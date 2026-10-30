@@ -1,0 +1,8 @@
+{
+  "name": "ZEVA Logistik Material - Operator Tracking v1.6",
+  "description": "Sistem monitoring aktivitas operator logistik material real-time, Lean Manufacturing, QR Code verification, Poka-Yoke Auto-Departure Fallback, dan Spatiotemporal Cycle Time Tracking.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
