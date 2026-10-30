@@ -1,0 +1,2 @@
+# zlog
+untuk indirect
