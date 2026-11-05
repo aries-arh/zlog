@@ -684,17 +684,12 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   };
 
   const handleOpenPrintModal = () => {
-    if (selectedQrIds.size === 0) {
-      // Auto-select current filtered items if none selected so the user can immediately print what's on screen
-      const next = new Set<string>();
-      filteredQrItems.forEach((item) => next.add(item.id));
-      setSelectedQrIds(next);
-    }
     setIsPrintModalOpen(true);
   };
 
-  // Selected items to pass into the Print Preview Modal
-  const selectedPrintItems = allPrintableQrItems.filter((item) => selectedQrIds.has(item.id));
+  // Selected items to pass into the Print Preview Modal - strictly filtered by category and search
+  const selectedPrintItems = filteredQrItems.filter((item) => selectedQrIds.has(item.id));
+  const itemsToPrint = selectedPrintItems.length > 0 ? selectedPrintItems : filteredQrItems;
 
   // Download Raw DB Backup JSON
   const handleExportJSON = () => {
@@ -866,7 +861,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
                 >
                   <Printer className="w-4 h-4" />
                   <span>
-                    Pratinjau &amp; Cetak {selectedQrIds.size > 0 ? `(${selectedQrIds.size} Dipilih)` : `(${filteredQrItems.length} Label)`}
+                    Pratinjau &amp; Cetak {selectedPrintItems.length > 0 ? `(${selectedPrintItems.length} Dipilih)` : `(${filteredQrItems.length} Label)`}
                   </span>
                 </button>
               </div>
@@ -899,7 +894,10 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
                 {/* Category Filter */}
                 <select
                   value={qrFilter}
-                  onChange={(e) => setQrFilter(e.target.value as any)}
+                  onChange={(e) => {
+                    setQrFilter(e.target.value as any);
+                    setSelectedQrIds(new Set());
+                  }}
                   className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold outline-none focus:border-amber-500 focus:bg-white cursor-pointer"
                 >
                   <option value="all">Semua Kategori ({allPrintableQrItems.length})</option>
@@ -921,7 +919,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
                   <span>Pilih Semua ({filteredQrItems.length})</span>
                 </button>
 
-                {selectedQrIds.size > 0 && (
+                {selectedPrintItems.length > 0 && (
                   <button
                     type="button"
                     onClick={handleDeselectAllQr}
@@ -934,7 +932,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
                 )}
 
                 <div className="px-2.5 py-1 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg font-bold text-[11px]">
-                  {selectedQrIds.size} dari {filteredQrItems.length} dipilih
+                  {selectedPrintItems.length} dari {filteredQrItems.length} dipilih
                 </div>
               </div>
             </div>
@@ -2604,7 +2602,8 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
       <QRPrintPreviewModal
         isOpen={isPrintModalOpen}
         onClose={() => setIsPrintModalOpen(false)}
-        items={selectedPrintItems.length > 0 ? selectedPrintItems : filteredQrItems}
+        items={itemsToPrint}
+        activeCategory={qrFilter}
       />
     </div>
   );

@@ -26,13 +26,25 @@ interface QRPrintPreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   items: QRPrintItem[];
+  activeCategory?: 'all' | 'raks' | 'materials' | 'lines';
 }
 
 export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
   isOpen,
   onClose,
   items,
+  activeCategory = 'all',
 }) => {
+  // Category tab filter inside modal
+  const [categoryTab, setCategoryTab] = useState<'all' | 'raks' | 'materials' | 'lines'>(activeCategory);
+
+  // Sync categoryTab whenever activeCategory prop or isOpen changes
+  React.useEffect(() => {
+    if (activeCategory) {
+      setCategoryTab(activeCategory);
+    }
+  }, [activeCategory, isOpen]);
+
   // Grid layout options: '12' = 3x4 (standar), '6' = 2x3 (sedang), '4' = 2x2 (besar)
   const [gridSize, setGridSize] = useState<'12' | '6' | '4'>('12');
   const [showSubtitle, setShowSubtitle] = useState(true);
@@ -41,6 +53,18 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
   const [showCutLines, setShowCutLines] = useState(true);
 
   if (!isOpen) return null;
+
+  const countRak = items.filter((i) => i.type === 'rak').length;
+  const countMat = items.filter((i) => i.type === 'material').length;
+  const countLine = items.filter((i) => i.type === 'line').length;
+
+  // Filter items based on active category in modal
+  const displayedItems = items.filter((item) => {
+    if (categoryTab === 'raks') return item.type === 'rak';
+    if (categoryTab === 'materials') return item.type === 'material';
+    if (categoryTab === 'lines') return item.type === 'line';
+    return true;
+  });
 
   const handlePrint = () => {
     window.print();
@@ -61,7 +85,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
             </div>
             <div>
               <h3 className="font-extrabold text-slate-900 text-base">
-                Pratinjau Lembar Cetak Stiker QR ({items.length} Label Terpilih)
+                Pratinjau Lembar Cetak Stiker QR ({displayedItems.length} Label)
               </h3>
               <p className="text-xs text-slate-500">
                 Pilih ukuran stiker dan sesuaikan informasi label sebelum mencetak atau menyimpan ke PDF
@@ -79,6 +103,66 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
 
         {/* Control Toolbar - Hidden saat print */}
         <div className="px-6 py-3 bg-slate-100/70 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs print:hidden">
+          {/* Category Filter Tabs inside modal */}
+          <div className="flex items-center gap-1.5">
+            <span className="font-bold text-slate-700 flex items-center gap-1">
+              <Tag className="w-3.5 h-3.5 text-slate-500" />
+              Kategori:
+            </span>
+            <div className="inline-flex rounded-xl p-0.5 bg-slate-200/90 border border-slate-300 shadow-2xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setCategoryTab('all')}
+                className={`px-2.5 py-1 rounded-lg transition ${
+                  categoryTab === 'all'
+                    ? 'bg-white text-slate-900 font-extrabold shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Semua ({items.length})
+              </button>
+              {countRak > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setCategoryTab('raks')}
+                  className={`px-2.5 py-1 rounded-lg transition ${
+                    categoryTab === 'raks'
+                      ? 'bg-amber-500 text-slate-950 font-extrabold shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Rak Gudang ({countRak})
+                </button>
+              )}
+              {countMat > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setCategoryTab('materials')}
+                  className={`px-2.5 py-1 rounded-lg transition ${
+                    categoryTab === 'materials'
+                      ? 'bg-blue-600 text-white font-extrabold shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Material ({countMat})
+                </button>
+              )}
+              {countLine > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setCategoryTab('lines')}
+                  className={`px-2.5 py-1 rounded-lg transition ${
+                    categoryTab === 'lines'
+                      ? 'bg-emerald-600 text-white font-extrabold shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Line ({countLine})
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Layout Grid Buttons */}
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 flex items-center gap-1">
@@ -168,12 +252,14 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
 
         {/* Sheet Preview Scroll Container */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-200/70 print:p-0 print:bg-white print:overflow-visible">
-          {items.length === 0 ? (
+          {displayedItems.length === 0 ? (
             <div className="p-12 text-center bg-white rounded-2xl border border-slate-300 text-slate-400">
               <AlertCircle className="w-10 h-10 mx-auto mb-2 text-amber-500" />
-              <p className="font-bold text-sm text-slate-700">Belum Ada QR Code yang Dipilih</p>
+              <p className="font-bold text-sm text-slate-700">Belum Ada QR Code yang Sesuai</p>
               <p className="text-xs text-slate-500 mt-1">
-                Tutup jendela ini lalu centang kotak [✓] pada stiker QR yang ingin dicetak.
+                {items.length === 0
+                  ? 'Tutup jendela ini lalu centang kotak [✓] pada stiker QR yang ingin dicetak.'
+                  : 'Tidak ada item yang ditemukan untuk kategori stiker yang dipilih di atas.'}
               </p>
             </div>
           ) : (
@@ -191,7 +277,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
                     : 'grid-cols-1 sm:grid-cols-2 print:grid-cols-2'
                 }`}
               >
-                {items.map((item, idx) => {
+                {displayedItems.map((item, idx) => {
                   let badgeText = item.badge;
                   let badgeClass = 'bg-amber-100 text-amber-900 border-amber-300';
                   if (item.type === 'line') badgeClass = 'bg-emerald-100 text-emerald-900 border-emerald-300';
@@ -255,7 +341,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
         {/* Modal Footer - Hidden saat print */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between print:hidden">
           <div className="text-xs text-slate-500 font-medium">
-            Siap cetak {items.length} label stiker • Printer standard A4 atau Thermal Roll
+            Siap cetak {displayedItems.length} label stiker • Printer standard A4 atau Thermal Roll
           </div>
 
           <div className="flex items-center gap-2">
@@ -269,7 +355,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
 
             <button
               type="button"
-              disabled={items.length === 0}
+              disabled={displayedItems.length === 0}
               onClick={handlePrint}
               className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-extrabold rounded-xl text-xs flex items-center gap-2 shadow-sm transition active:scale-[0.99] cursor-pointer"
             >
