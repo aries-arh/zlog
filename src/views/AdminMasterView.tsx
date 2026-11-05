@@ -39,9 +39,13 @@ import {
   ShieldAlert,
   Shield,
   Truck,
+  CheckSquare,
+  Square,
+  Eye,
 } from 'lucide-react';
 import { ImportExcelModal } from '../components/ImportExcelModal';
 import { ImportDatabaseModal, DatabaseBackupPayload } from '../components/ImportDatabaseModal';
+import { QRPrintPreviewModal, QRPrintItem } from '../components/QRPrintPreviewModal';
 import { downloadTemplate, downloadFullMasterWorkbook } from '../utils/excelImport';
 
 interface AdminMasterViewProps {
@@ -160,8 +164,11 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   const [editLineStatus, setEditLineStatus] = useState<'active' | 'inactive'>('active');
   const [editLineError, setEditLineError] = useState('');
 
-  // QR Print Category Filter
+  // QR Print State & Selective Printing
   const [qrFilter, setQrFilter] = useState<'all' | 'raks' | 'materials' | 'lines'>('all');
+  const [qrSearchTerm, setQrSearchTerm] = useState('');
+  const [selectedQrIds, setSelectedQrIds] = useState<Set<string>>(new Set());
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   // User Management State
   const [userRoleFilter, setUserRoleFilter] = useState<'all' | UserRole>('all');
@@ -600,10 +607,94 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     sound.playSuccessBeep();
   };
 
-  // Print QR Sheet
-  const handlePrintQRs = () => {
-    window.print();
+  // Compile all QR items into unified QRPrintItem format
+  const allPrintableQrItems: QRPrintItem[] = [
+    ...lines.map((line) => ({
+      id: `line-${line.id}`,
+      type: 'line' as const,
+      code: line.qr_code_proses,
+      title: line.nama_line,
+      subtitle: line.kode_line,
+      location: line.area ? `Area: ${line.area}` : undefined,
+      badge: 'STIKER LOKASI PROSES TUJUAN',
+    })),
+    ...raks.map((rak) => ({
+      id: `rak-${rak.id}`,
+      type: 'rak' as const,
+      code: rak.kode_rak,
+      title: rak.nama_rak,
+      subtitle: rak.kode_rak,
+      location: `Zona: ${rak.zona}`,
+      badge: 'STIKER RAK ASAL GUDANG',
+    })),
+    ...materials.map((mat) => {
+      const sourceRak = raks.find((r) => r.id === mat.default_rak_id);
+      return {
+        id: `mat-${mat.id}`,
+        type: 'material' as const,
+        code: mat.kode_material,
+        title: mat.deskripsi,
+        subtitle: `Satuan: ${mat.satuan} • ${mat.kategori}`,
+        location: sourceRak ? `Rak: ${sourceRak.kode_rak}` : undefined,
+        badge: 'LABEL MATERIAL / PART',
+      };
+    }),
+  ];
+
+  // Filter QR items by category and search term
+  const filteredQrItems = allPrintableQrItems.filter((item) => {
+    if (qrFilter === 'lines' && item.type !== 'line') return false;
+    if (qrFilter === 'raks' && item.type !== 'rak') return false;
+    if (qrFilter === 'materials' && item.type !== 'material') return false;
+
+    if (qrSearchTerm.trim()) {
+      const term = qrSearchTerm.toLowerCase();
+      const matchCode = item.code.toLowerCase().includes(term);
+      const matchTitle = item.title.toLowerCase().includes(term);
+      const matchSub = item.subtitle?.toLowerCase().includes(term);
+      const matchLoc = item.location?.toLowerCase().includes(term);
+      if (!matchCode && !matchTitle && !matchSub && !matchLoc) return false;
+    }
+
+    return true;
+  });
+
+  const toggleSelectQr = (id: string) => {
+    setSelectedQrIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
   };
+
+  const handleSelectAllFilteredQr = () => {
+    setSelectedQrIds((prev) => {
+      const next = new Set(prev);
+      filteredQrItems.forEach((item) => next.add(item.id));
+      return next;
+    });
+  };
+
+  const handleDeselectAllQr = () => {
+    setSelectedQrIds(new Set());
+  };
+
+  const handleOpenPrintModal = () => {
+    if (selectedQrIds.size === 0) {
+      // Auto-select current filtered items if none selected so the user can immediately print what's on screen
+      const next = new Set<string>();
+      filteredQrItems.forEach((item) => next.add(item.id));
+      setSelectedQrIds(next);
+    }
+    setIsPrintModalOpen(true);
+  };
+
+  // Selected items to pass into the Print Preview Modal
+  const selectedPrintItems = allPrintableQrItems.filter((item) => selectedQrIds.has(item.id));
 
   // Download Raw DB Backup JSON
   const handleExportJSON = () => {
@@ -752,118 +843,206 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
       {/* Tab: QR Code Bulk Generator & Print Sheet */}
       {activeTab === 'qrcodes' && (
         <div className="space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <QrCode className="w-4 h-4 text-amber-600" />
-                <span>BULK PRINTING MODUL QR CODE FISIK PABRIK</span>
-              </h2>
+          {/* Header Card & Toolbar */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <QrCode className="w-4 h-4 text-amber-600" />
+                  <span>BULK PRINTING MODUL QR CODE FISIK PABRIK</span>
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Pilih label QR yang ingin dicetak secara selektif. Hasil cetak terisolasi khusus stiker dan bebas dari elemen halaman web.
+                </p>
+              </div>
+
+              {/* Action: Open Print Preview */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleOpenPrintModal}
+                  className="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs flex items-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                  title="Buka pratinjau layout cetak stiker"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>
+                    Pratinjau &amp; Cetak {selectedQrIds.size > 0 ? `(${selectedQrIds.size} Dipilih)` : `(${filteredQrItems.length} Label)`}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Filter, Search & Batch Selection Bar */}
+            <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="flex flex-wrap items-center gap-2.5">
+                {/* Search Bar */}
+                <div className="relative min-w-[200px] sm:min-w-[260px]">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={qrSearchTerm}
+                    onChange={(e) => setQrSearchTerm(e.target.value)}
+                    placeholder="Cari kode QR, nama, lokasi..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-7 py-2 text-xs text-slate-800 outline-none focus:border-amber-500 focus:bg-white transition"
+                  />
+                  {qrSearchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => setQrSearchTerm('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Category Filter */}
+                <select
+                  value={qrFilter}
+                  onChange={(e) => setQrFilter(e.target.value as any)}
+                  className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold outline-none focus:border-amber-500 focus:bg-white cursor-pointer"
+                >
+                  <option value="all">Semua Kategori ({allPrintableQrItems.length})</option>
+                  <option value="raks">Khusus Rak Asal ({raks.length})</option>
+                  <option value="materials">Khusus Material &amp; Part ({materials.length})</option>
+                  <option value="lines">Khusus Line Proses ({lines.length})</option>
+                </select>
+              </div>
+
+              {/* Selection Batch Controls */}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleSelectAllFilteredQr}
+                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg transition flex items-center gap-1.5"
+                  title="Pilih semua stiker yang sesuai filter saat ini"
+                >
+                  <CheckSquare className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Pilih Semua ({filteredQrItems.length})</span>
+                </button>
+
+                {selectedQrIds.size > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleDeselectAllQr}
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-600 font-semibold rounded-lg transition flex items-center gap-1.5"
+                    title="Kosongkan pilihan stiker"
+                  >
+                    <Square className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Batalkan Pilihan</span>
+                  </button>
+                )}
+
+                <div className="px-2.5 py-1 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg font-bold text-[11px]">
+                  {selectedQrIds.size} dari {filteredQrItems.length} dipilih
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* QR Cards Grid */}
+          {filteredQrItems.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 space-y-2">
+              <QrCode className="w-10 h-10 mx-auto text-slate-300" />
+              <p className="font-bold text-slate-700 text-sm">Tidak Ada QR Code yang Cocok</p>
               <p className="text-xs text-slate-500">
-                Cetak stiker barcode / QR code fisik untuk ditempelkan di rak gudang, wadah material, dan stasiun kerja line proses.
+                Coba ubah kata kunci pencarian atau ganti filter kategori.
               </p>
             </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredQrItems.map((item) => {
+                const isSelected = selectedQrIds.has(item.id);
 
-            <div className="flex items-center gap-3">
-              <select
-                value={qrFilter}
-                onChange={(e) => setQrFilter(e.target.value as any)}
-                className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium outline-none focus:border-amber-500 focus:bg-white"
-              >
-                <option value="all">Tampilkan Semua QR</option>
-                <option value="raks">Khusus Rak Asal</option>
-                <option value="materials">Khusus Material</option>
-                <option value="lines">Khusus QR Lokasi Line Proses</option>
-              </select>
+                let badgeColor = 'bg-amber-100 text-amber-900 border-amber-300';
+                let borderColor = 'border-amber-400';
+                if (item.type === 'line') {
+                  badgeColor = 'bg-emerald-100 text-emerald-900 border-emerald-300';
+                  borderColor = 'border-emerald-400';
+                } else if (item.type === 'material') {
+                  badgeColor = 'bg-blue-100 text-blue-900 border-blue-300';
+                  borderColor = 'border-blue-400';
+                }
 
-              <button
-                onClick={handlePrintQRs}
-                className="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow-xs transition"
-              >
-                <Printer className="w-4 h-4" />
-                <span>Cetak Lembar Stiker (Print)</span>
-              </button>
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => toggleSelectQr(item.id)}
+                    className={`relative bg-white text-slate-950 p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-2 select-none group ${
+                      isSelected
+                        ? `border-amber-500 ring-3 ring-amber-400/40 bg-amber-50/20 shadow-md`
+                        : `border-slate-200 hover:border-slate-300 hover:shadow-xs`
+                    }`}
+                  >
+                    {/* Top Row: Checkbox & Type Badge */}
+                    <div className="w-full flex items-center justify-between gap-2">
+                      <div className="p-0.5 rounded text-amber-600 transition">
+                        {isSelected ? (
+                          <CheckSquare className="w-5 h-5 text-amber-600 fill-amber-100" />
+                        ) : (
+                          <Square className="w-5 h-5 text-slate-300 group-hover:text-slate-500 transition" />
+                        )}
+                      </div>
+                      <span
+                        className={`text-[9px] uppercase font-extrabold tracking-wider px-2 py-0.5 rounded border truncate ${badgeColor}`}
+                      >
+                        {item.type === 'line'
+                          ? 'LINE TUJUAN'
+                          : item.type === 'rak'
+                          ? 'RAK GUDANG'
+                          : 'MATERIAL PART'}
+                      </span>
+                    </div>
+
+                    {/* QR Code Container */}
+                    <div
+                      className={`p-2 rounded-xl border transition ${
+                        isSelected
+                          ? 'bg-white border-amber-300 shadow-sm'
+                          : 'bg-slate-50 border-slate-200 group-hover:bg-white'
+                      }`}
+                    >
+                      <QRCodeSVG value={item.code} size={110} level="M" />
+                    </div>
+
+                    {/* QR Details */}
+                    <div className="w-full space-y-0.5">
+                      <span className="font-mono font-black text-sm block tracking-wide text-slate-900">
+                        {item.code}
+                      </span>
+                      <span className="font-bold text-xs text-slate-800 block truncate" title={item.title}>
+                        {item.title}
+                      </span>
+                      {item.subtitle && (
+                        <span className="text-[10px] text-slate-500 block truncate font-medium">
+                          {item.subtitle}
+                        </span>
+                      )}
+                      {item.location && (
+                        <span className="text-[10px] text-slate-600 block truncate font-mono">
+                          {item.location}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Selection Prompt Footer */}
+                    <div className="w-full pt-1.5 border-t border-slate-100 text-[10px] font-bold">
+                      {isSelected ? (
+                        <span className="text-amber-700 flex items-center justify-center gap-1">
+                          <Check className="w-3 h-3 text-amber-600" />
+                          <span>Label Dipilih</span>
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 group-hover:text-slate-600">
+                          Klik untuk memilih
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
-
-          {/* Printable QR Grid Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 print:grid-cols-3 print:gap-4">
-            {/* Lines / Process QR (Physical location stickers) */}
-            {(qrFilter === 'all' || qrFilter === 'lines') &&
-              lines.map((line) => (
-                <div
-                  key={line.id}
-                  className="bg-white text-slate-950 p-4 rounded-2xl border-2 border-emerald-500 shadow-md flex flex-col items-center text-center space-y-2 print:border-black print:break-inside-avoid"
-                >
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    STIKER LOKASI PROSES TUJUAN
-                  </span>
-                  <div className="p-2 bg-white rounded-xl border border-slate-200 shadow-inner">
-                    <QRCodeSVG value={line.qr_code_proses} size={110} level="M" />
-                  </div>
-                  <div className="w-full">
-                    <span className="font-mono font-black text-sm block tracking-wide">
-                      {line.qr_code_proses}
-                    </span>
-                    <span className="font-bold text-xs text-slate-800 block truncate">
-                      {line.nama_line}
-                    </span>
-                    <span className="text-[10px] text-slate-500 block">{line.area}</span>
-                  </div>
-                </div>
-              ))}
-
-            {/* Rak QR */}
-            {(qrFilter === 'all' || qrFilter === 'raks') &&
-              raks.map((rak) => (
-                <div
-                  key={rak.id}
-                  className="bg-white text-slate-950 p-4 rounded-2xl border-2 border-amber-500 shadow-md flex flex-col items-center text-center space-y-2 print:border-black print:break-inside-avoid"
-                >
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">
-                    STIKER RAK ASAL GUDANG
-                  </span>
-                  <div className="p-2 bg-white rounded-xl border border-slate-200 shadow-inner">
-                    <QRCodeSVG value={rak.kode_rak} size={110} level="M" />
-                  </div>
-                  <div className="w-full">
-                    <span className="font-mono font-black text-sm block tracking-wide">
-                      {rak.kode_rak}
-                    </span>
-                    <span className="font-bold text-xs text-slate-800 block truncate">
-                      {rak.nama_rak}
-                    </span>
-                    <span className="text-[10px] text-slate-500 block">{rak.zona}</span>
-                  </div>
-                </div>
-              ))}
-
-            {/* Material Barcode / QR */}
-            {(qrFilter === 'all' || qrFilter === 'materials') &&
-              materials.map((mat) => (
-                <div
-                  key={mat.id}
-                  className="bg-white text-slate-950 p-4 rounded-2xl border-2 border-blue-500 shadow-md flex flex-col items-center text-center space-y-2 print:border-black print:break-inside-avoid"
-                >
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-300">
-                    LABEL MATERIAL / PART
-                  </span>
-                  <div className="p-2 bg-white rounded-xl border border-slate-200 shadow-inner">
-                    <QRCodeSVG value={mat.kode_material} size={110} level="M" />
-                  </div>
-                  <div className="w-full">
-                    <span className="font-mono font-black text-sm block tracking-wide">
-                      {mat.kode_material}
-                    </span>
-                    <span className="font-bold text-xs text-slate-800 block truncate">
-                      {mat.deskripsi}
-                    </span>
-                    <span className="text-[10px] text-slate-500 block">
-                      Satuan: {mat.satuan} • {mat.kategori}
-                    </span>
-                  </div>
-                </div>
-              ))}
-          </div>
+          )}
         </div>
       )}
 
@@ -2419,6 +2598,13 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
             onRestoreDatabase(data, mode);
           }
         }}
+      />
+
+      {/* QR Print Preview & Selective Print Sheet Modal */}
+      <QRPrintPreviewModal
+        isOpen={isPrintModalOpen}
+        onClose={() => setIsPrintModalOpen(false)}
+        items={selectedPrintItems.length > 0 ? selectedPrintItems : filteredQrItems}
       />
     </div>
   );
