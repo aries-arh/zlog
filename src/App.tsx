@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   User,
   MasterRak,
@@ -25,6 +25,30 @@ import { SpvMonitoringView } from './views/SpvMonitoringView';
 import { ManagerKpiView } from './views/ManagerKpiView';
 import { AdminMasterView } from './views/AdminMasterView';
 
+// 5 Menit Idle Timeout: Sesi reset ke login jika tidak ada pergerakan > 5 menit
+const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000;
+
+// Strict RBAC Access Validator
+const isViewAllowed = (role: UserRole | undefined, view: string): boolean => {
+  if (!role) return view === 'login';
+  // Admin has Super-Admin Omnipresent Access to all views
+  if (role === 'admin') return true;
+  // Operator is restricted ONLY to operator input and history
+  if (role === 'operator') return view === 'operator-task-input' || view === 'operator-history';
+  // SPV is restricted ONLY to SPV Live Monitoring
+  if (role === 'spv') return view === 'spv';
+  // Manager is restricted ONLY to Manager KPI
+  if (role === 'manager') return view === 'manager';
+  return false;
+};
+
+const getDefaultViewForRole = (role: UserRole | undefined): string => {
+  if (role === 'admin') return 'admin';
+  if (role === 'spv') return 'spv';
+  if (role === 'manager') return 'manager';
+  return 'operator-history';
+};
+
 export const App: React.FC = () => {
   // Global persistent state from storage
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -41,10 +65,55 @@ export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>('login');
   const [currentActiveTask, setCurrentActiveTask] = useState<Task | null>(null);
 
-  // Load data on startup
+  // User activity tracker
+  const recordActivity = useCallback(() => {
+    storage.setLastActivityTime(Date.now());
+  }, []);
+
+  const navigateToView = useCallback((view: string) => {
+    setCurrentView(view);
+    storage.setCurrentView(view);
+    storage.setLastActivityTime(Date.now());
+  }, []);
+
+  // Load data on startup with 5-minute idle session restore check
   useEffect(() => {
     loadAllData();
   }, []);
+
+  // Listen to user interaction events (clicks, touch, typing, mouse movement) to keep session fresh
+  useEffect(() => {
+    let lastThrottledTime = 0;
+    const handleUserInteraction = () => {
+      const now = Date.now();
+      if (now - lastThrottledTime > 3000) {
+        lastThrottledTime = now;
+        recordActivity();
+      }
+    };
+
+    const events = ['mousedown', 'keydown', 'touchstart', 'scroll', 'click'];
+    events.forEach((ev) => window.addEventListener(ev, handleUserInteraction, { passive: true }));
+
+    return () => {
+      events.forEach((ev) => window.removeEventListener(ev, handleUserInteraction));
+    };
+  }, [recordActivity]);
+
+  // Check periodically (every 10 seconds) if session has been idle for > 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!currentUser) return;
+      const lastActivity = storage.getLastActivityTime();
+      if (lastActivity && Date.now() - lastActivity > INACTIVITY_TIMEOUT_MS) {
+        sound.playErrorBeep();
+        alert('Sesi Anda telah berakhir karena tidak ada pergerakan/aktivitas lebih dari 5 menit.');
+        handleLogout();
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [currentUser]);
 
   const loadAllData = () => {
     const loadedUsers = storage.getUsers();
@@ -54,8 +123,6 @@ export const App: React.FC = () => {
     const loadedTasks = storage.getTasks();
     const loadedItems = storage.getTaskItems();
     const loadedLogs = storage.getLogs();
-    const savedUser = storage.getCurrentUser();
-    const savedTaskId = storage.getActiveTaskId();
 
     setAllUsers(loadedUsers);
     setAllRaks(loadedRaks);
@@ -65,10 +132,82 @@ export const App: React.FC = () => {
     setTaskItems(loadedItems);
     setLogs(loadedLogs);
 
-    // CRITICAL: Aplikasi saat pertama kali dijalankan HARUS selalu menampilkan
-    // halaman login tanpa sugesti dan tanpa auto-login untuk mencegah akses ilegal.
-    storage.setCurrentUser(null);
-    storage.setActiveTaskId(null);
+    const savedUser = storage.getCurrentUser();
+    const savedTaskId = storage.getActiveTaskId();
+    const savedView = storage.getCurrentView();
+    const lastActivity = storage.getLastActivityTime();
+    const now = Date.now();
+
+    // Check if session has expired due to 5 minutes of inactivity
+    const isExpired = !lastActivity || now - lastActivity > INACTIVITY_TIMEOUT_MS;
+
+    if (savedUser && !isExpired) {
+      // Validate that user still exists and is active in database
+      const userInDb = loadedUsers.find((u) => u.id === savedUser.id);
+      if (userInDb && userInDb.status === 'active') {
+        storage.setLastActivityTime(now);
+        setCurrentUser(userInDb);
+
+        // Restore active task if exists
+        let activeTask: Task | null = null;
+        if (savedTaskId) {
+          activeTask = loadedTasks.find((t) => t.id === savedTaskId) || null;
+        }
+        if (!activeTask) {
+          activeTask =
+            loadedTasks.find(
+              (t) =>
+                (userInDb.role === 'admin' || t.user_id === userInDb.id) &&
+                (t.status === 'active' || t.status === 'new')
+            ) || null;
+        }
+
+        if (activeTask) {
+          setCurrentActiveTask(activeTask);
+          storage.setActiveTaskId(activeTask.id);
+        } else {
+          setCurrentActiveTask(null);
+          storage.setActiveTaskId(null);
+        }
+
+        // Restore view: If the user was on 'operator-task-input', restore directly to that menu!
+        const targetView = savedView || getDefaultViewForRole(userInDb.role);
+        if (isViewAllowed(userInDb.role, targetView)) {
+          if (targetView === 'operator-task-input' && !activeTask) {
+            // If operator was on input view but had no active task, find existing or create new task
+            const newTaskId = `task-${Date.now()}`;
+            const newTask: Task = {
+              id: newTaskId,
+              user_id: userInDb.id,
+              task_no: generateTaskNo(),
+              tanggal: new Date().toISOString().split('T')[0],
+              shift: getCurrentShift(),
+              status: 'new',
+              start_time: new Date().toISOString(),
+              end_time: null,
+            };
+            const updatedTasks = [newTask, ...loadedTasks];
+            storage.saveTasks(updatedTasks);
+            storage.setActiveTaskId(newTaskId);
+            setTasks(updatedTasks);
+            setCurrentActiveTask(newTask);
+            setCurrentView('operator-task-input');
+            storage.setCurrentView('operator-task-input');
+          } else {
+            setCurrentView(targetView);
+            storage.setCurrentView(targetView);
+          }
+        } else {
+          const defaultView = getDefaultViewForRole(userInDb.role);
+          setCurrentView(defaultView);
+          storage.setCurrentView(defaultView);
+        }
+        return;
+      }
+    }
+
+    // If no user saved or idle > 5 minutes, clear session and show login screen
+    storage.clearSession();
     setCurrentUser(null);
     setCurrentActiveTask(null);
     setCurrentView('login');
@@ -132,9 +271,9 @@ export const App: React.FC = () => {
       setLogs(storage.getLogs());
 
       if (userActiveTask) {
-        setCurrentView('operator-task-input');
+        navigateToView('operator-task-input');
       } else {
-        setCurrentView('operator-history');
+        navigateToView('operator-history');
       }
 
       sound.playSuccessBeep();
@@ -189,7 +328,7 @@ export const App: React.FC = () => {
 
       sound.playSuccessBeep();
       // Direct masuk ke Panel Input Task agar operator baru langsung bekerja!
-      setCurrentView('operator-task-input');
+      navigateToView('operator-task-input');
       return { success: true };
     }
   };
@@ -242,16 +381,15 @@ export const App: React.FC = () => {
     });
     setLogs(storage.getLogs());
 
-    if (user.role === 'admin') setCurrentView('admin');
-    else if (user.role === 'spv') setCurrentView('spv');
-    else if (user.role === 'manager') setCurrentView('manager');
+    if (user.role === 'admin') navigateToView('admin');
+    else if (user.role === 'spv') navigateToView('spv');
+    else if (user.role === 'manager') navigateToView('manager');
 
     return { success: true };
   };
 
   const handleLogout = () => {
-    storage.setCurrentUser(null);
-    storage.setActiveTaskId(null);
+    storage.clearSession();
     setCurrentUser(null);
     setCurrentActiveTask(null);
     setCurrentView('login');
@@ -292,7 +430,7 @@ export const App: React.FC = () => {
     });
     setLogs(storage.getLogs());
 
-    setCurrentView('operator-task-input');
+    navigateToView('operator-task-input');
   };
 
   // Operator adds item to trolley
@@ -554,33 +692,13 @@ export const App: React.FC = () => {
     setLogs(storage.getLogs());
 
     sound.playDeliveryConfirmedChime();
-    setCurrentView('operator-history');
-  };
-
-  // Strict RBAC Access Validator
-  const isViewAllowed = (role: UserRole | undefined, view: string): boolean => {
-    if (!role) return view === 'login';
-    // Admin has Super-Admin Omnipresent Access to all views
-    if (role === 'admin') return true;
-    // Operator is restricted ONLY to operator input and history
-    if (role === 'operator') return view === 'operator-task-input' || view === 'operator-history';
-    // SPV is restricted ONLY to SPV Live Monitoring
-    if (role === 'spv') return view === 'spv';
-    // Manager is restricted ONLY to Manager KPI
-    if (role === 'manager') return view === 'manager';
-    return false;
-  };
-
-  const getDefaultViewForRole = (role: UserRole | undefined): string => {
-    if (role === 'admin') return 'admin';
-    if (role === 'spv') return 'spv';
-    if (role === 'manager') return 'manager';
-    return 'operator-history';
+    navigateToView('operator-history');
   };
 
   const handleNavigate = (view: string) => {
+    recordActivity();
     if (!currentUser) {
-      setCurrentView('login');
+      navigateToView('login');
       return;
     }
 
@@ -595,19 +713,23 @@ export const App: React.FC = () => {
     if (view === 'operator-task-input') {
       if (!currentActiveTask) {
         // Find existing active or new task
-        const active = tasks.find((t) => t.status === 'active' || t.status === 'new');
+        const active = tasks.find(
+          (t) =>
+            (currentUser.role === 'admin' || t.user_id === currentUser.id) &&
+            (t.status === 'active' || t.status === 'new')
+        );
         if (active) {
           setCurrentActiveTask(active);
           storage.setActiveTaskId(active.id);
-          setCurrentView('operator-task-input');
+          navigateToView('operator-task-input');
         } else {
           handleCreateNewTask();
         }
       } else {
-        setCurrentView('operator-task-input');
+        navigateToView('operator-task-input');
       }
     } else {
-      setCurrentView(view);
+      navigateToView(view);
     }
   };
 
@@ -655,14 +777,14 @@ export const App: React.FC = () => {
                 onVerifyDestinationScan={handleVerifyDestinationScan}
                 onReturnToRack={handleReturnToRack}
                 onCompleteTask={handleCompleteTask}
-                onBackToHistory={() => setCurrentView('operator-history')}
+                onBackToHistory={() => navigateToView('operator-history')}
               />
             ) : null
           ) : (
             <AccessDenied
               currentRole={currentUser?.role}
               requiredRole="Operator Gemba"
-              onBackToAllowed={() => setCurrentView(getDefaultViewForRole(currentUser?.role))}
+              onBackToAllowed={() => navigateToView(getDefaultViewForRole(currentUser?.role))}
             />
           )
         )}
@@ -682,7 +804,7 @@ export const App: React.FC = () => {
                 onOpenTask={(task) => {
                   setCurrentActiveTask(task);
                   storage.setActiveTaskId(task.id);
-                  setCurrentView('operator-task-input');
+                  navigateToView('operator-task-input');
                 }}
                 onCreateNewTask={handleCreateNewTask}
               />
@@ -691,7 +813,7 @@ export const App: React.FC = () => {
             <AccessDenied
               currentRole={currentUser?.role}
               requiredRole="Operator Gemba"
-              onBackToAllowed={() => setCurrentView(getDefaultViewForRole(currentUser?.role))}
+              onBackToAllowed={() => navigateToView(getDefaultViewForRole(currentUser?.role))}
             />
           )
         )}
@@ -712,7 +834,7 @@ export const App: React.FC = () => {
             <AccessDenied
               currentRole={currentUser?.role}
               requiredRole="Supervisor (SPV)"
-              onBackToAllowed={() => setCurrentView(getDefaultViewForRole(currentUser?.role))}
+              onBackToAllowed={() => navigateToView(getDefaultViewForRole(currentUser?.role))}
             />
           )
         )}
@@ -731,7 +853,7 @@ export const App: React.FC = () => {
             <AccessDenied
               currentRole={currentUser?.role}
               requiredRole="Logistics Manager"
-              onBackToAllowed={() => setCurrentView(getDefaultViewForRole(currentUser?.role))}
+              onBackToAllowed={() => navigateToView(getDefaultViewForRole(currentUser?.role))}
             />
           )
         )}
@@ -767,7 +889,7 @@ export const App: React.FC = () => {
             <AccessDenied
               currentRole={currentUser?.role}
               requiredRole="Administrator Sistem"
-              onBackToAllowed={() => setCurrentView(getDefaultViewForRole(currentUser?.role))}
+              onBackToAllowed={() => navigateToView(getDefaultViewForRole(currentUser?.role))}
             />
           )
         )}

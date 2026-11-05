@@ -18,6 +18,8 @@ const STORAGE_KEYS = {
   LOGS: 'zeva_logs_v16',
   CURRENT_USER: 'zeva_current_user_v16',
   ACTIVE_TASK_ID: 'zeva_active_task_id_v16',
+  CURRENT_VIEW: 'zeva_current_view_v16',
+  LAST_ACTIVITY_TIME: 'zeva_last_activity_time_v16',
 };
 
 const SEED_USERS: User[] = [
@@ -513,7 +515,36 @@ export const storage = {
     }
   },
 
+  getCurrentView: (): string | null => {
+    return localStorage.getItem(STORAGE_KEYS.CURRENT_VIEW);
+  },
+  setCurrentView: (view: string | null) => {
+    if (view) {
+      localStorage.setItem(STORAGE_KEYS.CURRENT_VIEW, view);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.CURRENT_VIEW);
+    }
+  },
+
+  getLastActivityTime: (): number | null => {
+    const raw = localStorage.getItem(STORAGE_KEYS.LAST_ACTIVITY_TIME);
+    if (!raw) return null;
+    const num = parseInt(raw, 10);
+    return isNaN(num) ? null : num;
+  },
+  setLastActivityTime: (time: number = Date.now()) => {
+    localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY_TIME, String(time));
+  },
+
+  clearSession: () => {
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    localStorage.removeItem(STORAGE_KEYS.ACTIVE_TASK_ID);
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_VIEW);
+    localStorage.removeItem(STORAGE_KEYS.LAST_ACTIVITY_TIME);
+  },
+
   resetAllData: () => {
+    storage.clearSession();
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(SEED_USERS));
     localStorage.setItem(STORAGE_KEYS.RAKS, JSON.stringify(SEED_RAKS));
     localStorage.setItem(STORAGE_KEYS.MATERIALS, JSON.stringify(SEED_MATERIALS));
