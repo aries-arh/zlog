@@ -16,7 +16,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   Send,
-  Timer,
   Trash2,
   Scan,
   ArrowLeft,
@@ -82,9 +81,6 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const [scannerOpen, setScannerOpen] = useState(false);
   const [scannerMode, setScannerMode] = useState<'rak' | 'material' | 'destination'>('rak');
 
-  // Departure Countdown Timer (Auto-Confirm 5s)
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const countdownTimerRef = useRef<any>(null);
 
   // Completion Verification Modal
   const [showCompletionModal, setShowCompletionModal] = useState(false);
@@ -233,44 +229,11 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     setMaterialValid(false);
     setQty(10);
     setTimeout(() => materialInputRef.current?.focus(), 100);
-
-    startDepartureCountdown();
-  };
-
-  const startDepartureCountdown = () => {
-    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-    setCountdown(5);
-    countdownTimerRef.current = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev === null) return null;
-        if (prev <= 1) {
-          clearInterval(countdownTimerRef.current);
-          countdownTimerRef.current = null;
-          onConfirmDeparture('MANUAL_PRESS');
-          return null;
-        }
-        sound.playTick();
-        return prev - 1;
-      });
-    }, 1000);
   };
 
   const handleManualDeparture = () => {
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-      countdownTimerRef.current = null;
-    }
-    setCountdown(null);
     sound.playSuccessBeep();
     onConfirmDeparture('MANUAL_PRESS');
-  };
-
-  const handleCancelCountdown = () => {
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-      countdownTimerRef.current = null;
-    }
-    setCountdown(null);
   };
 
   const handleDestinationScanSubmit = (qrCodeToVerify: string) => {
@@ -627,7 +590,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                 </p>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                {pickedItems.length} Diambil | {inTransitItems.length} Jalan | {deliveredItems.length} Tiba
+                {pickedItems.length} Siap di Troli | {inTransitItems.length} Jalan | {deliveredItems.length} Tiba
               </span>
             </div>
 
@@ -645,8 +608,15 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                   const line = allLines.find((l) => l.id === item.line_id);
 
                   let badgeColor = 'bg-amber-100 text-amber-800 border-amber-200';
-                  if (item.status === 'IN_TRANSIT') badgeColor = 'bg-blue-100 text-blue-700 border-blue-200';
-                  if (item.status === 'DELIVERED') badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                  let statusLabel = 'SIAP DI TROLI';
+                  if (item.status === 'IN_TRANSIT') {
+                    badgeColor = 'bg-blue-100 text-blue-700 border-blue-200';
+                    statusLabel = 'MENUJU LINE (T1)';
+                  }
+                  if (item.status === 'DELIVERED') {
+                    badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    statusLabel = 'TIBA DI LINE (T2)';
+                  }
 
                   return (
                     <div
@@ -670,8 +640,8 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                           <span className="text-[10px] text-slate-600 font-mono">
                             Line: {line?.nama_line || line?.kode_line}
                           </span>
-                          <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${badgeColor}`}>
-                            {item.status}
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${badgeColor}`}>
+                            {statusLabel}
                           </span>
                           {item.departure_mode === 'AUTO_FALLBACK' && (
                             <span className="text-[9px] font-bold px-1 rounded bg-rose-100 text-rose-700 border border-rose-200">
@@ -686,7 +656,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                           type="button"
                           onClick={() => onRemoveTaskItem(item.id)}
                           className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 transition"
-                          title="Batal / Hapus Item"
+                          title="Batal / Hapus Item dari Troli"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -702,48 +672,27 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
               {pickedItems.length > 0 && (
                 <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-xl space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                      <Timer className="w-4 h-4 text-amber-700" />
-                      Auto-Confirm Departure:
+                    <span className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                      <Truck className="w-4 h-4 text-amber-700" />
+                      Siap Berangkat ({pickedItems.length} Material Dimuat):
                     </span>
-                    {countdown !== null ? (
-                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-500 text-white animate-pulse">
-                        Otomatis Berangkat dlm {countdown}s
-                      </span>
-                    ) : (
-                      <button
-                        onClick={startDepartureCountdown}
-                        className="text-[11px] text-amber-700 font-semibold hover:underline"
-                      >
-                        Mulai Timer 5s
-                      </button>
-                    )}
+                    <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200">
+                      Troli di Area Rak
+                    </span>
                   </div>
 
-                  <p className="text-[11px] text-amber-900/80">
-                    Sistem mendeteksi {pickedItems.length} item siap di troli. Tekan konfirmasi atau biarkan timer berjalan saat operator mulai jalan.
+                  <p className="text-[11px] text-amber-900/80 leading-relaxed">
+                    Material tersimpan aman di troli. Anda dapat terus memindai/menambahkan material lain di panel samping. Tekan tombol di bawah saat troli selesai dimuat dan Anda siap jalan menuju lini produksi.
                   </p>
 
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={handleManualDeparture}
-                      className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>✓ KONFIRMASI BERANGKAT (T1)</span>
-                    </button>
-                    {countdown !== null && (
-                      <button
-                        type="button"
-                        onClick={handleCancelCountdown}
-                        className="px-3 py-3 bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 rounded-xl text-xs"
-                        title="Batal Timer Auto-Confirm"
-                      >
-                        Batal
-                      </button>
-                    )}
-                  </div>
+                  <button
+                    type="button"
+                    onClick={handleManualDeparture}
+                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99] cursor-pointer"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>✓ KONFIRMASI BERANGKAT (CATAT T1)</span>
+                  </button>
                 </div>
               )}
 
