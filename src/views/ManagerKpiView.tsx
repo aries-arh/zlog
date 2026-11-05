@@ -5,6 +5,7 @@ import {
   User,
   MasterLine,
   MasterMaterial,
+  MasterRak,
 } from '../types';
 import { formatDuration } from '../utils/storage';
 import {
@@ -21,6 +22,7 @@ import {
   Target,
   FileSpreadsheet,
 } from 'lucide-react';
+import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
 
 interface ManagerKpiViewProps {
   tasks: Task[];
@@ -28,6 +30,7 @@ interface ManagerKpiViewProps {
   allUsers: User[];
   allLines: MasterLine[];
   allMaterials: MasterMaterial[];
+  allRaks?: MasterRak[];
 }
 
 export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
@@ -36,7 +39,9 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
   allUsers,
   allLines,
   allMaterials,
+  allRaks = [],
 }) => {
+  const [managerTab, setManagerTab] = useState<'charts' | 'kpis'>('charts');
   const [selectedShiftFilter, setSelectedShiftFilter] = useState<string>('all');
   const operators = allUsers.filter((u) => u.role === 'operator');
 
@@ -196,30 +201,80 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <select
-            value={selectedShiftFilter}
-            onChange={(e) => setSelectedShiftFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium outline-none focus:border-emerald-500 focus:bg-white"
-          >
-            <option value="all">Semua Shift</option>
-            <option value="1">Shift 1</option>
-            <option value="2">Shift 2</option>
-            <option value="3">Shift 3</option>
-          </select>
-
+        {/* Tab Switcher */}
+        <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
           <button
-            onClick={handleExportCSV}
-            className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-xs transition"
+            onClick={() => setManagerTab('charts')}
+            className={`px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 ${
+              managerTab === 'charts'
+                ? 'bg-white text-emerald-800 shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
           >
-            <Download className="w-4 h-4" />
-            <span>Export CSV Laporan</span>
+            <BarChart3 className="w-3.5 h-3.5 text-amber-500" />
+            <span>Grafik Display &amp; Frekuensi</span>
+          </button>
+          <button
+            onClick={() => setManagerTab('kpis')}
+            className={`px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 ${
+              managerTab === 'kpis'
+                ? 'bg-white text-emerald-800 shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            <span>Ringkasan Eksekutif &amp; Drill-Down</span>
           </button>
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Tab 1: Grafik Display & Analisis Visual */}
+      {managerTab === 'charts' && (
+        <AnalyticsChartsView
+          tasks={tasks}
+          taskItems={taskItems}
+          allUsers={allUsers}
+          allLines={allLines}
+          allMaterials={allMaterials}
+          allRaks={allRaks}
+          role="manager"
+        />
+      )}
+
+      {/* Tab 2: Ringkasan Eksekutif KPI & Drill-Down Table */}
+      {managerTab === 'kpis' && (
+        <div className="space-y-6">
+          {/* Sub Toolbar for KPI Dashboard */}
+          <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-emerald-600" />
+              <span>Filter Shift &amp; Export Laporan Rinci</span>
+            </span>
+
+            <div className="flex items-center gap-2.5">
+              <select
+                value={selectedShiftFilter}
+                onChange={(e) => setSelectedShiftFilter(e.target.value)}
+                className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium outline-none focus:border-emerald-500 focus:bg-white"
+              >
+                <option value="all">Semua Shift</option>
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+                <option value="3">Shift 3</option>
+              </select>
+
+              <button
+                onClick={handleExportCSV}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-xs transition"
+              >
+                <Download className="w-4 h-4" />
+                <span>Export CSV Laporan</span>
+              </button>
+            </div>
+          </div>
+
+          {/* KPI Cards Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-600">
             <span className="font-semibold flex items-center gap-1.5">
@@ -392,5 +447,7 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
         </div>
       </div>
     </div>
-  );
+  )}
+</div>
+);
 };

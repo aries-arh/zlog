@@ -990,6 +990,7 @@ export const App: React.FC = () => {
               allUsers={allUsers}
               allLines={allLines}
               allMaterials={allMaterials}
+              allRaks={allRaks}
             />
           ) : (
             <AccessDenied

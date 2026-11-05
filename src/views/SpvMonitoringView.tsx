@@ -18,7 +18,9 @@ import {
   CheckCircle2,
   Search,
   Zap,
+  BarChart3,
 } from 'lucide-react';
+import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
 
 interface SpvMonitoringViewProps {
   tasks: Task[];
@@ -44,7 +46,7 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
   const [filterLine, setFilterLine] = useState<string>('all');
   const [filterOperator, setFilterOperator] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'grid' | 'timeline'>('grid');
+  const [activeTab, setActiveTab] = useState<'grid' | 'timeline' | 'charts'>('grid');
 
   const operators = allUsers.filter((u) => u.role === 'operator');
 
@@ -123,7 +125,7 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
         <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
           <button
             onClick={() => setActiveTab('grid')}
-            className={`px-4 py-2 rounded-lg transition ${
+            className={`px-3.5 py-2 rounded-lg transition ${
               activeTab === 'grid'
                 ? 'bg-white text-blue-700 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
@@ -133,7 +135,7 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('timeline')}
-            className={`px-4 py-2 rounded-lg transition ${
+            className={`px-3.5 py-2 rounded-lg transition ${
               activeTab === 'timeline'
                 ? 'bg-white text-blue-700 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
@@ -141,117 +143,133 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
           >
             Spatiotemporal Timeline
           </button>
+          <button
+            onClick={() => setActiveTab('charts')}
+            className={`px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 ${
+              activeTab === 'charts'
+                ? 'bg-white text-blue-700 shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-amber-500" />
+            <span>Grafik &amp; Laporan Display</span>
+          </button>
         </div>
       </div>
 
-      {/* Summary KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
-        <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
-          <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-            <Truck className="w-3.5 h-3.5 text-blue-600" /> Task Aktif / In-Transit
-          </div>
-          <div className="text-2xl font-black text-slate-900 mt-1 font-mono">
-            {activeTasksCount} <span className="text-xs font-normal text-slate-500">({inTransitCount} item jalan)</span>
-          </div>
-        </div>
+      {/* Summary KPI Cards & Filter Bar for Live Grid & Timeline */}
+      {activeTab !== 'charts' && (
+        <>
+          {/* Summary KPI Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
+                <Truck className="w-3.5 h-3.5 text-blue-600" /> Task Aktif / In-Transit
+              </div>
+              <div className="text-2xl font-black text-slate-900 mt-1 font-mono">
+                {activeTasksCount} <span className="text-xs font-normal text-slate-500">({inTransitCount} item jalan)</span>
+              </div>
+            </div>
 
-        <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
-          <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Items Delivered
-          </div>
-          <div className="text-2xl font-black text-emerald-700 mt-1 font-mono">
-            {deliveredCount}
-          </div>
-        </div>
+            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Items Delivered
+              </div>
+              <div className="text-2xl font-black text-emerald-700 mt-1 font-mono">
+                {deliveredCount}
+              </div>
+            </div>
 
-        <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
-          <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-amber-600" /> Avg Delivery Lead Time
+            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-amber-600" /> Avg Delivery Lead Time
+              </div>
+              <div className="text-2xl font-black text-slate-900 mt-1 font-mono">
+                {formatDuration(avgLeadTime)}
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Delay / Overtime Alert
+              </div>
+              <div className="text-2xl font-black text-rose-600 mt-1 font-mono flex items-center gap-2">
+                <span>{delayAlertCount}</span>
+                {delayAlertCount > 0 && <span className="text-xs bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded font-bold">&gt;5 mnt</span>}
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs col-span-2 md:col-span-1">
+              <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-600" /> Auto-Departure Fallbacks
+              </div>
+              <div className="text-2xl font-black text-amber-700 mt-1 font-mono">
+                {autoFallbackCount}
+              </div>
+            </div>
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-1 font-mono">
-            {formatDuration(avgLeadTime)}
+
+          {/* Filter Bar */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap items-center gap-3 text-xs shadow-xs">
+            <div className="flex items-center gap-1.5 text-slate-600 font-semibold">
+              <Filter className="w-4 h-4 text-blue-600" />
+              <span>Filter:</span>
+            </div>
+
+            {/* Shift Filter */}
+            <select
+              value={filterShift}
+              onChange={(e) => setFilterShift(e.target.value)}
+              className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
+            >
+              <option value="all">Semua Shift</option>
+              <option value="1">Shift 1 (Pagi)</option>
+              <option value="2">Shift 2 (Siang)</option>
+              <option value="3">Shift 3 (Malam)</option>
+            </select>
+
+            {/* Line Filter */}
+            <select
+              value={filterLine}
+              onChange={(e) => setFilterLine(e.target.value)}
+              className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
+            >
+              <option value="all">Semua Line Tujuan</option>
+              {allLines.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.kode_line} - {l.nama_line}
+                </option>
+              ))}
+            </select>
+
+            {/* Operator Filter */}
+            <select
+              value={filterOperator}
+              onChange={(e) => setFilterOperator(e.target.value)}
+              className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
+            >
+              <option value="all">Semua Operator</option>
+              {operators.map((op) => (
+                <option key={op.id} value={op.id}>
+                  {op.employee_id} - {op.nama}
+                </option>
+              ))}
+            </select>
+
+            {/* Search Input */}
+            <div className="flex-1 min-w-[200px] relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari material, rak, atau operator..."
+                className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-3 py-2 text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500 font-mono"
+              />
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" />
+            </div>
           </div>
-        </div>
-
-        <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
-          <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-            <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Delay / Overtime Alert
-          </div>
-          <div className="text-2xl font-black text-rose-600 mt-1 font-mono flex items-center gap-2">
-            <span>{delayAlertCount}</span>
-            {delayAlertCount > 0 && <span className="text-xs bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded font-bold">&gt;5 mnt</span>}
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs col-span-2 md:col-span-1">
-          <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-amber-600" /> Auto-Departure Fallbacks
-          </div>
-          <div className="text-2xl font-black text-amber-700 mt-1 font-mono">
-            {autoFallbackCount}
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Bar */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap items-center gap-3 text-xs shadow-xs">
-        <div className="flex items-center gap-1.5 text-slate-600 font-semibold">
-          <Filter className="w-4 h-4 text-blue-600" />
-          <span>Filter:</span>
-        </div>
-
-        {/* Shift Filter */}
-        <select
-          value={filterShift}
-          onChange={(e) => setFilterShift(e.target.value)}
-          className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
-        >
-          <option value="all">Semua Shift</option>
-          <option value="1">Shift 1 (Pagi)</option>
-          <option value="2">Shift 2 (Siang)</option>
-          <option value="3">Shift 3 (Malam)</option>
-        </select>
-
-        {/* Line Filter */}
-        <select
-          value={filterLine}
-          onChange={(e) => setFilterLine(e.target.value)}
-          className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
-        >
-          <option value="all">Semua Line Tujuan</option>
-          {allLines.map((l) => (
-            <option key={l.id} value={l.id}>
-              {l.kode_line} - {l.nama_line}
-            </option>
-          ))}
-        </select>
-
-        {/* Operator Filter */}
-        <select
-          value={filterOperator}
-          onChange={(e) => setFilterOperator(e.target.value)}
-          className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-blue-500 font-medium"
-        >
-          <option value="all">Semua Operator</option>
-          {operators.map((op) => (
-            <option key={op.id} value={op.id}>
-              {op.employee_id} - {op.nama}
-            </option>
-          ))}
-        </select>
-
-        {/* Search Input */}
-        <div className="flex-1 min-w-[200px] relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari material, rak, atau operator..."
-            className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-3 py-2 text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500 font-mono"
-          />
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" />
-        </div>
-      </div>
+        </>
+      )}
 
       {/* Tab 1: Live Monitoring Grid */}
       {activeTab === 'grid' && (
@@ -469,6 +487,19 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
             })}
           </div>
         </div>
+      )}
+
+      {/* Tab 3: Analytics & Graphic Display */}
+      {activeTab === 'charts' && (
+        <AnalyticsChartsView
+          tasks={tasks}
+          taskItems={taskItems}
+          allUsers={allUsers}
+          allLines={allLines}
+          allMaterials={allMaterials}
+          allRaks={allRaks}
+          role="spv"
+        />
       )}
     </div>
   );
