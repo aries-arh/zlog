@@ -83,7 +83,8 @@ export type EventType =
   | 'DELIVERED_CONFIRMED'
   | 'DELIVERY_MISMATCH_REJECTED'
   | 'RETURN_TO_RACK'
-  | 'TASK_COMPLETED';
+  | 'TASK_COMPLETED'
+  | 'DATABASE_RESTORE';
 
 export interface SpatiotemporalLogEvent {
   id: string;

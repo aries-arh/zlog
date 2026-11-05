@@ -4,6 +4,8 @@ import {
   MasterRak,
   MasterMaterial,
   MasterLine,
+  Task,
+  TaskItem,
   SpatiotemporalLogEvent,
   UserRole,
 } from '../types';
@@ -36,8 +38,10 @@ import {
   X,
   ShieldAlert,
   Shield,
+  Truck,
 } from 'lucide-react';
 import { ImportExcelModal } from '../components/ImportExcelModal';
+import { ImportDatabaseModal, DatabaseBackupPayload } from '../components/ImportDatabaseModal';
 import { downloadTemplate, downloadFullMasterWorkbook } from '../utils/excelImport';
 
 interface AdminMasterViewProps {
@@ -46,11 +50,14 @@ interface AdminMasterViewProps {
   lines: MasterLine[];
   users: User[];
   logs: SpatiotemporalLogEvent[];
+  tasks?: Task[];
+  taskItems?: TaskItem[];
   currentUser?: User | null;
   onSaveRaks: (raks: MasterRak[]) => void;
   onSaveMaterials: (mats: MasterMaterial[]) => void;
   onSaveLines: (lines: MasterLine[]) => void;
   onSaveUsers: (users: User[]) => void;
+  onRestoreDatabase?: (data: DatabaseBackupPayload, mode: 'overwrite' | 'merge') => void;
 }
 
 export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
@@ -59,17 +66,22 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   lines,
   users,
   logs,
+  tasks = [],
+  taskItems = [],
   currentUser,
   onSaveRaks,
   onSaveMaterials,
   onSaveLines,
   onSaveUsers,
+  onRestoreDatabase,
 }) => {
   const [activeTab, setActiveTab] = useState<'raks' | 'materials' | 'lines' | 'users' | 'qrcodes' | 'logs'>('qrcodes');
 
   // Excel Import modal state
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [importType, setImportType] = useState<'rak' | 'material' | 'line'>('rak');
+  // Raw DB Import modal state
+  const [importDbModalOpen, setImportDbModalOpen] = useState(false);
 
   // Handle Excel Import Confirm
   const handleImportConfirm = (items: any[], mode: 'append' | 'replace') => {
@@ -602,6 +614,8 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
       raks,
       materials,
       lines,
+      tasks: tasks || [],
+      taskItems: taskItems || [],
       logs,
     };
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backup, null, 2));
@@ -644,11 +658,23 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
           </button>
 
           <button
+            type="button"
             onClick={handleExportJSON}
             className="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-xs"
+            title="Download seluruh database sistem ke file JSON backup"
           >
             <Download className="w-4 h-4 text-purple-600" />
             <span>Export Raw Database (JSON)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setImportDbModalOpen(true)}
+            className="px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-300 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-xs"
+            title="Import & restore database sistem dari file JSON backup"
+          >
+            <Upload className="w-4 h-4 text-purple-600" />
+            <span>Import Database (JSON)</span>
           </button>
         </div>
       </div>
@@ -1905,8 +1931,41 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
       {activeTab === 'logs' && (
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h3 className="font-bold text-slate-900 text-sm">System Raw Audit Trail</h3>
+            <h3 className="font-bold text-slate-900 text-sm">System Raw Audit Trail &amp; Database Hub</h3>
             <span className="text-xs font-mono text-slate-500">{logs.length} Total Logs</span>
+          </div>
+
+          {/* Database Backup & Recovery Hub Card */}
+          <div className="p-4 bg-gradient-to-r from-purple-50 via-slate-50 to-purple-50 border border-purple-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="space-y-0.5">
+              <span className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                <Database className="w-4 h-4 text-purple-600" />
+                Pusat Cadangan &amp; Pemulihan Database (Backup &amp; Restore)
+              </span>
+              <p className="text-[11px] text-slate-600">
+                Unduh seluruh isi database sistem (Master, User, Tasks, &amp; Logs) ke file JSON atau pulihkan dari cadangan sebelumnya.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={handleExportJSON}
+                className="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs"
+                title="Download seluruh database sistem ke file JSON backup"
+              >
+                <Download className="w-3.5 h-3.5 text-purple-600" />
+                <span>Export Backup (JSON)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setImportDbModalOpen(true)}
+                className="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs"
+                title="Import & restore database sistem dari file JSON backup"
+              >
+                <Upload className="w-3.5 h-3.5 text-white" />
+                <span>Import Database (JSON)</span>
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto max-h-[500px]">
@@ -2349,6 +2408,17 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
         type={importType}
         existingRaks={raks}
         onImportConfirm={handleImportConfirm}
+      />
+
+      {/* Import Raw Database JSON Modal */}
+      <ImportDatabaseModal
+        isOpen={importDbModalOpen}
+        onClose={() => setImportDbModalOpen(false)}
+        onImportConfirm={(data, mode) => {
+          if (onRestoreDatabase) {
+            onRestoreDatabase(data, mode);
+          }
+        }}
       />
     </div>
   );

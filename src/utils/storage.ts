@@ -486,6 +486,9 @@ export const storage = {
     localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs.slice(0, 500))); // keep up to 500
     return newLog;
   },
+  saveLogs: (logs: SpatiotemporalLogEvent[]) => {
+    localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs.slice(0, 500)));
+  },
 
   getCurrentUser: (): User | null => {
     const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);

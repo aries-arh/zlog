@@ -24,6 +24,7 @@ import { OperatorHistoryView } from './views/OperatorHistoryView';
 import { SpvMonitoringView } from './views/SpvMonitoringView';
 import { ManagerKpiView } from './views/ManagerKpiView';
 import { AdminMasterView } from './views/AdminMasterView';
+import { DatabaseBackupPayload } from './components/ImportDatabaseModal';
 
 // 5 Menit Idle Timeout: Sesi reset ke login jika tidak ada pergerakan > 5 menit
 const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000;
@@ -695,6 +696,147 @@ export const App: React.FC = () => {
     navigateToView('operator-history');
   };
 
+  // Restore / Import Database from JSON Backup
+  const handleRestoreDatabase = (
+    backup: DatabaseBackupPayload,
+    mode: 'overwrite' | 'merge'
+  ) => {
+    recordActivity();
+
+    // 1. RAKS
+    if (backup.raks && Array.isArray(backup.raks)) {
+      let finalRaks: MasterRak[] = [];
+      if (mode === 'overwrite') {
+        finalRaks = backup.raks;
+      } else {
+        const existingIds = new Set(allRaks.map((r) => r.id));
+        const updated = allRaks.map((r) => {
+          const match = backup.raks!.find((b) => b.id === r.id);
+          return match || r;
+        });
+        const added = backup.raks.filter((b) => !existingIds.has(b.id));
+        finalRaks = [...updated, ...added];
+      }
+      setAllRaks(finalRaks);
+      storage.saveRaks(finalRaks);
+    }
+
+    // 2. MATERIALS
+    if (backup.materials && Array.isArray(backup.materials)) {
+      let finalMaterials: MasterMaterial[] = [];
+      if (mode === 'overwrite') {
+        finalMaterials = backup.materials;
+      } else {
+        const existingIds = new Set(allMaterials.map((m) => m.id));
+        const updated = allMaterials.map((m) => {
+          const match = backup.materials!.find((b) => b.id === m.id);
+          return match || m;
+        });
+        const added = backup.materials.filter((b) => !existingIds.has(b.id));
+        finalMaterials = [...updated, ...added];
+      }
+      setAllMaterials(finalMaterials);
+      storage.saveMaterials(finalMaterials);
+    }
+
+    // 3. LINES
+    if (backup.lines && Array.isArray(backup.lines)) {
+      let finalLines: MasterLine[] = [];
+      if (mode === 'overwrite') {
+        finalLines = backup.lines;
+      } else {
+        const existingIds = new Set(allLines.map((l) => l.id));
+        const updated = allLines.map((l) => {
+          const match = backup.lines!.find((b) => b.id === l.id);
+          return match || l;
+        });
+        const added = backup.lines.filter((b) => !existingIds.has(b.id));
+        finalLines = [...updated, ...added];
+      }
+      setAllLines(finalLines);
+      storage.saveLines(finalLines);
+    }
+
+    // 4. USERS
+    if (backup.users && Array.isArray(backup.users)) {
+      let finalUsers: User[] = [];
+      if (mode === 'overwrite') {
+        finalUsers = backup.users;
+      } else {
+        const existingIds = new Set(allUsers.map((u) => u.id));
+        const updated = allUsers.map((u) => {
+          const match = backup.users!.find((b) => b.id === u.id);
+          return match || u;
+        });
+        const added = backup.users.filter((b) => !existingIds.has(b.id));
+        finalUsers = [...updated, ...added];
+      }
+      setAllUsers(finalUsers);
+      storage.saveUsers(finalUsers);
+    }
+
+    // 5. TASKS
+    if (backup.tasks && Array.isArray(backup.tasks)) {
+      let finalTasks: Task[] = [];
+      if (mode === 'overwrite') {
+        finalTasks = backup.tasks;
+      } else {
+        const existingIds = new Set(tasks.map((t) => t.id));
+        const updated = tasks.map((t) => {
+          const match = backup.tasks!.find((b) => b.id === t.id);
+          return match || t;
+        });
+        const added = backup.tasks.filter((b) => !existingIds.has(b.id));
+        finalTasks = [...updated, ...added];
+      }
+      setTasks(finalTasks);
+      storage.saveTasks(finalTasks);
+    }
+
+    // 6. TASK ITEMS
+    if (backup.taskItems && Array.isArray(backup.taskItems)) {
+      let finalItems: TaskItem[] = [];
+      if (mode === 'overwrite') {
+        finalItems = backup.taskItems;
+      } else {
+        const existingIds = new Set(taskItems.map((i) => i.id));
+        const updated = taskItems.map((i) => {
+          const match = backup.taskItems!.find((b) => b.id === i.id);
+          return match || i;
+        });
+        const added = backup.taskItems.filter((b) => !existingIds.has(b.id));
+        finalItems = [...updated, ...added];
+      }
+      setTaskItems(finalItems);
+      storage.saveTaskItems(finalItems);
+    }
+
+    // 7. LOGS
+    if (backup.logs && Array.isArray(backup.logs)) {
+      let finalLogs: SpatiotemporalLogEvent[] = [];
+      if (mode === 'overwrite') {
+        finalLogs = backup.logs;
+      } else {
+        const existingIds = new Set(logs.map((l) => l.id));
+        const added = backup.logs.filter((b) => !existingIds.has(b.id));
+        finalLogs = [...logs, ...added];
+      }
+      setLogs(finalLogs);
+      storage.saveLogs(finalLogs);
+    }
+
+    storage.addLog({
+      task_id: 'SYSTEM',
+      operator_id: currentUser?.id || 'admin',
+      operator_name: currentUser?.nama || 'Administrator',
+      event_type: 'DATABASE_RESTORE',
+      notes: `Database berhasil di-restore dari file JSON backup (Mode: ${mode.toUpperCase()}) pada ${new Date().toLocaleString('id-ID')}.`,
+    });
+    setLogs(storage.getLogs());
+    sound.playSuccessBeep();
+    alert(`Database berhasil dipulihkan (${mode === 'overwrite' ? 'Restore Penuh / Overwrite' : 'Merge / Penggabungan Data'})!`);
+  };
+
   const handleNavigate = (view: string) => {
     recordActivity();
     if (!currentUser) {
@@ -867,6 +1009,8 @@ export const App: React.FC = () => {
               lines={allLines}
               users={allUsers}
               logs={logs}
+              tasks={tasks}
+              taskItems={taskItems}
               currentUser={currentUser}
               onSaveRaks={(newRaks) => {
                 setAllRaks(newRaks);
@@ -884,6 +1028,7 @@ export const App: React.FC = () => {
                 setAllUsers(newUsers);
                 storage.saveUsers(newUsers);
               }}
+              onRestoreDatabase={handleRestoreDatabase}
             />
           ) : (
             <AccessDenied
