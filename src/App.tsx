@@ -65,32 +65,25 @@ export const App: React.FC = () => {
     setTaskItems(loadedItems);
     setLogs(loadedLogs);
 
-    if (savedUser) {
-      setCurrentUser(savedUser);
-      // Route to correct view
-      if (savedUser.role === 'admin') setCurrentView('admin');
-      else if (savedUser.role === 'spv') setCurrentView('spv');
-      else if (savedUser.role === 'manager') setCurrentView('manager');
-      else {
-        // Operator
-        if (savedTaskId) {
-          const taskObj = loadedTasks.find((t) => t.id === savedTaskId);
-          if (taskObj && (taskObj.status === 'active' || taskObj.status === 'new')) {
-            setCurrentActiveTask(taskObj);
-            setCurrentView('operator-task-input');
-            return;
-          }
-        }
-        setCurrentView('operator-history');
-      }
-    } else {
-      setCurrentView('login');
-    }
+    // CRITICAL: Aplikasi saat pertama kali dijalankan HARUS selalu menampilkan
+    // halaman login tanpa sugesti dan tanpa auto-login untuk mencegah akses ilegal.
+    storage.setCurrentUser(null);
+    storage.setActiveTaskId(null);
+    setCurrentUser(null);
+    setCurrentActiveTask(null);
+    setCurrentView('login');
   };
 
-  // 1. FAST-TRACK OPERATOR LOGIN & AUTO-CREATE (Section 9.1)
-  const handleOperatorLogin = (employeeIdOrQr: string) => {
+  // 1. OPERATOR LOGIN & AUTHENTICATION (With Fast-Track Auto-Create)
+  const handleOperatorLogin = (employeeIdOrQr: string): { success: boolean; message?: string } => {
     const cleanId = employeeIdOrQr.trim();
+    if (!cleanId) {
+      return { success: false, message: 'Harap masukkan ID Karyawan atau scan QR Code.' };
+    }
+    if (cleanId.length < 3) {
+      return { success: false, message: 'ID Karyawan / NIK minimal 3 karakter.' };
+    }
+
     const existingUser = allUsers.find(
       (u) =>
         u.employee_id.toUpperCase() === cleanId.toUpperCase() ||
@@ -98,7 +91,15 @@ export const App: React.FC = () => {
     );
 
     if (existingUser) {
-      // Existing User -> Update login and redirect to Operator History
+      if (existingUser.status !== 'active') {
+        sound.playErrorBeep();
+        return {
+          success: false,
+          message: `Akun Operator [${existingUser.employee_id} - ${existingUser.nama}] berstatus NONAKTIF. Hubungi Administrator untuk aktivasi.`,
+        };
+      }
+
+      // Existing registered User -> Update login and redirect
       const updatedUser: User = {
         ...existingUser,
         last_login_at: new Date().toISOString(),
@@ -130,10 +131,16 @@ export const App: React.FC = () => {
       });
       setLogs(storage.getLogs());
 
-      // Existing user routes to Dashboard History
-      setCurrentView('operator-history');
+      if (userActiveTask) {
+        setCurrentView('operator-task-input');
+      } else {
+        setCurrentView('operator-history');
+      }
+
+      sound.playSuccessBeep();
+      return { success: true };
     } else {
-      // NEW USER: Auto-create account & Auto-create initial task -> Direct to Panel Input Task!
+      // AUTO-CREATE OPERATOR BARU: Memudahkan operator baru langsung bisa memakai sistem
       const newUserId = `u-${Date.now()}`;
       const newUser: User = {
         id: newUserId,
@@ -176,27 +183,55 @@ export const App: React.FC = () => {
         operator_id: newUserId,
         operator_name: newUser.nama,
         event_type: 'AUTO_REGISTER',
-        notes: `POKA-YOKE FAST-TRACK: User baru otomatis didaftarkan: ${newUser.nama}. Task awal ${newTask.task_no} dibuat.`,
+        notes: `POKA-YOKE FAST-TRACK: Operator baru otomatis didaftarkan: ${newUser.nama} (${newUser.employee_id}). Task awal ${newTask.task_no} dibuat.`,
       });
       setLogs(storage.getLogs());
 
-      // Direct routing to Panel Input Task!
+      sound.playSuccessBeep();
+      // Direct masuk ke Panel Input Task agar operator baru langsung bekerja!
       setCurrentView('operator-task-input');
+      return { success: true };
     }
   };
 
   // 2. STAFF LOGIN (Admin / SPV / Manager)
-  const handleStaffLogin = (username: string, pass: string): boolean => {
+  const handleStaffLogin = (username: string, pass: string): { success: boolean; message?: string } => {
+    const cleanUser = username.trim();
+    const cleanPass = pass.trim();
+
+    if (!cleanUser || !cleanPass) {
+      return { success: false, message: 'Harap isi username dan password!' };
+    }
+
     const user = allUsers.find(
-      (u) => u.employee_id.toLowerCase() === username.toLowerCase()
+      (u) => u.employee_id.toLowerCase() === cleanUser.toLowerCase()
     );
-    if (!user) return false;
+    if (!user) {
+      return { success: false, message: 'Username atau password tidak valid!' };
+    }
 
-    // Check basic role match or password
-    if (user.role === 'operator') return false;
+    if (user.role === 'operator') {
+      return { success: false, message: 'Akun operator tidak memiliki akses ke portal staf manajemen.' };
+    }
 
-    storage.setCurrentUser(user);
-    setCurrentUser(user);
+    if (user.status !== 'active') {
+      return { success: false, message: `Akun [${user.employee_id}] sedang NONAKTIF. Hubungi Administrator.` };
+    }
+
+    const expectedPass = user.password || `${user.employee_id}123`;
+    if (cleanPass !== expectedPass) {
+      return { success: false, message: 'Username atau password tidak valid!' };
+    }
+
+    const updatedUser: User = {
+      ...user,
+      last_login_at: new Date().toISOString(),
+    };
+    const updatedUsers = allUsers.map((u) => (u.id === user.id ? updatedUser : u));
+    storage.saveUsers(updatedUsers);
+    storage.setCurrentUser(updatedUser);
+    setAllUsers(updatedUsers);
+    setCurrentUser(updatedUser);
 
     storage.addLog({
       task_id: 'SYSTEM',
@@ -211,7 +246,7 @@ export const App: React.FC = () => {
     else if (user.role === 'spv') setCurrentView('spv');
     else if (user.role === 'manager') setCurrentView('manager');
 
-    return true;
+    return { success: true };
   };
 
   const handleLogout = () => {
@@ -710,6 +745,7 @@ export const App: React.FC = () => {
               lines={allLines}
               users={allUsers}
               logs={logs}
+              currentUser={currentUser}
               onSaveRaks={(newRaks) => {
                 setAllRaks(newRaks);
                 storage.saveRaks(newRaks);

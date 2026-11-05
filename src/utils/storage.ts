@@ -26,6 +26,7 @@ const SEED_USERS: User[] = [
     employee_id: 'admin',
     nama: 'Ahmad Faisal (Admin)',
     role: 'admin',
+    password: 'admin123',
     status: 'active',
     created_at: '2026-10-01T07:00:00.000Z',
     last_login_at: '2026-10-30T02:15:00.000Z',
@@ -35,6 +36,7 @@ const SEED_USERS: User[] = [
     employee_id: 'spv',
     nama: 'Rian Wijaya (Supervisor)',
     role: 'spv',
+    password: 'spv123',
     status: 'active',
     created_at: '2026-10-01T07:00:00.000Z',
     last_login_at: '2026-10-30T03:00:00.000Z',
@@ -44,6 +46,7 @@ const SEED_USERS: User[] = [
     employee_id: 'manager',
     nama: 'Bambang Soediro (Logistics Manager)',
     role: 'manager',
+    password: 'manager123',
     status: 'active',
     created_at: '2026-10-01T07:00:00.000Z',
     last_login_at: '2026-10-29T16:00:00.000Z',
@@ -370,7 +373,33 @@ export const storage = {
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(SEED_USERS));
       return SEED_USERS;
     }
-    return JSON.parse(raw);
+    try {
+      const parsed: User[] = JSON.parse(raw);
+      let changed = false;
+      const migrated = parsed.map((u) => {
+        if (!u.password) {
+          if (u.employee_id.toLowerCase() === 'admin') {
+            changed = true;
+            return { ...u, password: 'admin123' };
+          }
+          if (u.employee_id.toLowerCase() === 'spv') {
+            changed = true;
+            return { ...u, password: 'spv123' };
+          }
+          if (u.employee_id.toLowerCase() === 'manager') {
+            changed = true;
+            return { ...u, password: 'manager123' };
+          }
+        }
+        return u;
+      });
+      if (changed) {
+        localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(migrated));
+      }
+      return migrated;
+    } catch {
+      return SEED_USERS;
+    }
   },
   saveUsers: (users: User[]) => {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
