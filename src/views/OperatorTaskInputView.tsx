@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   User,
   MasterRak,
@@ -108,6 +108,43 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const pickedItems = itemsInTrolley.filter((item) => item.status === 'PICKED');
   const inTransitItems = itemsInTrolley.filter((item) => item.status === 'IN_TRANSIT');
   const deliveredItems = itemsInTrolley.filter((item) => item.status === 'DELIVERED');
+
+  // Active Raks and limited suggestions (max 4 to prevent layout vertical expansion)
+  const activeRaks = useMemo(() => allRaks.filter((r) => r.status !== 'inactive'), [allRaks]);
+
+  const suggestedRaks = useMemo(() => {
+    if (rakInput.trim()) {
+      const q = rakInput.trim().toUpperCase();
+      const matched = activeRaks.filter(
+        (r) => r.kode_rak.toUpperCase().includes(q) || r.nama_rak.toUpperCase().includes(q)
+      );
+      return matched.slice(0, 4);
+    }
+    return activeRaks.slice(0, 4);
+  }, [activeRaks, rakInput]);
+
+  // Active Materials and limited suggestions (max 4, prioritized by selected rack)
+  const activeMaterials = useMemo(
+    () => allMaterials.filter((m) => m.status !== 'inactive'),
+    [allMaterials]
+  );
+
+  const suggestedMaterials = useMemo(() => {
+    if (materialInput.trim()) {
+      const q = materialInput.trim().toUpperCase();
+      const matched = activeMaterials.filter(
+        (m) => m.kode_material.toUpperCase().includes(q) || m.deskripsi.toUpperCase().includes(q)
+      );
+      return matched.slice(0, 4);
+    }
+    if (selectedRakId) {
+      const byRak = activeMaterials.filter((m) => m.default_rak_id === selectedRakId);
+      if (byRak.length > 0) {
+        return byRak.slice(0, 4);
+      }
+    }
+    return activeMaterials.slice(0, 4);
+  }, [activeMaterials, materialInput, selectedRakId]);
 
   // Set default line if none selected
   useEffect(() => {
@@ -364,14 +401,15 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                 </button>
               </div>
 
-              {/* Quick Rak selector chips */}
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
-                {allRaks.map((r) => (
+              {/* Quick Rak selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
+              <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
+                <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
+                {suggestedRaks.map((r) => (
                   <button
                     key={r.id}
                     type="button"
                     onClick={() => handleRakChange(r.kode_rak)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition ${
+                    className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition shrink-0 ${
                       selectedRakId === r.id
                         ? 'bg-amber-500 text-white shadow-xs'
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
@@ -380,6 +418,26 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     {r.kode_rak}
                   </button>
                 ))}
+
+                {activeRaks.length > 4 && (
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) handleRakChange(e.target.value);
+                    }}
+                    className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
+                    title="Pilih dari seluruh daftar rak"
+                  >
+                    <option value="">
+                      + {activeRaks.length > suggestedRaks.length ? `${activeRaks.length - suggestedRaks.length} Rak Lainnya` : 'Semua Rak'}...
+                    </option>
+                    {activeRaks.map((r) => (
+                      <option key={r.id} value={r.kode_rak}>
+                        {r.kode_rak} - {r.nama_rak}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               {currentRakObj && (
                 <p className="text-xs text-emerald-800 mt-2 font-medium">
@@ -432,14 +490,15 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                 </button>
               </div>
 
-              {/* Quick Material selector chips */}
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
-                {allMaterials.map((m) => (
+              {/* Quick Material selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
+              <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
+                <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
+                {suggestedMaterials.map((m) => (
                   <button
                     key={m.id}
                     type="button"
                     onClick={() => handleMaterialChange(m.kode_material)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition ${
+                    className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition shrink-0 ${
                       selectedMaterialId === m.id
                         ? 'bg-amber-500 text-white shadow-xs'
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
@@ -448,6 +507,26 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     {m.kode_material}
                   </button>
                 ))}
+
+                {activeMaterials.length > 4 && (
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) handleMaterialChange(e.target.value);
+                    }}
+                    className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
+                    title="Pilih dari seluruh daftar material"
+                  >
+                    <option value="">
+                      + {activeMaterials.length > suggestedMaterials.length ? `${activeMaterials.length - suggestedMaterials.length} Part Lainnya` : 'Semua Part'}...
+                    </option>
+                    {activeMaterials.map((m) => (
+                      <option key={m.id} value={m.kode_material}>
+                        {m.kode_material} - {m.deskripsi}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               {currentMaterialObj && (
                 <div className="text-xs text-emerald-800 mt-2 font-medium flex items-center justify-between">
@@ -908,8 +987,8 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
         expectedType={scannerMode === 'destination' ? 'line' : scannerMode}
         suggestedCodes={
           scannerMode === 'rak'
-            ? allRaks.map((r) => ({ label: r.nama_rak, code: r.kode_rak, desc: r.zona }))
-            : allMaterials.map((m) => ({ label: m.deskripsi, code: m.kode_material, desc: m.satuan }))
+            ? suggestedRaks.map((r) => ({ label: r.nama_rak, code: r.kode_rak, desc: r.zona }))
+            : suggestedMaterials.map((m) => ({ label: m.deskripsi, code: m.kode_material, desc: m.satuan }))
         }
       />
     </div>

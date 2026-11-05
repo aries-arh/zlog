@@ -169,8 +169,8 @@ export const ScannerModal: React.FC<ScannerModalProps> = ({
                 </span>
                 <span className="text-slate-400">Klik untuk instan scan</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {suggestedCodes.map((item) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+                {suggestedCodes.slice(0, 6).map((item) => (
                   <button
                     key={item.code}
                     type="button"
