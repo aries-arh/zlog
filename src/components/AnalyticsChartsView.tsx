@@ -27,6 +27,10 @@ import {
   Package,
   Activity,
   Printer,
+  ChevronDown,
+  ChevronUp,
+  Boxes,
+  Truck,
 } from 'lucide-react';
 
 interface AnalyticsChartsViewProps {
@@ -196,6 +200,10 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
   const [shiftFilter, setShiftFilter] = useState<string>('all');
   const [periodFilter, setPeriodFilter] = useState<'today' | '7days' | 'all'>('all');
   const [activeSection, setActiveSection] = useState<'all' | 'operator' | 'line' | 'hourly'>('all');
+
+  // Drill-down expanded cards state
+  const [expandedLineId, setExpandedLineId] = useState<string | null>(null);
+  const [expandedOperatorId, setExpandedOperatorId] = useState<string | null>(null);
 
   const operators = allUsers.filter((u) => u.role === 'operator');
 
@@ -371,6 +379,107 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
   }, [allMaterials, filteredItems, allRaks]);
+
+  // Drill-down: Get materials delivered to a specific Line
+  const getLineMaterialBreakdown = (lineId: string) => {
+    const lineItems = filteredItems.filter((i) => i.line_id === lineId);
+    const totalLineQty = lineItems.reduce((acc, curr) => acc + (curr.qty || 0), 0);
+
+    const matMap = new Map<string, { count: number; volume: number }>();
+    lineItems.forEach((item) => {
+      const existing = matMap.get(item.material_id) || { count: 0, volume: 0 };
+      matMap.set(item.material_id, {
+        count: existing.count + 1,
+        volume: existing.volume + (item.qty || 0),
+      });
+    });
+
+    return Array.from(matMap.entries())
+      .map(([matId, stats]) => {
+        const mat = allMaterials.find((m) => m.id === matId);
+        const defaultRak = allRaks.find((r) => r.id === mat?.default_rak_id);
+        const percentage = totalLineQty > 0 ? Math.round((stats.volume / totalLineQty) * 100) : 0;
+        return {
+          materialId: matId,
+          kode: mat?.kode_material || matId,
+          deskripsi: mat?.deskripsi || 'Material Part',
+          satuan: mat?.satuan || 'Pcs',
+          defaultRak: defaultRak?.kode_rak || '-',
+          count: stats.count,
+          volume: stats.volume,
+          percentage,
+        };
+      })
+      .sort((a, b) => b.count - a.count || b.volume - a.volume);
+  };
+
+  // Drill-down: Get lines serviced and materials delivered by a specific Operator
+  const getOperatorBreakdown = (userId: string) => {
+    const opItems = filteredItems.filter((i) => i.user_id === userId);
+    const totalOpQty = opItems.reduce((acc, curr) => acc + (curr.qty || 0), 0);
+
+    // 1. Lines serviced by this operator
+    const lineMap = new Map<string, { count: number; volume: number }>();
+    // 2. Materials delivered by this operator
+    const matMap = new Map<string, { count: number; volume: number }>();
+
+    opItems.forEach((item) => {
+      // Line stats
+      const existingLine = lineMap.get(item.line_id) || { count: 0, volume: 0 };
+      lineMap.set(item.line_id, {
+        count: existingLine.count + 1,
+        volume: existingLine.volume + (item.qty || 0),
+      });
+
+      // Material stats
+      const existingMat = matMap.get(item.material_id) || { count: 0, volume: 0 };
+      matMap.set(item.material_id, {
+        count: existingMat.count + 1,
+        volume: existingMat.volume + (item.qty || 0),
+      });
+    });
+
+    const linesServiced = Array.from(lineMap.entries())
+      .map(([lineId, stats]) => {
+        const line = allLines.find((l) => l.id === lineId);
+        const percentage = opItems.length > 0 ? Math.round((stats.count / opItems.length) * 100) : 0;
+        return {
+          lineId,
+          namaLine: line?.nama_line || lineId,
+          kodeLine: line?.kode_line || '',
+          area: line?.area || '',
+          count: stats.count,
+          volume: stats.volume,
+          percentage,
+        };
+      })
+      .sort((a, b) => b.count - a.count || b.volume - a.volume);
+
+    const materialsDelivered = Array.from(matMap.entries())
+      .map(([matId, stats]) => {
+        const mat = allMaterials.find((m) => m.id === matId);
+        const defaultRak = allRaks.find((r) => r.id === mat?.default_rak_id);
+        const percentage = totalOpQty > 0 ? Math.round((stats.volume / totalOpQty) * 100) : 0;
+        return {
+          materialId: matId,
+          kode: mat?.kode_material || matId,
+          deskripsi: mat?.deskripsi || 'Material Part',
+          satuan: mat?.satuan || 'Pcs',
+          defaultRak: defaultRak?.kode_rak || '-',
+          count: stats.count,
+          volume: stats.volume,
+          percentage,
+        };
+      })
+      .sort((a, b) => b.count - a.count || b.volume - a.volume);
+
+    return {
+      totalTrips: opItems.length,
+      totalQty: totalOpQty,
+      linesServiced,
+      materialsDelivered,
+    };
+  };
 
   // Export CSV Report
   const handleExportCSV = () => {
@@ -601,7 +710,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                 Ranking Frekuensi Kedatangan Suplai per Line
               </span>
               <span className="text-[11px] text-slate-500 font-medium">
-                Diurutkan dari frekuensi terbanyak
+                Klik kartu untuk melihat rincian material
               </span>
             </div>
 
@@ -609,11 +718,18 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
               {lineDistribution.map((item, idx) => {
                 const maxCount = Math.max(...lineDistribution.map((l) => l.count), 1);
                 const barWidth = Math.max((item.count / maxCount) * 100, item.count > 0 ? 4 : 0);
+                const isExpanded = expandedLineId === item.line.id;
+                const lineBreakdown = isExpanded ? getLineMaterialBreakdown(item.line.id) : [];
 
                 return (
                   <div
                     key={item.line.id}
-                    className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl hover:bg-slate-100/60 transition space-y-2"
+                    onClick={() => setExpandedLineId((prev) => (prev === item.line.id ? null : item.line.id))}
+                    className={`p-3 rounded-xl transition-all cursor-pointer space-y-2 border ${
+                      isExpanded
+                        ? 'bg-emerald-50/30 border-emerald-500 ring-2 ring-emerald-200/60 shadow-xs'
+                        : 'bg-slate-50 border-slate-200/80 hover:bg-slate-100/60 hover:border-slate-300'
+                    }`}
                   >
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
@@ -652,6 +768,22 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                             {item.avgDuration ? formatDuration(item.avgDuration) : '-'}
                           </span>
                         </div>
+
+                        {/* Expand indicator button */}
+                        <div
+                          className={`p-1 rounded-lg border transition ${
+                            isExpanded
+                              ? 'bg-emerald-600 text-white border-emerald-600 shadow-2xs'
+                              : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800'
+                          }`}
+                          title={isExpanded ? 'Tutup rincian material' : 'Buka rincian material'}
+                        >
+                          {isExpanded ? (
+                            <ChevronUp className="w-3.5 h-3.5" />
+                          ) : (
+                            <ChevronDown className="w-3.5 h-3.5" />
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -665,6 +797,88 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                         }}
                       />
                     </div>
+
+                    {/* Drill-Down: List Material yang Dikirim ke Line Ini */}
+                    {isExpanded && (
+                      <div
+                        className="mt-3 pt-3 border-t border-slate-200/90 space-y-2.5 animate-in fade-in duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                            <Package className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Rincian Material yang Dikirim ke {item.line.nama_line}</span>
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-mono">
+                            {lineBreakdown.length} Jenis Part • {item.count}x Frekuensi Suplai
+                          </span>
+                        </div>
+
+                        {lineBreakdown.length === 0 ? (
+                          <div className="p-3 text-center text-slate-400 text-xs bg-white rounded-lg border border-slate-200">
+                            Belum ada material yang disuplai ke line ini pada periode terpilih.
+                          </div>
+                        ) : (
+                          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+                            <table className="w-full text-left text-xs">
+                              <thead className="bg-slate-100/80 text-slate-600 font-bold uppercase tracking-wider text-[10px] border-b border-slate-200">
+                                <tr>
+                                  <th className="px-3 py-2">#</th>
+                                  <th className="px-3 py-2">Material / Part</th>
+                                  <th className="px-3 py-2">Rak Asal</th>
+                                  <th className="px-3 py-2 text-right">Frekuensi Suplai</th>
+                                  <th className="px-3 py-2 text-right">Total Qty</th>
+                                  <th className="px-3 py-2 text-right">Porsi (%)</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
+                                {lineBreakdown.map((matItem, mIdx) => (
+                                  <tr key={matItem.materialId} className="hover:bg-slate-50/80">
+                                    <td className="px-3 py-2 font-bold text-slate-400">
+                                      #{mIdx + 1}
+                                    </td>
+                                    <td className="px-3 py-2 font-sans">
+                                      <div className="font-bold text-slate-900 leading-tight">
+                                        {matItem.kode}
+                                      </div>
+                                      <div className="text-[10px] text-slate-500 line-clamp-1">
+                                        {matItem.deskripsi}
+                                      </div>
+                                    </td>
+                                    <td className="px-3 py-2">
+                                      <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold">
+                                        {matItem.defaultRak}
+                                      </span>
+                                    </td>
+                                    <td className="px-3 py-2 text-right">
+                                      <span className="font-extrabold text-slate-900 text-xs">
+                                        {matItem.count}x
+                                      </span>
+                                      <span className="text-[10px] text-slate-400 block font-normal">
+                                        dikirim
+                                      </span>
+                                    </td>
+                                    <td className="px-3 py-2 text-right">
+                                      <span className="font-extrabold text-emerald-700">
+                                        {matItem.volume}
+                                      </span>
+                                      <span className="text-[10px] text-slate-400 block font-sans">
+                                        {matItem.satuan}
+                                      </span>
+                                    </td>
+                                    <td className="px-3 py-2 text-right">
+                                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-extrabold text-[10px]">
+                                        {matItem.percentage}%
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -724,7 +938,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                 Ranking Frekuensi Task Selesai per Operator
               </span>
               <span className="text-[11px] text-slate-500 font-medium">
-                Ritase pengantaran ke line
+                Klik kartu untuk melihat rincian line &amp; material
               </span>
             </div>
 
@@ -732,11 +946,20 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
               {operatorDistribution.map((item, idx) => {
                 const maxCount = Math.max(...operatorDistribution.map((o) => o.count), 1);
                 const barWidth = Math.max((item.count / maxCount) * 100, item.count > 0 ? 4 : 0);
+                const isExpanded = expandedOperatorId === item.operator.id;
+                const opBreakdown = isExpanded ? getOperatorBreakdown(item.operator.id) : null;
 
                 return (
                   <div
                     key={item.operator.id}
-                    className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl hover:bg-slate-100/60 transition space-y-2"
+                    onClick={() =>
+                      setExpandedOperatorId((prev) => (prev === item.operator.id ? null : item.operator.id))
+                    }
+                    className={`p-3 rounded-xl transition-all cursor-pointer space-y-2 border ${
+                      isExpanded
+                        ? 'bg-blue-50/30 border-blue-500 ring-2 ring-blue-200/60 shadow-xs'
+                        : 'bg-slate-50 border-slate-200/80 hover:bg-slate-100/60 hover:border-slate-300'
+                    }`}
                   >
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
@@ -775,6 +998,22 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                             {item.avgDuration ? formatDuration(item.avgDuration) : '-'}
                           </span>
                         </div>
+
+                        {/* Expand indicator button */}
+                        <div
+                          className={`p-1 rounded-lg border transition ${
+                            isExpanded
+                              ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                              : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800'
+                          }`}
+                          title={isExpanded ? 'Tutup rincian' : 'Buka rincian line & material'}
+                        >
+                          {isExpanded ? (
+                            <ChevronUp className="w-3.5 h-3.5" />
+                          ) : (
+                            <ChevronDown className="w-3.5 h-3.5" />
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -788,6 +1027,133 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                         }}
                       />
                     </div>
+
+                    {/* Drill-Down: Detail Line Mana Saja & Material Apa Saja yang Dikerjakan OP */}
+                    {isExpanded && opBreakdown && (
+                      <div
+                        className="mt-3 pt-3 border-t border-slate-200/90 space-y-3 animate-in fade-in duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                            <Users className="w-3.5 h-3.5 text-blue-600" />
+                            <span>Rincian Kerja Operator: {item.operator.nama}</span>
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-mono">
+                            NIK: {item.operator.employee_id} • Total {item.count}x Jalan ({item.volume} pcs)
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                          {/* 1. Line Tujuan yang Dilayani */}
+                          <div className="bg-white rounded-xl border border-slate-200 p-3 space-y-2 shadow-2xs">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                              <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                                <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                                <span>Line Tujuan yang Dilayani</span>
+                              </span>
+                              <span className="text-[10px] text-slate-500 font-mono">
+                                {opBreakdown.linesServiced.length} Line
+                              </span>
+                            </div>
+
+                            {opBreakdown.linesServiced.length === 0 ? (
+                              <p className="text-[11px] text-slate-400 py-3 text-center">
+                                Belum ada pengantaran line yang tercatat
+                              </p>
+                            ) : (
+                              <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                                {opBreakdown.linesServiced.map((lItem, lIdx) => (
+                                  <div
+                                    key={lItem.lineId}
+                                    className="p-2 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
+                                  >
+                                    <div className="min-w-0 flex items-center gap-2">
+                                      <span className="w-4 h-4 rounded bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[9px]">
+                                        #{lIdx + 1}
+                                      </span>
+                                      <div className="min-w-0">
+                                        <span className="font-bold text-slate-900 block truncate leading-tight">
+                                          {lItem.namaLine}
+                                        </span>
+                                        <span className="text-[10px] text-slate-500 font-mono block">
+                                          {lItem.kodeLine} {lItem.area ? `• Area: ${lItem.area}` : ''}
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div className="text-right font-mono shrink-0 ml-2">
+                                      <span className="font-black text-slate-900 text-xs block leading-tight">
+                                        {lItem.count}x jalan
+                                      </span>
+                                      <span className="text-[10px] text-emerald-700 block font-bold">
+                                        {lItem.volume} pcs ({lItem.percentage}%)
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* 2. Material Part yang Diantar */}
+                          <div className="bg-white rounded-xl border border-slate-200 p-3 space-y-2 shadow-2xs">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                              <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                                <Package className="w-3.5 h-3.5 text-blue-600" />
+                                <span>Material Part yang Diantar</span>
+                              </span>
+                              <span className="text-[10px] text-slate-500 font-mono">
+                                {opBreakdown.materialsDelivered.length} Jenis Part
+                              </span>
+                            </div>
+
+                            {opBreakdown.materialsDelivered.length === 0 ? (
+                              <p className="text-[11px] text-slate-400 py-3 text-center">
+                                Belum ada material yang diantar
+                              </p>
+                            ) : (
+                              <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                                {opBreakdown.materialsDelivered.map((mItem, mIdx) => (
+                                  <div
+                                    key={mItem.materialId}
+                                    className="p-2 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
+                                  >
+                                    <div className="min-w-0 flex items-center gap-2">
+                                      <span className="w-4 h-4 rounded bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-[9px]">
+                                        #{mIdx + 1}
+                                      </span>
+                                      <div className="min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                          <span className="font-bold text-slate-900 leading-tight">
+                                            {mItem.kode}
+                                          </span>
+                                          <span className="px-1 rounded bg-amber-50 text-amber-800 border border-amber-200 text-[9px] font-bold">
+                                            {mItem.defaultRak}
+                                          </span>
+                                        </div>
+                                        <span className="text-[10px] text-slate-500 block truncate">
+                                          {mItem.deskripsi}
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div className="text-right font-mono shrink-0 ml-2">
+                                      <span className="font-black text-slate-900 text-xs block leading-tight">
+                                        {mItem.count}x kirim
+                                      </span>
+                                      <span className="text-[10px] text-blue-700 block font-bold">
+                                        {mItem.volume} {mItem.satuan}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
