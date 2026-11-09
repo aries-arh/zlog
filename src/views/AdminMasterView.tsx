@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   User,
   MasterRak,
@@ -27,6 +27,7 @@ import {
   Package,
   Layers,
   FileText,
+  Clock,
   Upload,
   FileSpreadsheet,
   FileDown,
@@ -86,6 +87,38 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   const [importType, setImportType] = useState<'rak' | 'material' | 'line'>('rak');
   // Raw DB Import modal state
   const [importDbModalOpen, setImportDbModalOpen] = useState(false);
+
+  // Spatiotemporal Logs View State
+  const [logViewMode, setLogViewMode] = useState<'timeline' | 'table'>('timeline');
+  const [logEventFilter, setLogEventFilter] = useState<string>('all');
+  const [logSearchQuery, setLogSearchQuery] = useState<string>('');
+
+  const filteredLogs = useMemo(() => {
+    return logs.filter((log) => {
+      if (logEventFilter !== 'all' && log.event_type !== logEventFilter) {
+        return false;
+      }
+      if (logSearchQuery.trim()) {
+        const q = logSearchQuery.toLowerCase();
+        const matchOp = log.operator_name?.toLowerCase().includes(q);
+        const matchNotes = log.notes?.toLowerCase().includes(q);
+        const matchEvent = log.event_type?.toLowerCase().includes(q);
+        const matchLoc = log.location_ref?.toLowerCase().includes(q);
+        if (!matchOp && !matchNotes && !matchEvent && !matchLoc) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [logs, logEventFilter, logSearchQuery]);
+
+  const uniqueEventTypes: string[] = useMemo(() => {
+    const set = new Set<string>();
+    logs.forEach((l) => {
+      if (l.event_type) set.add(l.event_type);
+    });
+    return Array.from(set);
+  }, [logs]);
 
   // Handle Excel Import Confirm
   const handleImportConfirm = (items: any[], mode: 'append' | 'replace') => {
@@ -830,8 +863,8 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
               : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
         >
-          <FileText className="w-4 h-4" />
-          <span>Raw Logs ({logs.length})</span>
+          <Clock className="w-4 h-4" />
+          <span>Spatiotemporal Timeline &amp; Logs ({logs.length})</span>
         </button>
       </div>
 
@@ -2104,12 +2137,53 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
         </div>
       )}
 
-      {/* Tab: Raw Logs */}
+      {/* Tab: Spatiotemporal Timeline & Raw Logs */}
       {activeTab === 'logs' && (
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h3 className="font-bold text-slate-900 text-sm">System Raw Audit Trail &amp; Database Hub</h3>
-            <span className="text-xs font-mono text-slate-500">{logs.length} Total Logs</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <Clock className="w-4 h-4 text-purple-600" />
+                <span>SPATIOTEMPORAL EVENT LOG AUDIT TRAIL &amp; DATABASE HUB</span>
+              </h3>
+              <p className="text-xs text-slate-500">
+                Catatan kronologis perjalanan operator (T1 Departure → T2 Delivery Scan → T3 Return) &amp; Log Sistem.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-slate-500">
+                {filteredLogs.length} dari {logs.length} Total Logs
+              </span>
+
+              {/* View Switch: Timeline vs Table */}
+              <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => setLogViewMode('timeline')}
+                  className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                    logViewMode === 'timeline'
+                      ? 'bg-purple-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Timeline Kronologis</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLogViewMode('table')}
+                  className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                    logViewMode === 'table'
+                      ? 'bg-purple-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Raw Table</span>
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Database Backup & Recovery Hub Card */}
@@ -2145,38 +2219,140 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
             </div>
           </div>
 
-          <div className="overflow-x-auto max-h-[500px]">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b border-slate-200">
-                <tr>
-                  <th className="px-3 py-2">Timestamp</th>
-                  <th className="px-3 py-2">Event</th>
-                  <th className="px-3 py-2">Operator</th>
-                  <th className="px-3 py-2">Mode</th>
-                  <th className="px-3 py-2">Notes</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 text-[11px]">
-                {logs.map((l) => (
-                  <tr key={l.id} className="hover:bg-slate-50">
-                    <td className="px-3 py-2 text-slate-500 whitespace-nowrap">
-                      {new Date(l.timestamp).toLocaleString('id-ID')}
-                    </td>
-                    <td className="px-3 py-2 text-amber-700 font-bold">{l.event_type}</td>
-                    <td className="px-3 py-2 text-slate-900 font-semibold">{l.operator_name}</td>
-                    <td className="px-3 py-2">
-                      {l.departure_mode ? (
-                        <span className="text-blue-700 font-bold">{l.departure_mode}</span>
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td className="px-3 py-2 text-slate-700 font-sans">{l.notes}</td>
-                  </tr>
+          {/* Filter & Search Toolbar */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+            <div className="relative flex-1 w-full">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={logSearchQuery}
+                onChange={(e) => setLogSearchQuery(e.target.value)}
+                placeholder="Cari operator, catatan event, atau lokasi..."
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-xs outline-none focus:border-purple-500"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-slate-500 font-semibold whitespace-nowrap">Filter Event:</span>
+              <select
+                value={logEventFilter}
+                onChange={(e) => setLogEventFilter(e.target.value)}
+                className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-purple-500 font-medium"
+              >
+                <option value="all">Semua Jenis Event ({logs.length})</option>
+                {uniqueEventTypes.map((et) => (
+                  <option key={et} value={et}>
+                    {et}
+                  </option>
                 ))}
-              </tbody>
-            </table>
+              </select>
+            </div>
           </div>
+
+          {/* Mode 1: Spatiotemporal Timeline */}
+          {logViewMode === 'timeline' && (
+            <div className="pt-2">
+              {filteredLogs.length === 0 ? (
+                <div className="p-8 text-center text-slate-400 text-xs bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                  Tidak ada event log yang sesuai dengan filter pencarian.
+                </div>
+              ) : (
+                <div className="space-y-3 relative before:absolute before:inset-0 before:left-3 before:w-0.5 before:bg-slate-200 max-h-[600px] overflow-y-auto pl-6 pr-1">
+                  {filteredLogs.map((log) => {
+                    let dotColor = 'bg-slate-400';
+                    if (log.event_type === 'DELIVERED_CONFIRMED') dotColor = 'bg-emerald-500';
+                    if (log.event_type === 'DEPARTURE_AUTO_FALLBACK') dotColor = 'bg-rose-500 animate-ping';
+                    if (log.event_type === 'DEPARTURE_MANUAL') dotColor = 'bg-blue-500';
+                    if (log.event_type === 'MATERIAL_PICKED') dotColor = 'bg-amber-500';
+                    if (log.event_type === 'LOGIN') dotColor = 'bg-purple-500';
+
+                    return (
+                      <div key={log.id} className="relative group text-xs space-y-1">
+                        <span
+                          className={`absolute -left-[27px] top-1.5 w-3 h-3 rounded-full ${dotColor} border-2 border-white shadow-xs`}
+                        />
+                        <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl hover:border-purple-200 transition">
+                          <div className="flex flex-wrap items-center justify-between gap-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono font-bold text-amber-700">
+                                {new Date(log.timestamp).toLocaleTimeString('id-ID')}
+                              </span>
+                              <span className="text-slate-400">•</span>
+                              <span className="font-bold text-slate-900">{log.operator_name}</span>
+                              <span className="text-[10px] px-1.5 py-0.2 rounded bg-white border border-slate-200 text-slate-700 font-mono">
+                                {log.event_type}
+                              </span>
+                            </div>
+                            {log.departure_mode && (
+                              <span
+                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${
+                                  log.departure_mode === 'AUTO_FALLBACK'
+                                    ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                                    : 'bg-blue-100 text-blue-700 border border-blue-200'
+                                }`}
+                              >
+                                {log.departure_mode}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-slate-700 mt-1">{log.notes}</p>
+                          {log.location_ref && (
+                            <p className="text-[10px] text-amber-800 font-mono mt-0.5 font-semibold">
+                              Lokasi Ref: {log.location_ref}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Mode 2: Raw Table */}
+          {logViewMode === 'table' && (
+            <div className="overflow-x-auto max-h-[550px] border border-slate-200 rounded-xl">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b border-slate-200">
+                  <tr>
+                    <th className="px-3 py-2">Timestamp</th>
+                    <th className="px-3 py-2">Event</th>
+                    <th className="px-3 py-2">Operator</th>
+                    <th className="px-3 py-2">Mode</th>
+                    <th className="px-3 py-2">Notes</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 text-[11px]">
+                  {filteredLogs.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="p-4 text-center text-slate-400 font-sans italic">
+                        Tidak ada log event yang sesuai filter.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredLogs.map((l) => (
+                      <tr key={l.id} className="hover:bg-slate-50">
+                        <td className="px-3 py-2 text-slate-500 whitespace-nowrap">
+                          {new Date(l.timestamp).toLocaleString('id-ID')}
+                        </td>
+                        <td className="px-3 py-2 text-amber-700 font-bold">{l.event_type}</td>
+                        <td className="px-3 py-2 text-slate-900 font-semibold">{l.operator_name}</td>
+                        <td className="px-3 py-2">
+                          {l.departure_mode ? (
+                            <span className="text-blue-700 font-bold">{l.departure_mode}</span>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td className="px-3 py-2 text-slate-700 font-sans">{l.notes}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 

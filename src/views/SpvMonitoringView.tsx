@@ -19,8 +19,10 @@ import {
   Search,
   Zap,
   BarChart3,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
+import { exportSpvCompleteReport } from '../utils/excelReportExport';
 
 interface SpvMonitoringViewProps {
   tasks: Task[];
@@ -29,7 +31,7 @@ interface SpvMonitoringViewProps {
   allRaks: MasterRak[];
   allMaterials: MasterMaterial[];
   allLines: MasterLine[];
-  logs: SpatiotemporalLogEvent[];
+  logs?: SpatiotemporalLogEvent[];
 }
 
 export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
@@ -39,14 +41,13 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
   allRaks,
   allMaterials,
   allLines,
-  logs,
 }) => {
   // Filters
   const [filterShift, setFilterShift] = useState<string>('all');
   const [filterLine, setFilterLine] = useState<string>('all');
   const [filterOperator, setFilterOperator] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'grid' | 'timeline' | 'charts'>('grid');
+  const [activeTab, setActiveTab] = useState<'grid' | 'charts'>('grid');
 
   const operators = allUsers.filter((u) => u.role === 'operator');
 
@@ -102,6 +103,23 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
     (i) => i.departure_mode === 'AUTO_FALLBACK'
   ).length;
 
+  // Export full multi-sheet report for SPV
+  const handleExportExcel = () => {
+    exportSpvCompleteReport({
+      tasks,
+      taskItems,
+      allUsers,
+      allLines,
+      allMaterials,
+      allRaks,
+      filterShift,
+      filterLine,
+      filterOperator,
+      searchQuery,
+      periodFilter: 'all',
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Top Banner */}
@@ -111,7 +129,7 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
             <span className="text-xs uppercase font-extrabold px-2.5 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200">
               SUPERVISOR LOGISTIK (SPV)
             </span>
-            <span className="text-xs text-slate-500 font-mono">Live Monitoring &amp; Spatiotemporal Control</span>
+            <span className="text-xs text-slate-500 font-mono">Live Monitoring Operasional Gemba</span>
           </div>
           <h1 className="text-2xl font-black text-slate-900 mt-1">
             Monitoring Operasional &amp; Rute Gemba
@@ -127,21 +145,11 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
             onClick={() => setActiveTab('grid')}
             className={`px-3.5 py-2 rounded-lg transition ${
               activeTab === 'grid'
-                ? 'bg-white text-blue-700 shadow-xs'
+                ? 'bg-white text-blue-700 shadow-xs font-black'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Live Monitoring Grid
-          </button>
-          <button
-            onClick={() => setActiveTab('timeline')}
-            className={`px-3.5 py-2 rounded-lg transition ${
-              activeTab === 'timeline'
-                ? 'bg-white text-blue-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Spatiotemporal Timeline
           </button>
           <button
             onClick={() => setActiveTab('charts')}
@@ -157,8 +165,8 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
         </div>
       </div>
 
-      {/* Summary KPI Cards & Filter Bar for Live Grid & Timeline */}
-      {activeTab !== 'charts' && (
+      {/* Summary KPI Cards & Filter Bar for Live Grid */}
+      {activeTab === 'grid' && (
         <>
           {/* Summary KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
@@ -279,9 +287,20 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
               <Activity className="w-4 h-4 text-blue-600" />
               <span>LIVE OPERATOR &amp; MATERIAL IN-TRANSIT GRID</span>
             </h2>
-            <span className="text-xs text-slate-500 font-mono">
-              {filteredItems.length} Records Terfilter
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-slate-500 font-mono">
+                {filteredItems.length} Records Terfilter
+              </span>
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-2xs transition"
+                title="Download Laporan Lengkap SPV (.xlsx)"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5" />
+                <span>Export Excel (.xlsx)</span>
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
@@ -422,72 +441,7 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
         </div>
       )}
 
-      {/* Tab 2: Chronological Spatiotemporal Timeline */}
-      {activeTab === 'timeline' && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <div>
-              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-600" />
-                <span>SPATIOTEMPORAL EVENT LOG AUDIT TRAIL</span>
-              </h2>
-              <p className="text-xs text-slate-500">
-                Catatan kronologis perjalanan operator (T1 Departure → T2 Delivery Scan → T3 Return).
-              </p>
-            </div>
-            <span className="text-xs font-mono text-slate-500">{logs.length} Log Events</span>
-          </div>
 
-          <div className="space-y-3 relative before:absolute before:inset-0 before:left-3 before:w-0.5 before:bg-slate-200 max-h-[600px] overflow-y-auto pl-6">
-            {logs.map((log) => {
-              let dotColor = 'bg-slate-400';
-              if (log.event_type === 'DELIVERED_CONFIRMED') dotColor = 'bg-emerald-500';
-              if (log.event_type === 'DEPARTURE_AUTO_FALLBACK') dotColor = 'bg-rose-500 animate-ping';
-              if (log.event_type === 'DEPARTURE_MANUAL') dotColor = 'bg-blue-500';
-              if (log.event_type === 'MATERIAL_PICKED') dotColor = 'bg-amber-500';
-
-              return (
-                <div key={log.id} className="relative group text-xs space-y-1">
-                  <span
-                    className={`absolute -left-[27px] top-1.5 w-3 h-3 rounded-full ${dotColor} border-2 border-white shadow-xs`}
-                  />
-                  <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl hover:border-slate-300 transition">
-                    <div className="flex flex-wrap items-center justify-between gap-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-amber-700">
-                          {new Date(log.timestamp).toLocaleTimeString('id-ID')}
-                        </span>
-                        <span className="text-slate-400">•</span>
-                        <span className="font-bold text-slate-900">{log.operator_name}</span>
-                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-white border border-slate-200 text-slate-700 font-mono">
-                          {log.event_type}
-                        </span>
-                      </div>
-                      {log.departure_mode && (
-                        <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${
-                            log.departure_mode === 'AUTO_FALLBACK'
-                              ? 'bg-rose-100 text-rose-700 border border-rose-200'
-                              : 'bg-blue-100 text-blue-700 border border-blue-200'
-                          }`}
-                        >
-                          {log.departure_mode}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-slate-700 mt-1">{log.notes}</p>
-                    {log.location_ref && (
-                      <p className="text-[10px] text-amber-800 font-mono mt-0.5 font-semibold">
-                        Lokasi Ref: {log.location_ref}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Tab 3: Analytics & Graphic Display */}
       {activeTab === 'charts' && (

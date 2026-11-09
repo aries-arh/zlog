@@ -23,6 +23,7 @@ import {
   FileSpreadsheet,
 } from 'lucide-react';
 import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
+import { exportManagerCompleteReport } from '../utils/excelReportExport';
 
 interface ManagerKpiViewProps {
   tasks: Task[];
@@ -130,56 +131,18 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
     };
   }).sort((a, b) => b.deliveredCount - a.deliveredCount);
 
-  // Export Executive Report (CSV)
-  const handleExportCSV = () => {
-    const headers = [
-      'Task No',
-      'Operator',
-      'Shift',
-      'Material',
-      'Qty',
-      'Satuan',
-      'Rak',
-      'Line Tujuan',
-      'Status',
-      'Departure Mode',
-      'T1 Picked',
-      'T2 Delivered',
-      'Lead Time (Sec)',
-      'Return (Sec)',
-    ];
-
-    const rows = deliveredItems.map((item) => {
-      const t = tasks.find((task) => task.id === item.task_id);
-      const u = allUsers.find((user) => user.id === item.user_id);
-      const m = allMaterials.find((mat) => mat.id === item.material_id);
-      const l = allLines.find((line) => line.id === item.line_id);
-      return [
-        t?.task_no || '',
-        `"${u?.nama || ''}"`,
-        t?.shift || '',
-        `"${m?.deskripsi || item.material_id}"`,
-        item.qty,
-        item.satuan,
-        item.rak_id,
-        `"${l?.nama_line || ''}"`,
-        item.status,
-        item.departure_mode,
-        item.picked_at || '',
-        item.delivered_at || '',
-        item.delivery_duration_sec || '',
-        item.return_duration_sec || '',
-      ].join(',');
+  // Export Executive Complete Report (.xlsx)
+  const handleExportExcel = () => {
+    exportManagerCompleteReport({
+      tasks,
+      taskItems,
+      allUsers,
+      allLines,
+      allMaterials,
+      allRaks,
+      selectedShiftFilter,
+      periodFilter: 'all',
     });
-
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `ZEVA_Logistik_Executive_Report_${Date.now()}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   return (
@@ -264,11 +227,13 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
               </select>
 
               <button
-                onClick={handleExportCSV}
+                type="button"
+                onClick={handleExportExcel}
                 className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-xs transition"
+                title="Download Laporan Eksekutif Lengkap (.xlsx)"
               >
-                <Download className="w-4 h-4" />
-                <span>Export CSV Laporan</span>
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>Export Excel Eksekutif (.xlsx)</span>
               </button>
             </div>
           </div>

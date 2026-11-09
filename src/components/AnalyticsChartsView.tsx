@@ -31,7 +31,9 @@ import {
   ChevronUp,
   Boxes,
   Truck,
+  FileSpreadsheet,
 } from 'lucide-react';
+import { exportSpvCompleteReport, exportManagerCompleteReport } from '../utils/excelReportExport';
 
 interface AnalyticsChartsViewProps {
   tasks: Task[];
@@ -55,6 +57,60 @@ const CHART_COLORS = [
   '#14b8a6', // teal
   '#ec4899', // pink
 ];
+
+// Helper to format delivery times
+interface DeliveryTimestampInfo {
+  rawTime: string;
+  formattedTime: string;
+  fullTime: string;
+  qty: number;
+  opName?: string;
+  lineName?: string;
+}
+
+const formatDeliveryTime = (isoString?: string | null, forceDate = false): string => {
+  if (!isoString) return '-';
+  try {
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return '-';
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const timeStr = `${hours}:${minutes}`;
+
+    const now = new Date();
+    const isToday =
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+
+    if (!forceDate && isToday) {
+      return timeStr;
+    }
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month} ${timeStr}`;
+  } catch {
+    return '-';
+  }
+};
+
+const formatFullDateTime = (isoString?: string | null): string => {
+  if (!isoString) return '-';
+  try {
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return '-';
+    return date.toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  } catch {
+    return '-';
+  }
+};
 
 // Helper to draw SVG Donut slice
 interface DonutSlice {
@@ -343,21 +399,41 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
   // 3. Hourly Workload Distribution (Peak Hours)
   const hourlyData = useMemo(() => {
     // Factory typical operational hours: 06:00 to 21:00
-    const hours = Array.from({ length: 16 }, (_, i) => i + 6); // 6 to 21
+    const hours = Array.from({ length: 16 }, (_, i) => i + 6); // 6:00 to 21:00
     const hourCounts = hours.map((hour) => {
-      const count = filteredItems.filter((item) => {
-        if (!item.delivered_at) return false;
-        const h = new Date(item.delivered_at).getHours();
+      const itemsInHour = filteredItems.filter((item) => {
+        const timeStr = item.delivered_at || item.picked_at || item.last_material_scanned_at;
+        if (!timeStr) return false;
+        const h = new Date(timeStr).getHours();
         return h === hour;
-      }).length;
+      });
+      const count = itemsInHour.length;
+      const volume = itemsInHour.reduce((acc, curr) => acc + (curr.qty || 0), 0);
       return {
         hour: `${String(hour).padStart(2, '0')}:00`,
+        hourLabel: `${String(hour).padStart(2, '0')}:00 - ${String(hour + 1).padStart(2, '0')}:00`,
         count,
+        volume,
       };
     });
 
     const maxCount = Math.max(...hourCounts.map((h) => h.count), 1);
-    return { hourCounts, maxCount };
+    const activeHours = hourCounts.filter((h) => h.count > 0);
+    const peakHour =
+      activeHours.length > 0
+        ? activeHours.reduce((prev, curr) => (curr.count > prev.count ? curr : prev), activeHours[0])
+        : null;
+    const totalDeliveries = hourCounts.reduce((acc, curr) => acc + curr.count, 0);
+    const avgPerHour =
+      activeHours.length > 0 ? (totalDeliveries / activeHours.length).toFixed(1) : '0';
+
+    return {
+      hourCounts,
+      maxCount,
+      peakHour,
+      totalDeliveries,
+      avgPerHour,
+    };
   }, [filteredItems]);
 
   // 4. Top Fast-Moving Material (Top 5 Parts)
@@ -385,12 +461,32 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
     const lineItems = filteredItems.filter((i) => i.line_id === lineId);
     const totalLineQty = lineItems.reduce((acc, curr) => acc + (curr.qty || 0), 0);
 
-    const matMap = new Map<string, { count: number; volume: number }>();
+    const matMap = new Map<
+      string,
+      {
+        count: number;
+        volume: number;
+        deliveries: DeliveryTimestampInfo[];
+      }
+    >();
+
     lineItems.forEach((item) => {
-      const existing = matMap.get(item.material_id) || { count: 0, volume: 0 };
+      const existing = matMap.get(item.material_id) || { count: 0, volume: 0, deliveries: [] };
+      const rawTime = item.delivered_at || item.picked_at || item.last_material_scanned_at || '';
+      const op = allUsers.find((u) => u.id === item.user_id);
+
+      const deliveryInfo: DeliveryTimestampInfo = {
+        rawTime,
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        fullTime: formatFullDateTime(rawTime),
+        qty: item.qty || 0,
+        opName: op?.nama || 'Operator',
+      };
+
       matMap.set(item.material_id, {
         count: existing.count + 1,
         volume: existing.volume + (item.qty || 0),
+        deliveries: [...existing.deliveries, deliveryInfo],
       });
     });
 
@@ -399,6 +495,14 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
         const mat = allMaterials.find((m) => m.id === matId);
         const defaultRak = allRaks.find((r) => r.id === mat?.default_rak_id);
         const percentage = totalLineQty > 0 ? Math.round((stats.volume / totalLineQty) * 100) : 0;
+
+        // Sort delivery timestamps chronologically (oldest to newest)
+        const sortedDeliveries = [...stats.deliveries].sort((a, b) => {
+          if (!a.rawTime) return 1;
+          if (!b.rawTime) return -1;
+          return new Date(a.rawTime).getTime() - new Date(b.rawTime).getTime();
+        });
+
         return {
           materialId: matId,
           kode: mat?.kode_material || matId,
@@ -408,6 +512,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
           count: stats.count,
           volume: stats.volume,
           percentage,
+          deliveries: sortedDeliveries,
         };
       })
       .sort((a, b) => b.count - a.count || b.volume - a.volume);
@@ -419,23 +524,55 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
     const totalOpQty = opItems.reduce((acc, curr) => acc + (curr.qty || 0), 0);
 
     // 1. Lines serviced by this operator
-    const lineMap = new Map<string, { count: number; volume: number }>();
+    const lineMap = new Map<
+      string,
+      {
+        count: number;
+        volume: number;
+        deliveries: DeliveryTimestampInfo[];
+      }
+    >();
     // 2. Materials delivered by this operator
-    const matMap = new Map<string, { count: number; volume: number }>();
+    const matMap = new Map<
+      string,
+      {
+        count: number;
+        volume: number;
+        deliveries: DeliveryTimestampInfo[];
+      }
+    >();
 
     opItems.forEach((item) => {
+      const rawTime = item.delivered_at || item.picked_at || item.last_material_scanned_at || '';
+      const line = allLines.find((l) => l.id === item.line_id);
+
       // Line stats
-      const existingLine = lineMap.get(item.line_id) || { count: 0, volume: 0 };
+      const existingLine = lineMap.get(item.line_id) || { count: 0, volume: 0, deliveries: [] };
+      const lineDelInfo: DeliveryTimestampInfo = {
+        rawTime,
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        fullTime: formatFullDateTime(rawTime),
+        qty: item.qty || 0,
+      };
       lineMap.set(item.line_id, {
         count: existingLine.count + 1,
         volume: existingLine.volume + (item.qty || 0),
+        deliveries: [...existingLine.deliveries, lineDelInfo],
       });
 
       // Material stats
-      const existingMat = matMap.get(item.material_id) || { count: 0, volume: 0 };
+      const existingMat = matMap.get(item.material_id) || { count: 0, volume: 0, deliveries: [] };
+      const matDelInfo: DeliveryTimestampInfo = {
+        rawTime,
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        fullTime: formatFullDateTime(rawTime),
+        qty: item.qty || 0,
+        lineName: line?.nama_line || item.line_id,
+      };
       matMap.set(item.material_id, {
         count: existingMat.count + 1,
         volume: existingMat.volume + (item.qty || 0),
+        deliveries: [...existingMat.deliveries, matDelInfo],
       });
     });
 
@@ -443,6 +580,11 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       .map(([lineId, stats]) => {
         const line = allLines.find((l) => l.id === lineId);
         const percentage = opItems.length > 0 ? Math.round((stats.count / opItems.length) * 100) : 0;
+        const sortedDeliveries = [...stats.deliveries].sort((a, b) => {
+          if (!a.rawTime) return 1;
+          if (!b.rawTime) return -1;
+          return new Date(a.rawTime).getTime() - new Date(b.rawTime).getTime();
+        });
         return {
           lineId,
           namaLine: line?.nama_line || lineId,
@@ -451,6 +593,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
           count: stats.count,
           volume: stats.volume,
           percentage,
+          deliveries: sortedDeliveries,
         };
       })
       .sort((a, b) => b.count - a.count || b.volume - a.volume);
@@ -460,6 +603,11 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
         const mat = allMaterials.find((m) => m.id === matId);
         const defaultRak = allRaks.find((r) => r.id === mat?.default_rak_id);
         const percentage = totalOpQty > 0 ? Math.round((stats.volume / totalOpQty) * 100) : 0;
+        const sortedDeliveries = [...stats.deliveries].sort((a, b) => {
+          if (!a.rawTime) return 1;
+          if (!b.rawTime) return -1;
+          return new Date(a.rawTime).getTime() - new Date(b.rawTime).getTime();
+        });
         return {
           materialId: matId,
           kode: mat?.kode_material || matId,
@@ -469,6 +617,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
           count: stats.count,
           volume: stats.volume,
           percentage,
+          deliveries: sortedDeliveries,
         };
       })
       .sort((a, b) => b.count - a.count || b.volume - a.volume);
@@ -481,53 +630,31 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
     };
   };
 
-  // Export CSV Report
-  const handleExportCSV = () => {
-    const headers = [
-      'Jenis Laporan',
-      'Entitas (Nama OP / Line)',
-      'ID / Kode',
-      'Frekuensi Dikerjakan (Kali)',
-      'Persentase Share (%)',
-      'Total Volume (Pcs)',
-      'Rata-rata Lead Time (Detik)',
-    ];
-
-    const opRows = operatorDistribution.map((d) => [
-      'OPERATOR',
-      `"${d.operator.nama}"`,
-      d.operator.employee_id,
-      d.count,
-      `${d.percentage}%`,
-      d.volume,
-      d.avgDuration || 0,
-    ]);
-
-    const lineRows = lineDistribution.map((d) => [
-      'LINE PRODUKSI',
-      `"${d.line.nama_line}"`,
-      d.line.kode_line,
-      d.count,
-      `${d.percentage}%`,
-      d.volume,
-      d.avgDuration || 0,
-    ]);
-
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      [headers.join(','), ...opRows.map((r) => r.join(',')), ...lineRows.map((r) => r.join(','))].join(
-        '\n'
-      );
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute(
-      'download',
-      `ZEVA_Laporan_Grafik_${role.toUpperCase()}_${Date.now()}.csv`
-    );
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Export Complete Multi-Sheet Excel Report (.xlsx)
+  const handleExportExcel = () => {
+    if (role === 'manager') {
+      exportManagerCompleteReport({
+        tasks,
+        taskItems,
+        allUsers,
+        allLines,
+        allMaterials,
+        allRaks,
+        selectedShiftFilter: shiftFilter,
+        periodFilter,
+      });
+    } else {
+      exportSpvCompleteReport({
+        tasks,
+        taskItems,
+        allUsers,
+        allLines,
+        allMaterials,
+        allRaks,
+        filterShift: shiftFilter,
+        periodFilter,
+      });
+    }
   };
 
   return (
@@ -589,15 +716,15 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
             </select>
           </div>
 
-          {/* Export CSV */}
+          {/* Export Excel (.xlsx) */}
           <button
             type="button"
-            onClick={handleExportCSV}
+            onClick={handleExportExcel}
             className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-2xs transition"
-            title="Download CSV rekapitulasi data grafik"
+            title={`Download Laporan Lengkap ${role === 'manager' ? 'Manager' : 'SPV'} (.xlsx)`}
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export CSV</span>
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <span>Export Excel (.xlsx)</span>
           </button>
         </div>
       </div>
@@ -819,14 +946,15 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                             Belum ada material yang disuplai ke line ini pada periode terpilih.
                           </div>
                         ) : (
-                          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
-                            <table className="w-full text-left text-xs">
+                          <div className="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-2xs">
+                            <table className="w-full text-left text-xs min-w-[600px]">
                               <thead className="bg-slate-100/80 text-slate-600 font-bold uppercase tracking-wider text-[10px] border-b border-slate-200">
                                 <tr>
                                   <th className="px-3 py-2">#</th>
                                   <th className="px-3 py-2">Material / Part</th>
                                   <th className="px-3 py-2">Rak Asal</th>
                                   <th className="px-3 py-2 text-right">Frekuensi Suplai</th>
+                                  <th className="px-3 py-2">Waktu Pengiriman</th>
                                   <th className="px-3 py-2 text-right">Total Qty</th>
                                   <th className="px-3 py-2 text-right">Porsi (%)</th>
                                 </tr>
@@ -857,6 +985,24 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                                       <span className="text-[10px] text-slate-400 block font-normal">
                                         dikirim
                                       </span>
+                                    </td>
+                                    <td className="px-3 py-2 font-sans">
+                                      <div className="flex flex-wrap items-center gap-1 max-w-[220px]">
+                                        {matItem.deliveries.length === 0 ? (
+                                          <span className="text-[10px] text-slate-400 italic">-</span>
+                                        ) : (
+                                          matItem.deliveries.map((del, dIdx) => (
+                                            <span
+                                              key={dIdx}
+                                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/90 text-[10px] font-mono font-bold shadow-2xs hover:bg-emerald-100 transition-colors cursor-help"
+                                              title={`Pengiriman #${dIdx + 1}: ${del.fullTime}${del.opName ? ` • Pengirim: ${del.opName}` : ''}${del.qty ? ` • Qty: ${del.qty} ${matItem.satuan}` : ''}`}
+                                            >
+                                              <Clock className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
+                                              <span>{del.formattedTime}</span>
+                                            </span>
+                                          ))
+                                        )}
+                                      </div>
                                     </td>
                                     <td className="px-3 py-2 text-right">
                                       <span className="font-extrabold text-emerald-700">
@@ -1062,27 +1208,46 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                                 Belum ada pengantaran line yang tercatat
                               </p>
                             ) : (
-                              <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                              <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
                                 {opBreakdown.linesServiced.map((lItem, lIdx) => (
                                   <div
                                     key={lItem.lineId}
-                                    className="p-2 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
+                                    className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-start justify-between text-xs hover:border-emerald-200 transition-colors"
                                   >
-                                    <div className="min-w-0 flex items-center gap-2">
-                                      <span className="w-4 h-4 rounded bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[9px]">
+                                    <div className="min-w-0 flex items-start gap-2 flex-1">
+                                      <span className="w-4 h-4 rounded bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[9px] shrink-0 mt-0.5">
                                         #{lIdx + 1}
                                       </span>
-                                      <div className="min-w-0">
+                                      <div className="min-w-0 flex-1">
                                         <span className="font-bold text-slate-900 block truncate leading-tight">
                                           {lItem.namaLine}
                                         </span>
                                         <span className="text-[10px] text-slate-500 font-mono block">
                                           {lItem.kodeLine} {lItem.area ? `• Area: ${lItem.area}` : ''}
                                         </span>
+                                        {/* Waktu kapan saja dikirim ke line */}
+                                        <div className="mt-1 flex flex-wrap items-center gap-1">
+                                          <span className="text-[9px] text-slate-400 font-medium flex items-center gap-0.5 shrink-0">
+                                            <Clock className="w-2.5 h-2.5 text-emerald-600" /> Waktu:
+                                          </span>
+                                          {lItem.deliveries.length === 0 ? (
+                                            <span className="text-[9px] text-slate-400 italic">-</span>
+                                          ) : (
+                                            lItem.deliveries.map((del, dIdx) => (
+                                              <span
+                                                key={dIdx}
+                                                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[9px] font-mono font-bold shadow-2xs hover:bg-emerald-100 transition-colors cursor-help"
+                                                title={`Trip #${dIdx + 1}: ${del.fullTime}${del.qty ? ` (${del.qty} pcs)` : ''}`}
+                                              >
+                                                {del.formattedTime}
+                                              </span>
+                                            ))
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
 
-                                    <div className="text-right font-mono shrink-0 ml-2">
+                                    <div className="text-right font-mono shrink-0 ml-2 pt-0.5">
                                       <span className="font-black text-slate-900 text-xs block leading-tight">
                                         {lItem.count}x jalan
                                       </span>
@@ -1113,18 +1278,18 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                                 Belum ada material yang diantar
                               </p>
                             ) : (
-                              <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                              <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
                                 {opBreakdown.materialsDelivered.map((mItem, mIdx) => (
                                   <div
                                     key={mItem.materialId}
-                                    className="p-2 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
+                                    className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-start justify-between text-xs hover:border-blue-200 transition-colors"
                                   >
-                                    <div className="min-w-0 flex items-center gap-2">
-                                      <span className="w-4 h-4 rounded bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-[9px]">
+                                    <div className="min-w-0 flex items-start gap-2 flex-1">
+                                      <span className="w-4 h-4 rounded bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-[9px] shrink-0 mt-0.5">
                                         #{mIdx + 1}
                                       </span>
-                                      <div className="min-w-0">
-                                        <div className="flex items-center gap-1.5">
+                                      <div className="min-w-0 flex-1">
+                                        <div className="flex items-center gap-1.5 flex-wrap">
                                           <span className="font-bold text-slate-900 leading-tight">
                                             {mItem.kode}
                                           </span>
@@ -1135,10 +1300,29 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                                         <span className="text-[10px] text-slate-500 block truncate">
                                           {mItem.deskripsi}
                                         </span>
+                                        {/* Waktu kapan saja material dikirim oleh operator */}
+                                        <div className="mt-1 flex flex-wrap items-center gap-1">
+                                          <span className="text-[9px] text-slate-400 font-medium flex items-center gap-0.5 shrink-0">
+                                            <Clock className="w-2.5 h-2.5 text-blue-500" /> Waktu:
+                                          </span>
+                                          {mItem.deliveries.length === 0 ? (
+                                            <span className="text-[9px] text-slate-400 italic">-</span>
+                                          ) : (
+                                            mItem.deliveries.map((del, dIdx) => (
+                                              <span
+                                                key={dIdx}
+                                                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 text-[9px] font-mono font-bold shadow-2xs hover:bg-blue-100 transition-colors cursor-help"
+                                                title={`Pengantaran #${dIdx + 1}: ${del.fullTime}${del.lineName ? ` ke ${del.lineName}` : ''}${del.qty ? ` (${del.qty} ${mItem.satuan})` : ''}`}
+                                              >
+                                                {del.formattedTime}
+                                              </span>
+                                            ))
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
 
-                                    <div className="text-right font-mono shrink-0 ml-2">
+                                    <div className="text-right font-mono shrink-0 ml-2 pt-0.5">
                                       <span className="font-black text-slate-900 text-xs block leading-tight">
                                         {mItem.count}x kirim
                                       </span>
@@ -1166,66 +1350,158 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Hourly Peak Hours Workload Chart */}
         <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
             <div>
               <h3 className="font-black text-slate-900 text-sm flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-600" />
                 <span>RITME KERJA PER JAM (PEAK HOURS PABRIK)</span>
               </h3>
               <p className="text-xs text-slate-500">
-                Distribusi frekuensi pengantaran material berdasarkan jam kerja harian.
+                Grafik batang distribusi frekuensi pengantaran material per jam kerja harian.
               </p>
             </div>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-bold flex items-center gap-1">
-              <Flame className="w-3 h-3 text-amber-600" />
-              <span>Analisis Jam Sibuk</span>
-            </span>
+
+            {hourlyData.peakHour ? (
+              <span className="text-[10px] px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-extrabold flex items-center gap-1.5 shadow-2xs">
+                <Flame className="w-3.5 h-3.5 text-amber-600 fill-amber-500 animate-pulse" />
+                <span>Peak: {hourlyData.peakHour.hour} ({hourlyData.peakHour.count}x Suplai)</span>
+              </span>
+            ) : (
+              <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-bold">
+                Standby Mode
+              </span>
+            )}
           </div>
 
-          {/* Vertical Bar Chart */}
-          <div className="pt-4">
-            <div className="h-44 flex items-end justify-between gap-1 sm:gap-2 px-1 border-b border-slate-200 pb-2">
-              {hourlyData.hourCounts.map((h, i) => {
-                const heightPercent = Math.max((h.count / hourlyData.maxCount) * 100, h.count > 0 ? 8 : 2);
-                const isPeak = h.count === hourlyData.maxCount && h.count > 0;
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="p-2.5 bg-amber-50/70 border border-amber-200 rounded-xl">
+              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">
+                Jam Tersibuk (Peak)
+              </span>
+              <span className="text-base font-black text-amber-700 font-mono">
+                {hourlyData.peakHour ? hourlyData.peakHour.hour : '-'}
+              </span>
+              <span className="text-[10px] text-amber-600 block">
+                {hourlyData.peakHour ? `${hourlyData.peakHour.count}x kirim (${hourlyData.peakHour.volume} pcs)` : 'Tidak ada aktivitas'}
+              </span>
+            </div>
 
-                return (
-                  <div key={i} className="flex-1 flex flex-col items-center group relative">
-                    {/* Tooltip on hover */}
-                    <div className="absolute -top-8 hidden group-hover:flex flex-col items-center z-10">
-                      <div className="bg-slate-900 text-white text-[9px] font-mono px-1.5 py-0.5 rounded shadow whitespace-nowrap">
-                        {h.hour}: {h.count}x
+            <div className="p-2.5 bg-blue-50/70 border border-blue-200 rounded-xl">
+              <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">
+                Rata-rata Ritase
+              </span>
+              <span className="text-base font-black text-blue-700 font-mono">
+                {hourlyData.avgPerHour}x
+              </span>
+              <span className="text-[10px] text-blue-600 block">per jam operasional aktif</span>
+            </div>
+
+            <div className="col-span-2 sm:col-span-1 p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex sm:flex-col justify-between sm:justify-center">
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                  Total Suplai Terdistribusi
+                </span>
+                <span className="text-base font-black text-slate-900 font-mono">
+                  {hourlyData.totalDeliveries}x
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-500 flex items-center gap-2 sm:mt-0.5">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded bg-amber-500 inline-block" /> Peak
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded bg-blue-500 inline-block" /> Normal
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Vertical Bar Chart Container */}
+          <div className="pt-2">
+            <div className="relative">
+              {/* Horizontal Reference Lines */}
+              <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6">
+                <div className="w-full border-b border-dashed border-slate-200 flex justify-end">
+                  <span className="text-[9px] font-mono text-slate-400 bg-white px-1 -mt-2">
+                    Max: {hourlyData.maxCount}x
+                  </span>
+                </div>
+                <div className="w-full border-b border-dashed border-slate-100 flex justify-end">
+                  <span className="text-[9px] font-mono text-slate-300 bg-white px-1 -mt-2">
+                    {Math.round(hourlyData.maxCount * 0.5)}x
+                  </span>
+                </div>
+                <div className="w-full border-b border-slate-200" />
+              </div>
+
+              {/* Bars Row */}
+              <div className="h-48 flex items-end justify-between gap-1 sm:gap-2 px-1 pb-1 relative z-10">
+                {hourlyData.hourCounts.map((h, i) => {
+                  const isPeak = hourlyData.peakHour && h.hour === hourlyData.peakHour.hour && h.count > 0;
+                  const heightPercent = hourlyData.maxCount > 0 ? (h.count / hourlyData.maxCount) * 100 : 0;
+
+                  return (
+                    <div
+                      key={i}
+                      className="flex-1 h-full flex flex-col justify-end items-center group relative cursor-pointer"
+                    >
+                      {/* Floating Tooltip */}
+                      <div className="absolute -top-12 hidden group-hover:flex flex-col items-center z-30 pointer-events-none transition-all">
+                        <div className="bg-slate-900 text-white text-[10px] font-mono px-2 py-1 rounded-lg shadow-lg whitespace-nowrap text-center">
+                          <span className="font-bold block text-amber-400">{h.hourLabel}</span>
+                          <span>{h.count}x pengantaran ({h.volume} pcs)</span>
+                        </div>
+                        <div className="w-2 h-2 bg-slate-900 rotate-45 -mt-1" />
+                      </div>
+
+                      {/* Count label above bar */}
+                      <div className="h-6 flex items-center justify-center">
+                        {h.count > 0 ? (
+                          <span
+                            className={`text-[10px] font-mono font-black transition-transform group-hover:scale-125 ${
+                              isPeak ? 'text-amber-600 font-extrabold' : 'text-slate-700'
+                            }`}
+                          >
+                            {h.count}
+                          </span>
+                        ) : (
+                          <span className="text-[9px] text-slate-300 opacity-0 group-hover:opacity-100 font-mono">
+                            0
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Bar Track & Fill */}
+                      <div className="w-full max-w-[28px] sm:max-w-[34px] h-36 flex flex-col justify-end bg-slate-100/70 hover:bg-slate-200/50 rounded-t-lg overflow-hidden border border-slate-200/50 p-0.5 transition-colors">
+                        <div
+                          className={`w-full rounded-t-md transition-all duration-500 ease-out ${
+                            isPeak
+                              ? 'bg-gradient-to-t from-amber-600 via-amber-500 to-amber-400 shadow-sm ring-1 ring-amber-300'
+                              : h.count > 0
+                              ? 'bg-gradient-to-t from-blue-600 via-blue-500 to-blue-400 group-hover:from-blue-500 group-hover:to-blue-300 shadow-xs'
+                              : 'h-0'
+                          }`}
+                          style={{
+                            height: h.count > 0 ? `${Math.max(heightPercent, 12)}%` : '0%',
+                          }}
+                        />
                       </div>
                     </div>
-
-                    {/* Count above bar if peak */}
-                    {h.count > 0 && (
-                      <span className="text-[9px] font-mono font-bold text-slate-600 mb-1">
-                        {h.count}
-                      </span>
-                    )}
-
-                    {/* Bar */}
-                    <div
-                      className={`w-full rounded-t-md transition-all duration-300 ${
-                        isPeak
-                          ? 'bg-amber-500 shadow-sm'
-                          : h.count > 0
-                          ? 'bg-blue-500 hover:bg-blue-600'
-                          : 'bg-slate-100'
-                      }`}
-                      style={{ height: `${heightPercent}%` }}
-                    />
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
             {/* X-axis labels */}
-            <div className="flex justify-between text-[9px] font-mono text-slate-400 mt-2 px-1">
-              {hourlyData.hourCounts.filter((_, i) => i % 2 === 0).map((h, i) => (
-                <span key={i}>{h.hour}</span>
-              ))}
+            <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-2 px-1 font-semibold">
+              {hourlyData.hourCounts
+                .filter((_, i) => i % 2 === 0)
+                .map((h, i) => (
+                  <span key={i} className="hover:text-slate-900 transition-colors">
+                    {h.hour}
+                  </span>
+                ))}
             </div>
           </div>
         </div>

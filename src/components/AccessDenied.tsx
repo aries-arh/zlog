@@ -46,9 +46,9 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
             <span>Ketentuan RBAC ZEVA v1.6:</span>
           </div>
           <p>• <strong>Operator:</strong> Hanya dapat mengakses Panel Input &amp; Histori Task.</p>
-          <p>• <strong>Supervisor:</strong> Hanya dapat mengakses Live Monitoring &amp; Spatiotemporal Timeline.</p>
+          <p>• <strong>Supervisor:</strong> Hanya dapat mengakses Live Monitoring &amp; Grafik Laporan Display.</p>
           <p>• <strong>Manager:</strong> Hanya dapat mengakses Executive KPI &amp; Analisis Laporan.</p>
-          <p>• <strong>Admin:</strong> Memiliki akses penuh (Super-Admin) ke seluruh modul.</p>
+          <p>• <strong>Admin:</strong> Memiliki akses penuh (Super-Admin) ke seluruh modul, Master Data, &amp; Spatiotemporal Timeline.</p>
         </div>
 
         <button
