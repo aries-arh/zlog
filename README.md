@@ -1,154 +1,326 @@
-# ZEVA Logistik Material — Operator Tracking v1.6
+# ZEVA Logistik Material - Operator Tracking
 
-Aplikasi web berbasis React dan TypeScript untuk demo/pencatatan alur pengambilan material dari rak, pengiriman ke line produksi, verifikasi QR lokasi tujuan, serta monitoring KPI. README ini menjelaskan **perilaku yang tersedia pada implementasi saat ini**, bukan rancangan fitur yang belum dibuat.
+Aplikasi operasional berbasis web untuk memantau aktivitas operator dalam pengambilan material dari rak, pengiriman ke line/area produksi, hingga pencatatan waktu perjalanan dan status pengiriman. Sistem ini dirancang untuk mendukung alur kerja Gemba dan Lean Manufacturing dengan fokus pada kecepatan onboarding, verifikasi lokasi tujuan, serta audit trail event log.
 
-> **Status penyimpanan:** aplikasi saat ini menyimpan data di `localStorage` browser. Belum ada API/backend atau database server. Data tidak otomatis tersinkron antarperangkat/browser.
+## 1. Status Proyek
 
-## Fitur saat ini
+Dokumen ini memadukan dua sudut pandang:
 
-- Login operator menggunakan ID karyawan atau QR/barcode; tersedia input manual dan pemindai kamera.
-- Akun operator baru dibuat otomatis bersama task awal, lalu langsung diarahkan ke panel input.
-- Operator terdaftar yang memiliki task berstatus `new` atau `active` langsung masuk ke task tersebut. Jika tidak ada task aktif, operator masuk ke riwayat task.
-- Login staf Admin, SPV, dan Manager melalui username dan password.
-- Pengelolaan master rak, material, line/proses, dan pengguna; pembuatan QR code serta pratinjau/cetak label massal.
-- Import master dari Excel/CSV dan ekspor/impor backup database JSON.
-- Input beberapa item material dalam satu task, pencatatan keberangkatan, verifikasi scan QR tujuan, dan pencatatan kembali ke rak.
-- Monitoring SPV, dashboard KPI Manager, visualisasi grafik, dan ekspor laporan Excel.
-- Audit log untuk login, task, pengambilan material, keberangkatan, pengiriman, penolakan scan, kembali ke rak, serta pemulihan database.
-- Sesi diakhiri setelah 5 menit tanpa aktivitas.
+1. **Spesifikasi operasional formal** yang menjelaskan visi, proses bisnis, dan kebutuhan fungsional sistem.
+2. **Status implementasi saat ini** yang mencerminkan fitur yang sudah tersedia pada branch `main`.
 
-## Teknologi
+Dengan demikian, README ini berfungsi sekaligus sebagai:
+- dokumentasi sistem untuk stakeholder dan tim teknis,
+- deskripsi fitur yang sudah ada di aplikasi,
+- daftar roadmap pengembangan ke depan.
 
-- React, TypeScript, Vite
-- Persistensi browser dengan Web Storage API (`localStorage`)
-- QR code, pemindaian kamera, dan ekspor/impor spreadsheet/JSON
+> Status implementasi: aplikasi saat ini berjalan sebagai aplikasi frontend berbasis browser dengan penyimpanan lokal (`localStorage`). Belum ada backend/API atau database relasional yang aktif.
 
-## Menjalankan aplikasi secara lokal
+## 2. Ringkasan Sistem
 
-Pastikan Node.js dan npm tersedia. Dari direktori repository:
+Sistem ZEVA Logistik Material bertujuan menangani proses pengiriman material dari gudang ke line produksi dengan mekanisme yang cepat, terdokumentasi, dan terverifikasi. Fokus utama sistem adalah:
+
+- pengurangan waktu onboarding operator,
+- validasi lokasi tujuan melalui QR code line/proses,
+- pencatatan waktu pengiriman secara kronologis,
+- pemantauan status task dan item material,
+- akses role-based untuk Admin, SPV, Manager, dan Operator.
+
+### Versi operasional yang dirancang
+
+Versi formal yang diharapkan mencakup fitur-fitur berikut:
+
+- Fast-track login operator menggunakan ID karyawan atau QR/barcode.
+- Auto-create user dan task baru bila operator belum terdaftar.
+- Validasi pengiriman wajib melalui scan QR code lokasi proses tujuan.
+- Auto-fallback saat operator lupa menekan tombol berangkat.
+- Pencatatan spatiotemporal log T1, T2, T3.
+- Monitor real-time untuk supervisor dan KPI untuk manager.
+- Struktur data yang terdefinisi dan eksport backup serta laporan.
+
+### Kondisi implementasi saat ini
+
+Pada implementasi saat ini, fitur yang sudah tersedia meliputi:
+
+- login operator dengan ID karyawan / scan QR
+- auto-create akun + task baru untuk operator baru
+- panel task operator untuk menambahkan item, qty, rak, material, dan line tujuan
+- validasi pemindai lokasi tujuan dengan scan QR line
+- fallback otomatis saat `T1` belum ada
+- log event dan riwayat task
+- modul Admin, SPV, Manager, serta manajemen user/master data
+- import/export master dan backup database JSON
+- ekspor laporan Excel untuk SPV/Manager
+
+## 3. Tujuan Sistem
+
+1. Memungkinkan operator login cepat dan tanpa hambatan administrasi.
+2. Mempercepat pembuatan task baru bagi operator baru.
+3. Mencatat waktu pengiriman dan pengembalian material secara konsisten.
+4. Mengurangi risiko human error seperti lupa menekan tombol keberangkatan.
+5. Memisahkan hak akses dan tampilan sesuai peran pengguna.
+6. Menyediakan audit trail dan KPI untuk evaluasi operasional.
+
+## 4. Role dan Otorisasi Akses
+
+### 4.1 Admin
+
+Fungsi utama:
+- kelola master data rak, material, dan line/proses
+- generate dan print QR code
+- kelola pengguna
+- import/export backup database
+- akses log & audit trail
+
+### 4.2 SPV (Supervisor)
+
+Fungsi utama:
+- monitoring task aktif
+- filter operator, line, material, dan shift
+- melihat status pengiriman dan lead time
+- analisis operasional dan alert
+
+### 4.3 Manager
+
+Fungsi utama:
+- KPI dan analitik performa
+- monitoring volume, lead time, dan efisiensi
+- drill-down per operator dan line
+- ekspor laporan Excel
+
+### 4.4 Operator
+
+Fungsi utama:
+- melakukan task material dari rak ke line
+- menambah item task dan scan tujuan
+- melihat riwayat task dan melanjutkan task aktif
+
+> Catatan aktual: pada implementasi saat ini, role diproses di sisi frontend/browser dan bukan pengganti otorisasi backend yang aman untuk sistem produksi.
+
+## 5. Alur Kerja Operator (Aktual)
+
+### 5.1 Login & routing
+
+1. Operator memasukkan atau memindai ID karyawan.
+2. Jika ID belum terdaftar, aplikasi membuat akun baru dan task baru.
+3. Jika ID terdaftar dan memiliki task `new` atau `active`, aplikasi akan membuka task tersebut secara langsung.
+4. Jika tidak ada task aktif, operator diarahkan ke riwayat task.
+
+### 5.2 Input task
+
+Operator melakukan langkah berikut:
+- memilih/memindai rak asal,
+- memilih/memindai material,
+- memasukkan qty,
+- memilih line tujuan,
+- menambahkan item ke troli task.
+
+Saat item ditambahkan, timestamp `last_material_scanned_at` disimpan.
+
+### 5.3 Keberangkatan / T1
+
+- Tombol **Konfirmasi Berangkat** akan mengubah item dari status `PICKED` menjadi `IN_TRANSIT`.
+- `T1` (`picked_at`) disimpan saat tombol ditekan.
+- Mode keberangkatan ditandai sebagai `MANUAL_PRESS`.
+
+### 5.4 Verifikasi tujuan / T2
+
+- Operator melakukan scan QR code lokasi proses/line.
+- Sistem membandingkan QR yang dipindai dengan target line item.
+- Jika cocok, item berubah menjadi `DELIVERED` dan menyimpan `T2` (`delivered_at`).
+- Durasi pengiriman dihitung sebagai `T2 - T1`.
+
+### 5.5 Fallback otomatis
+
+Jika item belum memiliki `T1` ketika scan QR tujuan dilakukan, maka:
+- `T1` diisi dari `last_material_scanned_at`,
+- mode keberangkatan berubah menjadi `AUTO_FALLBACK`,
+- item tetap diproses sebagai delivered.
+
+### 5.6 Kembali ke rak / T3
+
+Setelah pengiriman, operator menekan tombol **Kembali ke Rak (Catat T3)** untuk menyimpan `return_at` dan durasi kembali.
+
+> Catatan aktual: timer auto-confirm 5 detik belum ada pada implementasi saat ini. T3 saat ini belum dipicu dari scan rak; namun dicatat melalui tombol return.
+
+## 6. Prinsip Tracking & Waktu
+
+Model tracking formal yang dirancang:
+
+- T1 = Picked / Departure Time
+- T2 = Delivered Time
+- T3 = Return / Next Cycle Start
+
+Perhitungan yang direncanakan:
+
+- Delivery Lead Time = T2 - T1
+- Return Lead Time = T3 - T2
+- Round-Trip = T3 - T1
+- Inter-Line Transit = T2b - T2a
+
+Model yang diimplementasikan saat ini:
+
+- `picked_at` menyimpan T1 saat konfirmasi berangkat atau fallback otomatis
+- `delivered_at` menyimpan T2 setelah scan QR tujuan valid
+- `return_at` menyimpan T3 saat tombol kembali ke rak ditekan
+- `delivery_duration_sec` dihitung dari T2 - T1
+- `return_duration_sec` dihitung dari T3 - T2
+
+## 7. Status Item dan Event Log
+
+### Status item
+
+- `PICKED`
+- `IN_TRANSIT`
+- `DELIVERED`
+- `CANCELLED`
+
+### Status task
+
+- `new`
+- `active`
+- `completed`
+- `cancelled`
+
+### Mode keberangkatan
+
+- `MANUAL_PRESS`
+- `AUTO_FALLBACK`
+
+### Event log
+
+Aplikasi saat ini merekam event seperti:
+- login
+- task dibuat
+- material dipilih
+- item berangkat
+- item delivered
+- scan lokasi salah
+- item kembali ke rak
+- import/export database
+
+Semua log tersedia di modul Admin dan beberapa log digunakan di monitoring SPV/Manager.
+
+## 8. Dashboard dan UI
+
+### 8.1 Admin
+
+Available saat ini:
+- master rak/material/line
+- user management
+- QR generator & bulk print
+- import Excel/CSV master
+- ekspor/import JSON backup
+- log timeline dan raw table
+
+### 8.2 SPV
+
+Available saat ini:
+- live monitoring grid
+- filter shift, operator, line, dan material
+- ringkasan KPI operational
+- grafik dan analitik
+- ekspor laporan Excel
+
+### 8.3 Manager
+
+Available saat ini:
+- ringkasan KPI
+- visualisasi lead time dan volume
+- drill-down performa operator
+- ekspor Excel
+
+> Eksport PDF untuk laporan eksekutif belum tersedia pada implementasi saat ini.
+
+## 9. Data dan Struktur Sistem
+
+Pada catatan perencanaan, sistem sering digambarkan dengan skema relasional SQL. Namun implementasi saat ini tidak menggunakan database server atau SQL backend. Data disimpan di browser dengan `localStorage`.
+
+Struktur data yang dipakai saat ini bersifat object-based, meliputi:
+
+- `users`
+- `raks`
+- `materials`
+- `lines`
+- `tasks`
+- `taskItems`
+- `logs`
+
+Data ini dipersiapkan melalui seed data awal dan dikelola langsung dari aplikasi frontend.
+
+## 10. Persiapan dan Menjalankan Aplikasi
+
+### Persyaratan
+
+- Node.js
+- npm
+
+### Langkah start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Vite akan menampilkan URL lokal di terminal. Untuk membuat build produksi:
+Build produksi:
 
 ```bash
 npm run build
 ```
 
-## Alur kerja operator
+## 11. Batasan Implementasi Saat Ini
 
-1. Operator memasukkan atau memindai ID karyawan. ID dengan panjang kurang dari 3 karakter ditolak.
-2. Jika ID belum ditemukan, aplikasi membuat akun operator aktif dan task baru, kemudian membuka panel input.
-3. Jika ID sudah terdaftar dan aktif:
-   - task berstatus `new` atau `active` yang ditemukan akan dibuka langsung;
-   - jika tidak ada task seperti itu, aplikasi menampilkan riwayat task dengan pilihan melanjutkan atau membuat task baru.
-4. Di panel task, operator memilih/memindai rak, memilih/memindai material, mengisi qty dan line tujuan, lalu menambahkan item ke troli. Timestamp `last_material_scanned_at` dicatat saat item ditambahkan.
-5. Tombol **Konfirmasi Berangkat** mengubah item berstatus `PICKED` menjadi `IN_TRANSIT`, menyimpan `T1` (`picked_at`) dan mode `MANUAL_PRESS`.
-6. Di tujuan, operator membuka verifikasi dan memindai QR proses/line. Kode dibandingkan tanpa membedakan huruf besar-kecil. Item aktif yang target line-nya cocok berubah menjadi `DELIVERED` dan memperoleh `T2` serta durasi pengiriman.
-7. Bila item yang cocok belum memiliki `T1`, scan tujuan menjalankan fallback: `T1` diambil dari `last_material_scanned_at` (atau waktu saat ini jika timestamp tersebut tidak tersedia), dan mode menjadi `AUTO_FALLBACK`.
-8. Setelah pengiriman, operator menekan **Kembali ke Rak (Catat T3)**. Aplikasi mencatat `return_at` dan durasi kembali untuk item delivered yang belum memiliki timestamp kembali.
-9. Task dapat diselesaikan setelah tidak ada item `PICKED` atau `IN_TRANSIT` dan terdapat item delivered.
+Aplikasi saat ini memiliki beberapa batasan yang perlu dicatat:
 
-### Catatan penting terkait alur aktual
+- Data disimpan di browser (`localStorage`), bukan database backend.
+- Tidak ada multidevice sync, API server, atau autentikasi server-side.
+- Role checking hanya berjalan di frontend dan tidak menggantikan keamanan backend.
+- Password staf disimpan sebagai nilai data biasa di browser untuk demo.
+- Tidak ada ekspor PDF untuk Manager.
+- Timer auto-confirm 5 detik tidak ada.
+- T3 tidak dipicu dari scan rak, melainkan tombol return.
+- Timeline event real-time per detik lebih sesuai sebagai roadmap, bukan fitur yang sudah tersedia penuh.
+- Tidak ada database relasional aktif seperti skema SQL yang sering digambarkan dalam perancangan awal.
 
-- **Tidak ada timer auto-confirm 5 detik.** Keberangkatan manual terjadi saat tombol ditekan. Fallback otomatis baru diterapkan saat scan QR tujuan jika `T1` belum ada.
-- **T3 tidak dipicu oleh scan rak.** Saat ini T3 dicatat melalui tombol kembali ke rak.
-- Satu scan tujuan dapat menyelesaikan seluruh item aktif dalam task yang memiliki line tujuan dengan QR yang cocok. Dengan demikian, beberapa item untuk line yang sama menerima timestamp T2 yang sama; scan tujuan lain dapat menyelesaikan item untuk line lain (multi-drop).
-- Scan yang tidak cocok ditolak, menghasilkan pesan/audio error, dan dicatat di log.
-- Pemindaian input rak/material tersedia melalui input dan modal scanner; dukungan aktual kamera bergantung pada izin browser dan perangkat. Panel input juga menyediakan pilihan cepat dari master data.
-- Setelah verifikasi sukses, operator dapat mencatat kembali ke rak melalui tombol pada hasil verifikasi atau kartu status pengiriman.
+## 12. Future Roadmap
 
-## Role dan akses
+Roadmap yang disarankan untuk pengembangan ke depan:
 
-| Role | Akses aplikasi saat ini |
-| --- | --- |
-| **Admin** | Akses semua tampilan, master data, QR generator/print, user management, log/timeline audit, import/export database, dan tampilan operator. Penghapusan user bersifat permanen, bukan soft delete. |
-| **SPV** | Live monitoring grid, grafik/analitik, filter shift/line/operator dan pencarian material/rak/operator, serta ekspor laporan Excel. |
-| **Manager** | Grafik/analitik, ringkasan KPI, filter shift, drill-down kinerja operator dan distribusi volume per line, serta ekspor laporan Excel. PDF belum tersedia. |
-| **Operator** | Riwayat task dan panel input task. Tidak memiliki akses ke dashboard staf. |
+### Prioritas 1 — Stabilitas & Backend
+- migrasi data dari localStorage ke backend API/database,
+- autentikasi sesi yang aman,
+- otorisasi server-side untuk Admin/SPV/Manager/Operator,
+- audit trail yang sepenuhnya terintegrasi dan tidak tergantung browser.
 
-Pemeriksaan role dilakukan di sisi aplikasi/browser. Ini **bukan** pengganti otorisasi backend dan tidak boleh dianggap sebagai batas keamanan untuk sistem produksi yang menyimpan data sensitif.
+### Prioritas 2 — Pengalaman operator
+- auto-confirm countdown 5 detik,
+- peningkatan scanner dan auto-focus input,
+- alur progres task yang lebih presisi dan hands-free,
+- validasi multi-task dan multi-drop yang lebih eksplisit.
 
-## Data, waktu, dan log
+### Prioritas 3 — Monitoring & KPI
+- timeline event real-time per operator dan per task,
+- dashboard SPV yang lebih kaya dengan alert laten dan bottleneck,
+- laporan PDF untuk eksekutif,
+- export Excel yang lebih terstruktur dan formatting KPI.
 
-Data utama yang disimpan di browser meliputi:
+### Prioritas 4 — Operasional produksi
+- sinkronisasi multi-user real-time,
+- sistem backup/restore server-side,
+- pencatatan lokasi GPS/route jika dipakai pada lingkungan lapangan,
+- API integrasi dengan MES/ERP atau sistem manufaktur lain.
 
-- Pengguna (`users`), master rak (`raks`), material (`materials`), dan line (`lines`).
-- Task (`tasks`) dan item task (`taskItems`).
-- Event log kronologis (`logs`), dibatasi hingga 500 entri terakhir.
-- Informasi sesi, task aktif, tampilan terakhir, dan waktu aktivitas terakhir.
+## 13. Catatan Akhir
 
-Item task menggunakan ID string dan mencakup antara lain `task_id`, `user_id`, `rak_id`, `material_id`, `line_id`, `qty`, `status`, `departure_mode`, `last_material_scanned_at`, serta timestamp/durasi berikut:
+Dokumen ini dibuat untuk menjaga keseimbangan antara kebutuhan formal proyek dan keadaan implementasi yang ada saat ini. Dengan kata lain:
 
-- `picked_at` (`T1`): waktu konfirmasi keberangkatan manual atau timestamp fallback dari scan material terakhir.
-- `delivered_at` (`T2`): waktu scan QR line tujuan yang valid.
-- `return_at` (`T3`): waktu tombol kembali ke rak ditekan.
-- `delivery_duration_sec`: selisih `T2 - T1`.
-- `return_duration_sec`: selisih `T3 - T2`.
+- bagian perencanaan menjelaskan “apa yang ingin dicapai” dan “apa yang menjadi target operasional sistem”,
+- bagian status implementasi menjelaskan “apa yang sudah dapat digunakan di aplikasi yang ada sekarang”,
+- bagian roadmap menjelaskan “apa yang masih perlu dikembangkan untuk mencapai versi produksi yang lebih matang”.
 
-Dashboard Manager menampilkan rata-rata delivery lead time dan round-trip. Untuk item yang belum mempunyai durasi kembali, perhitungan round-trip saat ini menggunakan delivery duration saja; angka tersebut bukan round-trip penuh.
-
-### Penyimpanan dan backup
-
-- Data tersimpan per origin/browser di `localStorage`; membersihkan data situs/browser dapat menghapus data aplikasi.
-- Data awal contoh dimuat ketika penyimpanan terkait masih kosong.
-- Admin dapat mengekspor seluruh data aplikasi ke JSON dan memulihkan backup dengan mode **overwrite** atau **merge**.
-- Pengelolaan master juga mendukung import Excel/CSV. Dashboard SPV dan Manager menyediakan ekspor laporan Excel.
-- Belum ada database relasional aktif. Tabel pada dokumen rancangan lama seperti `users`, `mst_line`, `trx_task`, dan `trx_task_item` **bukan** skema database yang dipakai aplikasi saat ini.
-
-## Dashboard dan pelaporan
-
-### Admin
-
-- CRUD master rak, material, line/proses, dan pengguna.
-- Pengaturan status aktif/nonaktif; penghapusan akun menghapusnya dari data aplikasi.
-- Generator QR untuk rak, material, dan line; pemilihan kategori, pratinjau, dan cetak massal.
-- Tampilan event log dalam bentuk timeline atau tabel, dengan pencarian/filter event.
-- Ekspor dan pemulihan backup JSON; import master dan template Excel.
-
-### SPV
-
-- Kartu ringkasan task aktif, jumlah item in-transit/delivered, rata-rata lead time, alert keterlambatan, serta jumlah fallback.
-- Grid item dengan status, mode keberangkatan, T1, T2, dan lead time.
-- Filter shift, line, operator, serta pencarian berdasarkan material, rak, atau operator.
-- Tab grafik/analitik dan ekspor laporan Excel.
-- Timeline log kronologis terperinci berada pada tampilan Admin, bukan tampilan SPV.
-
-### Manager
-
-- KPI volume delivered, rata-rata delivery lead time, round-trip estimate, fulfillment, dan on-time compliance.
-- Grafik/analitik, distribusi volume per line, serta drill-down performa operator.
-- Filter shift dan ekspor laporan Excel (`.xlsx`); ekspor PDF belum tersedia.
-
-## Status dan mode item
-
-- Status task: `new`, `active`, `completed`, `cancelled`.
-- Status item: `PICKED`, `IN_TRANSIT`, `DELIVERED`, `CANCELLED`.
-- Mode keberangkatan: `MANUAL_PRESS`, `AUTO_FALLBACK`.
-
-## Batasan dan hal yang perlu diperhatikan
-
-- Aplikasi saat ini adalah aplikasi sisi klien dengan penyimpanan lokal; tidak ada sinkronisasi multi-user/perangkat, API, atau database server.
-- Login dan pemeriksaan role dikerjakan di sisi klien. Jangan gunakan implementasi ini sebagai sistem autentikasi/otorisasi produksi tanpa backend yang aman.
-- Password staf pada model aplikasi disimpan sebagai nilai biasa di data browser, bukan hash server-side. Kredensial contoh hanya untuk keperluan demo; ubah/ jangan gunakan kredensial tersebut untuk lingkungan produksi.
-- Karena data berada di browser, pengguna/perangkat yang berbeda dapat memiliki dataset berbeda.
-- Timer auto-confirm keberangkatan, pencatatan T3 melalui scan rak, ekspor PDF, serta timeline event pada dashboard SPV belum tersedia.
-- Nilai KPI tergantung data yang tersimpan di browser dan sebagian dapat berupa data contoh awal.
-
-## Struktur source utama
-
-```text
-src/
-├── App.tsx                     # routing tampilan, login, alur task, RBAC sisi klien
-├── components/                 # header, scanner, modal import/export, QR print, grafik
-├── types/index.ts              # tipe pengguna, master, task, item, dan event log
-├── utils/storage.ts            # seed data, localStorage, helper shift/durasi
-└── views/                      # tampilan login, operator, Admin, SPV, dan Manager
-```
+Dengan pendekatan ini, README tetap relevan untuk stakeholder, tim pengembang, dan pengguna akhir, tanpa menyesatkan tentang fitur yang belum tersedia secara aktual.
 
 ---
 
-Dokumen diperbarui agar mencerminkan implementasi aplikasi pada branch `main`. Fitur yang belum ada dijelaskan sebagai batasan, bukan sebagai acceptance criteria yang sudah terpenuhi.
+Versi dokumen: 1.6 (formalized + implementation-aware)
+Status: Aktif untuk branch `main` dengan catatan roadmap pengembangan
