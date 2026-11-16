@@ -95,9 +95,26 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   } | null>(null);
 
   // References for hands-free auto advance
+  const rakInputRef = useRef<HTMLInputElement>(null);
   const materialInputRef = useRef<HTMLInputElement>(null);
   const qtyInputRef = useRef<HTMLInputElement>(null);
   const destInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto focus rak input on screen mount so PDA can scan immediately without clicking
+  useEffect(() => {
+    setTimeout(() => {
+      rakInputRef.current?.focus();
+    }, 100);
+  }, []);
+
+  // Auto focus destination scan input when completion modal opens
+  useEffect(() => {
+    if (showCompletionModal) {
+      setTimeout(() => {
+        destInputRef.current?.focus();
+      }, 100);
+    }
+  }, [showCompletionModal]);
 
   // Filter items in trolley (current task items)
   const itemsInTrolley = taskItems.filter((item) => item.task_id === task.id);
@@ -149,10 +166,68 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     }
   }, [allLines, selectedLineId]);
 
+  // Dedicated Rak submit (PDA enter or instant match)
+  const handleRakSubmit = (val?: string) => {
+    const raw = val !== undefined ? val : rakInput;
+    const clean = raw.trim().replace(/[\r\n]+/g, '').toUpperCase();
+    if (!clean) return;
+
+    const found = allRaks.find(
+      (r) =>
+        r.kode_rak.toUpperCase() === clean ||
+        r.id.toUpperCase() === clean ||
+        clean.includes(r.kode_rak.toUpperCase())
+    );
+    if (found) {
+      setSelectedRakId(found.id);
+      setRakInput(found.kode_rak);
+      setRakValid(true);
+      sound.playSuccessBeep();
+      setTimeout(() => materialInputRef.current?.focus(), 80);
+    } else {
+      sound.playErrorBeep();
+      setRakValid(false);
+      rakInputRef.current?.select();
+    }
+  };
+
+  // Dedicated Material submit (PDA enter or instant match)
+  const handleMaterialSubmit = (val?: string) => {
+    const raw = val !== undefined ? val : materialInput;
+    const clean = raw.trim().replace(/[\r\n]+/g, '').toUpperCase();
+    if (!clean) return;
+
+    const found = allMaterials.find(
+      (m) =>
+        m.kode_material.toUpperCase() === clean ||
+        m.id.toUpperCase() === clean ||
+        clean.includes(m.kode_material.toUpperCase())
+    );
+    if (found) {
+      setSelectedMaterialId(found.id);
+      setMaterialInput(found.kode_material);
+      setMaterialValid(true);
+      sound.playSuccessBeep();
+      if (!selectedRakId && found.default_rak_id) {
+        const defaultRak = allRaks.find((r) => r.id === found.default_rak_id);
+        if (defaultRak) {
+          setSelectedRakId(defaultRak.id);
+          setRakInput(defaultRak.kode_rak);
+          setRakValid(true);
+        }
+      }
+      setTimeout(() => qtyInputRef.current?.focus(), 80);
+    } else {
+      sound.playErrorBeep();
+      setMaterialValid(false);
+      materialInputRef.current?.select();
+    }
+  };
+
   // Rak validation on change
   const handleRakChange = (val: string) => {
     setRakInput(val);
-    const clean = val.trim().toUpperCase();
+    const clean = val.trim().replace(/[\r\n]+/g, '').toUpperCase();
     const found = allRaks.find(
       (r) => r.kode_rak.toUpperCase() === clean || r.id === val
     );
@@ -160,7 +235,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       setSelectedRakId(found.id);
       setRakValid(true);
       sound.playSuccessBeep();
-      setTimeout(() => materialInputRef.current?.focus(), 150);
+      setTimeout(() => materialInputRef.current?.focus(), 100);
     } else {
       setSelectedRakId('');
       setRakValid(false);
@@ -170,7 +245,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   // Material validation on change
   const handleMaterialChange = (val: string) => {
     setMaterialInput(val);
-    const clean = val.trim().toUpperCase();
+    const clean = val.trim().replace(/[\r\n]+/g, '').toUpperCase();
     const found = allMaterials.find(
       (m) => m.kode_material.toUpperCase() === clean || m.id === val
     );
@@ -186,19 +261,100 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
           setRakValid(true);
         }
       }
-      setTimeout(() => qtyInputRef.current?.focus(), 150);
+      setTimeout(() => qtyInputRef.current?.focus(), 100);
     } else {
       setSelectedMaterialId('');
       setMaterialValid(false);
     }
   };
 
+  // Global Keydown Buffer to catch PDA Barcode Wedge anywhere on screen
+  useEffect(() => {
+    let scanBuffer = '';
+    let lastKeyTime = 0;
+
+    const handleGlobalScan = (e: KeyboardEvent) => {
+      // Don't intercept if user is typing numbers in qty input
+      if (document.activeElement === qtyInputRef.current && e.key !== 'Enter') {
+        return;
+      }
+
+      const now = Date.now();
+      const elapsed = now - lastKeyTime;
+      lastKeyTime = now;
+
+      if (e.key === 'Enter') {
+        if (scanBuffer.length >= 3 && elapsed < 80) {
+          e.preventDefault();
+          const scanned = scanBuffer.trim().replace(/[\r\n]+/g, '').toUpperCase();
+          scanBuffer = '';
+
+          // 1. Line QR Code check
+          const lineFound = allLines.find(
+            (l) =>
+              l.qr_code_proses.toUpperCase() === scanned ||
+              l.kode_line.toUpperCase() === scanned ||
+              scanned.includes(l.qr_code_proses.toUpperCase())
+          );
+          if (lineFound) {
+            setShowCompletionModal(true);
+            setDestScanInput(lineFound.qr_code_proses);
+            handleDestinationScanSubmit(lineFound.qr_code_proses);
+            return;
+          }
+
+          // 2. Rak Barcode check
+          const rakFound = allRaks.find(
+            (r) =>
+              r.kode_rak.toUpperCase() === scanned ||
+              r.id.toUpperCase() === scanned ||
+              scanned.includes(r.kode_rak.toUpperCase())
+          );
+          if (rakFound) {
+            handleRakSubmit(scanned);
+            return;
+          }
+
+          // 3. Material Barcode check
+          const matFound = allMaterials.find(
+            (m) =>
+              m.kode_material.toUpperCase() === scanned ||
+              m.id.toUpperCase() === scanned ||
+              scanned.includes(m.kode_material.toUpperCase())
+          );
+          if (matFound) {
+            handleMaterialSubmit(scanned);
+            return;
+          }
+        }
+      } else if (e.key.length === 1) {
+        if (elapsed > 100) {
+          scanBuffer = e.key;
+        } else {
+          scanBuffer += e.key;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalScan);
+    return () => window.removeEventListener('keydown', handleGlobalScan);
+  }, [allLines, allRaks, allMaterials, selectedRakId]);
+
   // Add Material to Trolley
   const handleAddMaterial = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!selectedRakId || !selectedMaterialId || qty <= 0 || !selectedLineId) {
+    if (!selectedRakId) {
       sound.playErrorBeep();
-      alert('Harap lengkapi Scan Rak, Scan Material, Qty, dan Line Tujuan!');
+      rakInputRef.current?.focus();
+      return;
+    }
+    if (!selectedMaterialId) {
+      sound.playErrorBeep();
+      materialInputRef.current?.focus();
+      return;
+    }
+    if (qty <= 0 || !selectedLineId) {
+      sound.playErrorBeep();
       return;
     }
 
@@ -228,7 +384,8 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     setSelectedMaterialId('');
     setMaterialValid(false);
     setQty(10);
-    setTimeout(() => materialInputRef.current?.focus(), 100);
+    // Keep rack and refocus to material input so operator can continuously scan next parts
+    setTimeout(() => materialInputRef.current?.focus(), 80);
   };
 
   const handleManualDeparture = () => {
@@ -335,6 +492,10 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     1
                   </span>
                   <span>STEP 1: SCAN RAK ASAL</span>
+                  <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-300 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    PDA Gun Ready
+                  </span>
                 </label>
                 {rakValid && (
                   <span className="text-xs font-bold text-emerald-700 flex items-center gap-1">
@@ -345,11 +506,20 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
 
               <div className="flex gap-2">
                 <input
+                  ref={rakInputRef}
                   type="text"
+                  autoFocus
                   value={rakInput}
                   onChange={(e) => handleRakChange(e.target.value)}
-                  placeholder="Scan Barcode Rak (e.g. RAK-A12)..."
-                  className="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleRakSubmit();
+                    }
+                  }}
+                  placeholder="Arahkan PDA & Scan Barcode Rak (e.g. RAK-A12)..."
+                  className="flex-1 bg-white border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
                 />
                 <button
                   type="button"
@@ -357,12 +527,18 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     setScannerMode('rak');
                     setScannerOpen(true);
                   }}
-                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                  title="Buka Kamera HP (hanya jika perangkat tidak memiliki hardware scanner PDA)"
                 >
-                  <Scan className="w-4 h-4 text-amber-600" />
-                  <span>Scan</span>
+                  <Scan className="w-4 h-4 text-slate-500" />
+                  <span className="hidden sm:inline">Kamera</span>
                 </button>
               </div>
+
+              <p className="text-[11px] text-emerald-800 font-medium mt-1.5 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span><strong>Mode PDA:</strong> Kursor siap di kolom ini. Tekan tombol trigger PDA ke barcode Rak (data langsung masuk otomatis tanpa perlu buka menu QR Scan).</span>
+              </p>
 
               {/* Quick Rak selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
               <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
@@ -423,6 +599,10 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     2
                   </span>
                   <span>STEP 2: SCAN KODE MATERIAL</span>
+                  <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-300 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    PDA Gun Ready
+                  </span>
                 </label>
                 {materialValid && (
                   <span className="text-xs font-bold text-emerald-700 flex items-center gap-1">
@@ -437,8 +617,15 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                   type="text"
                   value={materialInput}
                   onChange={(e) => handleMaterialChange(e.target.value)}
-                  placeholder="Scan Barcode Material (e.g. MAT-001)..."
-                  className="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleMaterialSubmit();
+                    }
+                  }}
+                  placeholder="Arahkan PDA & Scan Barcode Material (e.g. MAT-001)..."
+                  className="flex-1 bg-white border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
                 />
                 <button
                   type="button"
@@ -446,12 +633,18 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     setScannerMode('material');
                     setScannerOpen(true);
                   }}
-                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                  title="Buka Kamera HP (hanya jika perangkat tidak memiliki hardware scanner PDA)"
                 >
-                  <Scan className="w-4 h-4 text-amber-600" />
-                  <span>Scan</span>
+                  <Scan className="w-4 h-4 text-slate-500" />
+                  <span className="hidden sm:inline">Kamera</span>
                 </button>
               </div>
+
+              <p className="text-[11px] text-emerald-800 font-medium mt-1.5 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span><strong>Mode PDA:</strong> Kursor otomatis berpindah ke sini setelah scan Rak. Tekan tombol trigger PDA ke barcode Material part.</span>
+              </p>
 
               {/* Quick Material selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
               <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
@@ -529,6 +722,12 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                       min={1}
                       value={qty}
                       onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddMaterial();
+                        }
+                      }}
                       className="flex-1 bg-white border border-slate-300 rounded-xl py-2 px-3 text-center text-lg font-mono font-bold text-slate-900 focus:outline-none focus:border-amber-500"
                     />
                     <button
@@ -809,6 +1008,14 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     type="text"
                     value={destScanInput}
                     onChange={(e) => setDestScanInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (destScanInput.trim()) {
+                          handleDestinationScanSubmit(destScanInput);
+                        }
+                      }
+                    }}
                     placeholder="Scan QR Lokasi (e.g. QR-LINE-01-ASSY)..."
                     className="flex-1 bg-slate-50 border-2 border-slate-300 focus:border-amber-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-mono text-slate-900 outline-none"
                   />

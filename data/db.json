@@ -1,0 +1,6603 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "employee_id": "ADMIN",
+      "nama": "admin",
+      "role": "admin",
+      "password": "admin123",
+      "status": "active",
+      "created_at": "2026-10-01T07:00:00.000Z",
+      "last_login_at": "2026-11-13T06:53:24.491Z",
+      "qr_code": "admin"
+    },
+    {
+      "id": "u-spv",
+      "employee_id": "SPV",
+      "nama": "SPV-TRIAL",
+      "role": "spv",
+      "password": "spv123",
+      "status": "active",
+      "created_at": "2026-10-01T07:00:00.000Z",
+      "last_login_at": "2026-11-12T08:02:42.617Z",
+      "qr_code": "spv"
+    },
+    {
+      "id": "u-mgr",
+      "employee_id": "MANAGER",
+      "nama": "MGR-TRIAL",
+      "role": "manager",
+      "password": "mgr123",
+      "status": "active",
+      "created_at": "2026-10-01T07:00:00.000Z",
+      "last_login_at": "2026-10-29T16:00:00.000Z",
+      "qr_code": "manager"
+    },
+    {
+      "id": "u-op-001",
+      "employee_id": "OP-001",
+      "nama": "Budi Santoso",
+      "qr_code": "OP-001",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-10-10T06:30:00.000Z",
+      "last_login_at": "2026-10-30T03:10:00.000Z"
+    },
+    {
+      "id": "u-op-002",
+      "employee_id": "OP-002",
+      "nama": "Agus Pratama",
+      "qr_code": "OP-002",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-10-12T06:30:00.000Z",
+      "last_login_at": "2026-10-30T02:40:00.000Z"
+    },
+    {
+      "id": "u-op-003",
+      "employee_id": "OP-003",
+      "nama": "Siti Rahma",
+      "qr_code": "OP-003",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-10-15T06:30:00.000Z",
+      "last_login_at": "2026-10-30T01:50:00.000Z"
+    },
+    {
+      "id": "u-1794472416721",
+      "employee_id": "318683",
+      "nama": "Operator 318683",
+      "qr_code": "318683",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-11-12T08:33:36.721Z",
+      "last_login_at": "2026-11-12T08:33:36.721Z"
+    },
+    {
+      "id": "u-1794472740044",
+      "employee_id": "3018683",
+      "nama": "Operator 3018683",
+      "qr_code": "3018683",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-11-12T08:39:00.044Z",
+      "last_login_at": "2026-11-13T06:52:14.558Z"
+    }
+  ],
+  "raks": [
+    {
+      "id": "rak-1794470228656-we88",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-7zoe",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-is39",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-bsrh",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-yqq5",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-y3ne",
+      "kode_rak": "MGPTF RAK I",
+      "nama_rak": "MGPTF RAK I",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-6ns4",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-xzsm",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-6n1h",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-eg8q",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ecnc",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-df3j",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-f02m",
+      "kode_rak": "MGPTF RAK G",
+      "nama_rak": "MGPTF RAK G",
+      "zona": "MPS, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-eqnt",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2a0a",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ss7g",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-1ihc",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-05wd",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-dh0d",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-s8lr",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-h2yi",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-5ggg",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-316d",
+      "kode_rak": "MGPTF RAK F",
+      "nama_rak": "MGPTF RAK F",
+      "zona": "BIG PART, PLASTIK, ELEKTRIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-yn37",
+      "kode_rak": "MGPTF RAK C",
+      "nama_rak": "MGPTF RAK C",
+      "zona": "BIG PART, SMALL PART, PLASTIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vxvg",
+      "kode_rak": "MGPTF RAK C",
+      "nama_rak": "MGPTF RAK C",
+      "zona": "BIG PART, SMALL PART, PLASTIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-dn87",
+      "kode_rak": "MGPTF RAK C",
+      "nama_rak": "MGPTF RAK C",
+      "zona": "BIG PART, SMALL PART, PLASTIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ylhl",
+      "kode_rak": "MGPTF RAK C",
+      "nama_rak": "MGPTF RAK C",
+      "zona": "BIG PART, SMALL PART, PLASTIK",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-irxj",
+      "kode_rak": "MGPTF RAK B",
+      "nama_rak": "MGPTF RAK B",
+      "zona": "BIG PART, MPS",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-oabx",
+      "kode_rak": "MGPTF RAK B",
+      "nama_rak": "MGPTF RAK B",
+      "zona": "BIG PART, MPS",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ecf5",
+      "kode_rak": "MGPTF RAK B",
+      "nama_rak": "MGPTF RAK B",
+      "zona": "BIG PART, MPS",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-qla0",
+      "kode_rak": "MGPTF RAK B",
+      "nama_rak": "MGPTF RAK B",
+      "zona": "BIG PART, MPS",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-947v",
+      "kode_rak": "MGPTF RAK B",
+      "nama_rak": "MGPTF RAK B",
+      "zona": "BIG PART, MPS",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-lfav",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-n852",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-b75k",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-sn6c",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-cm3h",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-8kfk",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-mt6b",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-orqv",
+      "kode_rak": "MGPTF RAK A",
+      "nama_rak": "MGPTF RAK A",
+      "zona": "BIG PART, SMALL PART",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-72pk",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-3ko4",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hcze",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-3ao9",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-02vx",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-zg92",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2uk4",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-mbrh",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4q37",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-m43b",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-tu6l",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-lsd3",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-b0m5",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-bwmg",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-k14b",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-w6ym",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-cye7",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-qn3c",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-cvyn",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-8wz0",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-74nf",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-l5pi",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-wmsk",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-bgq7",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-7p28",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-zax1",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-5yff",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-8t5m",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-8os5",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hp8w",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4gfw",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-rtmh",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-339m",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-m510",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2q51",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hkl6",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2awe",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hmsz",
+      "kode_rak": "WD01 RAK F",
+      "nama_rak": "WD01 RAK F",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-few1",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vt1x",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-sq97",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-kyrs",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-11jb",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ox38",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vjzv",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-n4x6",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-sdpl",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hc11",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hs9r",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-jaxf",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-8imb",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-i0h9",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vy17",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-283b",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-imat",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-v0dy",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-jajo",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-q6bw",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-pcph",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ls3t",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-rpmh",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-g39p",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-iu8f",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-men8",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-02dp",
+      "kode_rak": "WD01 RAK H",
+      "nama_rak": "WD01 RAK H",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ras7",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-m2im",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-himw",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-d3g6",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-gjyt",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-181k",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-qeyb",
+      "kode_rak": "WD01 RAK DEKAT WL01",
+      "nama_rak": "WD01 RAK DEKAT WL01",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-trva",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-tbk6",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-akha",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-9e52",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-h2ky",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-u8vv",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-7sez",
+      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-mfnw",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-buy0",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-fgry",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-k4ti",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-xm1r",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ps0p",
+      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-tyd4",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-39mo",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2upc",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-xqcs",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-pni2",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-f45u",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-j1jy",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-gjtk",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-c9km",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-nli0",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-t5yi",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-a7lw",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-7ur1",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-r3ns",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-jy5g",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-rp8j",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vk2j",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-stjt",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-algd",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-nt2y",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4vy2",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-97my",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-j506",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-bx47",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-wlrd",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-xfx8",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-7ujg",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-3ec7",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-focp",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-vq7u",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-lk0x",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-bsa4",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-we5o",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-l6t8",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-1tzl",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-g72f",
+      "kode_rak": "RAK FA4 TF",
+      "nama_rak": "RAK FA4 TF",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-upkh",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-92m4",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hsj3",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ey9j",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-e9vs",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-ah0m",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-1yth",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-x2lv",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4y7k",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-n33v",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-lqss",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-rrgu",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-v7ru",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-b3ja",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-64x3",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-tf9e",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-h4v1",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-hfys",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-idio",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-su5u",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-2ce1",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-m8wc",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4i2v",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-1tri",
+      "kode_rak": "RAK FA4 TF (2)",
+      "nama_rak": "RAK FA4 TF (2)",
+      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-rmg0",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-a66m",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-g2xp",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-4ix2",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-cmqr",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-jumt",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-icpm",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-11fe",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-frfo",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-dmjx",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-i1s2",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228656-xtwm",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-w8s1",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-p3ff",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-p3sm",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-dsic",
+      "kode_rak": "WD01 PACKING H",
+      "nama_rak": "WD01 PACKING H",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-oe1h",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-eqks",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-pvyi",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ftmd",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-pxyu",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-mmld",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-48g2",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-zs5k",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xs3a",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8b0t",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-13kz",
+      "kode_rak": "WD01 PACKING G",
+      "nama_rak": "WD01 PACKING G",
+      "zona": "RAK PACKING SUB",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-i4cw",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fsyi",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-rd7n",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ztko",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-jh0v",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-mvhl",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-qdx7",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-7o9a",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-j4bu",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-96vg",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-2fup",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-kk1o",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-s4a6",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-7nli",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-p2zd",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-hrls",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-r3ex",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-3f3c",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-cj3y",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wc5r",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-qw3z",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-zyjq",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-uccb",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-vr2q",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-beqb",
+      "kode_rak": "AKRILIK MGP",
+      "nama_rak": "AKRILIK MGP",
+      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-racl",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-3pu5",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-sap5",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-7lfu",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-63zf",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-shd3",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-4ned",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-lqst",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-bb5c",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-x9g0",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ol0b",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8arc",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-5mac",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-lozz",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wvs5",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-cp8i",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-48j4",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-lw5x",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-om9h",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-iyv4",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wgdx",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-tg69",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-tcko",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-6tfy",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-cy0c",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-i6vr",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-h6qw",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-qhio",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ledu",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-0met",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-hllg",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-rm43",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-q5m8",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-jx7r",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-80y6",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-1d1z",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-0yri",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-00fk",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-314h",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xsna",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-39ub",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fw1c",
+      "kode_rak": "AKRILIK MGP (2)",
+      "nama_rak": "AKRILIK MGP (2)",
+      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-qjd3",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-klt8",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-jvyz",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-uzzj",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xg1q",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-qdvo",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-5u5w",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-63ab",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-cbb8",
+      "kode_rak": "RAK WD01",
+      "nama_rak": "RAK WD01",
+      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-nm0t",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-g08e",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-1fqu",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fc5y",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-nowv",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-hesb",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-mnrj",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-jzb3",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-393w",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fzcn",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-pa1e",
+      "kode_rak": "RAK WD01 (2)",
+      "nama_rak": "RAK WD01 (2)",
+      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-g058",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ihie",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-211e",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wesl",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-3te4",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-4oqz",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-jl82",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-o5qo",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-0e5x",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-zyab",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ks3i",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-761j",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-6bov",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wndg",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-gs59",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xpw8",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-bexw",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-c49n",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-2nfd",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xj30",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-myrh",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-d9rq",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-em8f",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-b4ja",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-wqbx",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ypy6",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-j86k",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-hh78",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ot7m",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-kb4j",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fytt",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-x0jw",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-nkht",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8zn7",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-mhmj",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ve0u",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-lv2t",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-s3j8",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8ble",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-b6jb",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-yrcp",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-phmo",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-27lj",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-b0r2",
+      "kode_rak": "WD01 RAK G",
+      "nama_rak": "WD01 RAK G",
+      "zona": "OWNER'S MANUAL, LEAFLET",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-uomx",
+      "kode_rak": "RAK BP WD",
+      "nama_rak": "RAK BP WD",
+      "zona": "BODY COVER, LOWER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-5fe5",
+      "kode_rak": "RAK BP WD",
+      "nama_rak": "RAK BP WD",
+      "zona": "BODY COVER, LOWER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-5i71",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-2l49",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-3ibw",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-aqy4",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-c9d8",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-uphi",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-mmow",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-lkkq",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-naed",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-v6zt",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-a47d",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-k7bw",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-miq6",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-dozv",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-ps4r",
+      "kode_rak": "RAK BP WD (2)",
+      "nama_rak": "RAK BP WD (2)",
+      "zona": "UPPER CASE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-33f8",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-kk0t",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8kv2",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-nhir",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-gyiy",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-d5qk",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-xn2n",
+      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
+      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-fgjw",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-l9iq",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-3fv1",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-17gw",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-c7zj",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-p330",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-i72s",
+      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
+      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-eh33",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-z1ur",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-8gjq",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-en0u",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-koho",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    },
+    {
+      "id": "rak-1794470228657-g26c",
+      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
+      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
+      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
+      "status": "active"
+    }
+  ],
+  "materials": [
+    {
+      "id": "mat-1794470270576-3cyl",
+      "kode_material": "ZX35830",
+      "deskripsi": "CRYSTAL DISPLAY BTG-12864FX-FBWD-G-G-A6",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270576-2rpg",
+      "kode_material": "VDT2800",
+      "deskripsi": "VR COMPLEX SLIDE RSA0V11M9002 B 10K",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-47gd",
+      "kode_material": "ZN17740",
+      "deskripsi": "DC FAN MOTOR RDL6025S",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-cs10",
+      "kode_material": "ZK60070",
+      "deskripsi": "CONPANE L PRINTED 16 8Q00",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-dyx7",
+      "kode_material": "ZK60060",
+      "deskripsi": "CONPANE L PRINTED 24 8K95",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-16r5",
+      "kode_material": "ZK60050",
+      "deskripsi": "CONPANE L PRINTED 32 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-we88",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-flh1",
+      "kode_material": "VEK8220",
+      "deskripsi": "CRYSTAL DISPLAY TLM-PVLJP0001-03",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-4mjn",
+      "kode_material": "ZU96610",
+      "deskripsi": "FAN AXIAL FLOW 9A0612S418",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-zku0",
+      "kode_material": "ZD04430",
+      "deskripsi": "FERRITE CORE E04FG221308",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-1t3a",
+      "kode_material": "ZK60360",
+      "deskripsi": "S COVER RU PAINTED 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-wslp",
+      "kode_material": "ZK60370",
+      "deskripsi": "S COVER LU PAINTED 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-5gy8",
+      "kode_material": "ZU60320",
+      "deskripsi": "Material ZU60320",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-xggl",
+      "kode_material": "ZK60330",
+      "deskripsi": "SIDE COVER L UPPER 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-6ns4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-k9pa",
+      "kode_material": "WH12190",
+      "deskripsi": "PLASTIC BAG 70 450 0.5",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-y2y7",
+      "kode_material": "ZK70310",
+      "deskripsi": "PLASTIC BAG 150X550X0.5",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-i43f",
+      "kode_material": "ZU64530",
+      "deskripsi": "HANDLE PAINTED SILVER",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-hm02",
+      "kode_material": "VAD3750",
+      "deskripsi": "BATTERY LITHUM CR2032",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ih0t",
+      "kode_material": "WG12170",
+      "deskripsi": "RACK METAL PAINTED RK1612",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-3woh",
+      "kode_material": "ZJ74880",
+      "deskripsi": "SHIELD PS 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-4fqx",
+      "kode_material": "ZJ43580",
+      "deskripsi": "RACK METAL PAINTED R",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-l1rk",
+      "kode_material": "ZS84000",
+      "deskripsi": "RACK ANGLE PAINTED 8R36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-myp5",
+      "kode_material": "ZJ43590",
+      "deskripsi": "RACK METAL PAINTED L",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ropr",
+      "kode_material": "ZJ74880",
+      "deskripsi": "SHIELD PS 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-eqnt",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-376f",
+      "kode_material": "V787900",
+      "deskripsi": "PLASTIC SHEET 0.5X1300X2500",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-yn37",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-lpwt",
+      "kode_material": "WD29670",
+      "deskripsi": "PLASTIC SHEET  W:1700XH:1350X0.5",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-yn37",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-3svl",
+      "kode_material": "WK67650",
+      "deskripsi": "02MI SHEET PC-N W:830 D:800 0.5",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-yn37",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-63d4",
+      "kode_material": "ZS83980",
+      "deskripsi": "TOP COVER PAINTED 8R36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-yn37",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-uxde",
+      "kode_material": "ZT71400",
+      "deskripsi": "CASE LCD PAINTED 8R36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-irxj",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-lesj",
+      "kode_material": "ZJ75360",
+      "deskripsi": "SIDE COVER R PAINTED 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-irxj",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-cf4y",
+      "kode_material": "ZJ75380",
+      "deskripsi": "SIDE COVER L PAINTED 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-irxj",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-m4v6",
+      "kode_material": "ZK60350",
+      "deskripsi": "SIDE COVER LB ASSY PA 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-irxj",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-99ao",
+      "kode_material": "ZK60340",
+      "deskripsi": "SIDE COVER RB ASSY PA 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-irxj",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-9v84",
+      "kode_material": "ZN00760",
+      "deskripsi": "SHIELD PS 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-y09s",
+      "kode_material": "ZE26650",
+      "deskripsi": "SHIELD DSP 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-3tpg",
+      "kode_material": "ZE26640",
+      "deskripsi": "SHIELD BASE 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-xc3o",
+      "kode_material": "ZE26600",
+      "deskripsi": "SHIELD PN 1 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-bwp3",
+      "kode_material": "ZE26610",
+      "deskripsi": "SHIELD PN 2 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-0uez",
+      "kode_material": "ZE26470",
+      "deskripsi": "TC SUPPORT 24 A ASSY PA 8I56",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-490b",
+      "kode_material": "ZE26480",
+      "deskripsi": "TC SUPPORT 24 B ASSY PA 8I56",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-lhnk",
+      "kode_material": "ZE26530",
+      "deskripsi": "TC SUPPORT 24 B 0.8 Z :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-lfav",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-jvhr",
+      "kode_material": "VDR6910",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 JA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-gdjl",
+      "kode_material": "VDR7010",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ixvt",
+      "kode_material": "VJZ8280",
+      "deskripsi": "OWNER_S MANUAL MULTI 8L21 7MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-iryk",
+      "kode_material": "VDR6920",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6ex8",
+      "kode_material": "VDR7020",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 ZH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-0sh8",
+      "kode_material": "VAU5540",
+      "deskripsi": "OWNER_S MANUAL 000680 JAPANESE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-aw8l",
+      "kode_material": "VDR6930",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 FR",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ppxm",
+      "kode_material": "VJT0700",
+      "deskripsi": "OWNER_S_MANUAL_MULTI PCY175 7MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-fwz5",
+      "kode_material": "VDP3180",
+      "deskripsi": "FLYER GUIDANCE EU PA-130B",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-v8ze",
+      "kode_material": "VDR6940",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-h84v",
+      "kode_material": "VCV2180",
+      "deskripsi": "OWNER_S MANUAL DE KP100 MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-yvxy",
+      "kode_material": "VAU5550",
+      "deskripsi": "OWNER_S MANUAL 000680 ENGLISH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-xsfx",
+      "kode_material": "VDR6950",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ts8c",
+      "kode_material": "VAU5560",
+      "deskripsi": "OWNER_S MANUAL 000680 GERMAN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-lip0",
+      "kode_material": "VHS7940",
+      "deskripsi": "ERP SPEC CHANGE LEAF COMMON 28MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-51vg",
+      "kode_material": "VJV9030",
+      "deskripsi": "INDIA PWMR FLYER (FOLDER)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-5u7n",
+      "kode_material": "VAU5570",
+      "deskripsi": "OWNER_S MANUAL 000680 FRENCH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-dmco",
+      "kode_material": "VDR6960",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 ZH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-0s8p",
+      "kode_material": "VAU5580",
+      "deskripsi": "OWNER_S MANUAL 000680 ITALIAN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-qp67",
+      "kode_material": "VDR6970",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 JA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-kxpk",
+      "kode_material": "VJU5260",
+      "deskripsi": "CHINA_ROHS_FLYER COMMON ZHCN ALL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-g0m3",
+      "kode_material": "VCV2210",
+      "deskripsi": "OWNER_S MANUAL DE TP70 MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-tt6f",
+      "kode_material": "ZX33480",
+      "deskripsi": "OWNER_S MANUAL DE 8T37/8N32 Y",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-7ebx",
+      "kode_material": "VDR6980",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-wj1o",
+      "kode_material": "VDR6990",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 FR",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-874e",
+      "kode_material": "ZK65590",
+      "deskripsi": "SUPPLEMENTAL LEAFLET DE 8H38/8H34/8H35/",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-fh6a",
+      "kode_material": "VHY8380",
+      "deskripsi": "OWNER_S MANUAL 000048 ID ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-g430",
+      "kode_material": "VDR7000",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-is2w",
+      "kode_material": "VCV2200",
+      "deskripsi": "OWNER_S MANUAL DE TP70S MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ofw4",
+      "kode_material": "WU82970",
+      "deskripsi": "DIRTY WARNING LEAFLE DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-70eq",
+      "kode_material": "VFV7200",
+      "deskripsi": "PLUG SPEC LEAFLET : COMMON :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-fj11",
+      "kode_material": "VJZ8270",
+      "deskripsi": "OWNER_S MANUAL MULTI KP65 6MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-lliq",
+      "kode_material": "VEK9130",
+      "deskripsi": "EAC LEAFLET 000828",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-sox4",
+      "kode_material": "VFE8770",
+      "deskripsi": "WARRANTY CARD SET DE COMMON J",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-r8yb",
+      "kode_material": "VJX8470",
+      "deskripsi": "OWNER_S MANUAL MULTI HH65 5MULTI ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-r59f",
+      "kode_material": "ZZ09320",
+      "deskripsi": "OWNER_S MANUAL 000051 MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-gch1",
+      "kode_material": "VJY4380",
+      "deskripsi": "OWNER_S MANUAL MULTI HH65 2MULTI ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-or0f",
+      "kode_material": "ZU10370",
+      "deskripsi": "WARRANTY CARD YMID",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-72pk",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-io9p",
+      "kode_material": "VJC1560",
+      "deskripsi": "MELODICS LEAFLET ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-btv1",
+      "kode_material": "VDR4530",
+      "deskripsi": "OWNER_S MANUAL DE 000534 Y",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-nqaz",
+      "kode_material": "VHZ3190",
+      "deskripsi": "OWNER_S MANUAL RS6 ID DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-qjby",
+      "kode_material": "ZD95200",
+      "deskripsi": "ADDRESS_EU WARRANTY COMMON",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6sfb",
+      "kode_material": "VJN2720",
+      "deskripsi": "DRUMEO LEAFLET ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-13ld",
+      "kode_material": "VHY8310",
+      "deskripsi": "OWNER_S MANUAL 000048 EN ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-v94k",
+      "kode_material": "VHY8310",
+      "deskripsi": "OWNER_S MANUAL 000048 EN ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-yc89",
+      "kode_material": "VHY8300",
+      "deskripsi": "OWNER_S MANUAL 000048 JA ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-h2lp",
+      "kode_material": "VHY8320",
+      "deskripsi": "OWNER_S MANUAL 000048 DE ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-3v4h",
+      "kode_material": "VHY8320",
+      "deskripsi": "OWNER_S MANUAL 000048 DE ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-zmge",
+      "kode_material": "ZZ03370",
+      "deskripsi": "OWNER_S MANUAL 000048 KOREAN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-cl7w",
+      "kode_material": "VHY8330",
+      "deskripsi": "OWNER_S MANUAL 000048 FR ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-uus3",
+      "kode_material": "VHY8330",
+      "deskripsi": "OWNER_S MANUAL 000048 FR ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-83ih",
+      "kode_material": "ZZ03390",
+      "deskripsi": "OWNER_S MANUAL 000048 CHINESE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-cdll",
+      "kode_material": "VHY8340",
+      "deskripsi": "OWNER_S MANUAL 000048 IT ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-01tv",
+      "kode_material": "VHY8340",
+      "deskripsi": "OWNER_S MANUAL 000048 IT ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-k0yg",
+      "kode_material": "ZZ03400",
+      "deskripsi": "OWNER_S MANUAL 000048 PORTUGUESE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-zxec",
+      "kode_material": "VGN9670",
+      "deskripsi": "ASSEMBLY MANUAL DE 000827 ZH-TW",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-y5bd",
+      "kode_material": "VGU6220",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 INA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-h3rn",
+      "kode_material": "VGY0270",
+      "deskripsi": "OWNER_S MANUAL DE 001977/001978",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-qh8n",
+      "kode_material": "VGN9680",
+      "deskripsi": "ASSEMBLY MANUAL DE 000826 ZH-TW",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-vwyo",
+      "kode_material": "VJA0730",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO ID DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-pc3r",
+      "kode_material": "VGN9690",
+      "deskripsi": "OWNER_S MANUAL DE RHH135 5-MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-rnau",
+      "kode_material": "VGU7470",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 INA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-pgaa",
+      "kode_material": "VGU6250",
+      "deskripsi": "OWNER_S MANUAL 000678 INA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ipsr",
+      "kode_material": "VJT0720",
+      "deskripsi": "OWNER_S_MANUAL_MULTI RHH135 2MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-vkgx",
+      "kode_material": "VGU7460",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515 ZH-TW",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-few1",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-bbw2",
+      "kode_material": "VDM7430",
+      "deskripsi": "ASSEMBLING FLYER DE 001114 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-2yq2",
+      "kode_material": "ZJ20410",
+      "deskripsi": "BACK LEG 2 PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-wxs7",
+      "kode_material": "ZJ20390",
+      "deskripsi": "RISER PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-2jg0",
+      "kode_material": "ZJ20400",
+      "deskripsi": "BACK LEG 1 PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-p4yu",
+      "kode_material": "VCD9460",
+      "deskripsi": "DM ANGLE B 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-9hvi",
+      "kode_material": "VDG7280",
+      "deskripsi": "STRAIGHT PIPE (T=1.0 L=700)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-r2oh",
+      "kode_material": "AAE9679",
+      "deskripsi": "HS740A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-ras7",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-vc59",
+      "kode_material": "WZ66730",
+      "deskripsi": "HOLDER CLAMP :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-aw35",
+      "kode_material": "VDG7150",
+      "deskripsi": "RUBBER PAD 17 000828",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ukv6",
+      "kode_material": "ZZ11560",
+      "deskripsi": "RUBBER PAD 15 8O97 BL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-jgbv",
+      "kode_material": "VHY5680",
+      "deskripsi": "MESH HEAD MP10 DE 000549/550",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6irq",
+      "kode_material": "VHY5670",
+      "deskripsi": "MESH HEAD MP12 DE 000549/550",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-i53g",
+      "kode_material": "ZQ05920",
+      "deskripsi": "REGULAR HOOP 6 12X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-jxea",
+      "kode_material": "ZQ05900",
+      "deskripsi": "REGULAR HOOP 6 10X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-trva",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-chqs",
+      "kode_material": "V740640",
+      "deskripsi": "BATTERY COVER :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-k897",
+      "kode_material": "V769440",
+      "deskripsi": "PEDAL UPPER CASE :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6p2b",
+      "kode_material": "VEW378Z",
+      "deskripsi": "KEY BLOCK 6L PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-y0pn",
+      "kode_material": "VEW391Z",
+      "deskripsi": "KEY BLOCK 6R PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-bqsk",
+      "kode_material": "VFK918Z",
+      "deskripsi": "ARM 6L PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-foku",
+      "kode_material": "VFK919Z",
+      "deskripsi": "ARM 6R PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-mfnw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-twef",
+      "kode_material": "VJU5260",
+      "deskripsi": "CHINA_ROHS_FLYER COMMON ZHCN ALL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ljpu",
+      "kode_material": "VGN8500",
+      "deskripsi": "OPERATING MANUAL JA PA 8K94 J",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-khu5",
+      "kode_material": "VGS1030",
+      "deskripsi": "NUENDO L3 LEAFLET PA COMMON :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-jvch",
+      "kode_material": "ZP71910",
+      "deskripsi": "LCD PROTECTION FILM 200 140 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-uta0",
+      "kode_material": "VD8090",
+      "deskripsi": "Material VD8090",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-fd2r",
+      "kode_material": "ZJ75520",
+      "deskripsi": "COVER PLATE PAINTED 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-h1hc",
+      "kode_material": "WJ49700",
+      "deskripsi": "KOREA SAFETY STD. PA COMMON KT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6s4q",
+      "kode_material": "VGN8510",
+      "deskripsi": "OPERATING MANUAL EN PA 8K94 U",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-ztjo",
+      "kode_material": "VGN8530",
+      "deskripsi": "OPERATING MANUAL FR PA 8K94 U",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-cz8z",
+      "kode_material": "VGN8550",
+      "deskripsi": "OPERATING MANUAL PT PA 8K94 BRA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-wz0l",
+      "kode_material": "VGN8520",
+      "deskripsi": "OPERATING MANUAL DE PA 8K94 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-uhky",
+      "kode_material": "VGN8540",
+      "deskripsi": "OPERATING MANUAL ES PA 8K94 U",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-x6ww",
+      "kode_material": "VGN8560",
+      "deskripsi": "OPERATING MANUAL IT PA 8K94 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-xub6",
+      "kode_material": "VGN8570",
+      "deskripsi": "OPERATING MANUAL RU PA 8K94",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-1a8x",
+      "kode_material": "VCM8680",
+      "deskripsi": "END CORD POWER SUPPLY NR VM1385-VM1743",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-6nnt",
+      "kode_material": "VH32460",
+      "deskripsi": "PLASTIC BAG  50X70",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-r6kw",
+      "kode_material": "ZV53370",
+      "deskripsi": "RUBBER FOOT 4 8R36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-1w8m",
+      "kode_material": "VGN8580",
+      "deskripsi": "OPERATING MANUAL ZH PA 8K94 CHN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-5myq",
+      "kode_material": "WC24950",
+      "deskripsi": "CORD POWER SUPPLY U 3SHIN 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-vkcw",
+      "kode_material": "WC24960",
+      "deskripsi": "CORD POWER SUPPLY E 3SHIN 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-pu9d",
+      "kode_material": "WC24970",
+      "deskripsi": "B H05VV-F 3X1.00",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-itzw",
+      "kode_material": "VCM8680",
+      "deskripsi": "END CORD POWER SUPPLY NR VM1385-VM1743",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-vkta",
+      "kode_material": "WD29640",
+      "deskripsi": "PS CORD CHN RVV 3X1.0",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-b9g7",
+      "kode_material": "VJF4330",
+      "deskripsi": "EU_BATTERY_FLYER COMMON ALL ALL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-e37i",
+      "kode_material": "WV19330",
+      "deskripsi": "PLASTIC BAG 260 400 0.04",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-67oz",
+      "kode_material": "ZV34810",
+      "deskripsi": "FLYER GUIDANCE EU(CQ)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-gml6",
+      "kode_material": "VGN8600",
+      "deskripsi": "OPERATING MANUAL EN PA 8R36 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-yegg",
+      "kode_material": "VGN8610",
+      "deskripsi": "OPERATING MANUAL DE PA 8R36 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-bgnu",
+      "kode_material": "VGN8620",
+      "deskripsi": "OPERATING MANUAL FR PA 8R36 U",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-be6y",
+      "kode_material": "VGN8630",
+      "deskripsi": "OPERATING MANUAL ES PA 8R36 U",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-95ew",
+      "kode_material": "VGN8650",
+      "deskripsi": "OPERATING MANUAL IT PA 8R36 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-sf76",
+      "kode_material": "VGN8660",
+      "deskripsi": "OPERATING MANUAL RU PA 8R36 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270577-v7z2",
+      "kode_material": "CGN8500",
+      "deskripsi": "Material CGN8500",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-vza1",
+      "kode_material": "VGN8680",
+      "deskripsi": "OPERATING MANUAL KR PA 8R36 K",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ddyu",
+      "kode_material": "WU79500",
+      "deskripsi": "POWER SUPPLY CORD BRA 3P 2.5M 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ywlc",
+      "kode_material": "VGN8670",
+      "deskripsi": "OPERATING MANUAL ZH PA 8R36 CHN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-tyd4",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-tx86",
+      "kode_material": "VJM3540",
+      "deskripsi": "OWNER_S MANUAL MGP32X A JA CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-kf47",
+      "kode_material": "VJM3550",
+      "deskripsi": "OWNER_S MANUAL MGP32X A EN CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-bonz",
+      "kode_material": "VJM3560",
+      "deskripsi": "OWNER_S MANUAL MGP32X A DE CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-dw79",
+      "kode_material": "VJM3570",
+      "deskripsi": "OWNER_S MANUAL MGP32X A FR CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ttrf",
+      "kode_material": "VJM3580",
+      "deskripsi": "OWNER_S MANUAL MGP32X A ES CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-igra",
+      "kode_material": "VJM3590",
+      "deskripsi": "OWNER_S MANUAL MGP32X A IT CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-dxfw",
+      "kode_material": "VJM3600",
+      "deskripsi": "OWNER_S MANUAL MGP32X A RU CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ueye",
+      "kode_material": "VJM3610",
+      "deskripsi": "OWNER_S MANUAL MGP32X A ZHCN CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-pcn2",
+      "kode_material": "VJM3620",
+      "deskripsi": "OWNER_S MANUAL MGP32X A PT CCA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-tgcc",
+      "kode_material": "VJV9030",
+      "deskripsi": "INDIA PWMR FLYER (FOLDER)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hky8",
+      "kode_material": "ZV34810",
+      "deskripsi": "FLYER GUIDANCE EU(CQ)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-p9z9",
+      "kode_material": "WC24970",
+      "deskripsi": "B H05VV-F 3X1.00",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-7e08",
+      "kode_material": "WH92550",
+      "deskripsi": "OPERATING MANUAL RK5014 MULTI",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-yvk4",
+      "kode_material": "WV19330",
+      "deskripsi": "PLASTIC BAG 260 400 0.04",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-54sp",
+      "kode_material": "WD29640",
+      "deskripsi": "PS CORD CHN RVV 3X1.0",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-87dd",
+      "kode_material": "VDD8390",
+      "deskripsi": "EAC LEAFLET MGP PA 8I55 E",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-6vcg",
+      "kode_material": "WJ49700",
+      "deskripsi": "KOREA SAFETY STD. PA COMMON KT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-fs64",
+      "kode_material": "WC24950",
+      "deskripsi": "CORD POWER SUPPLY U 3SHIN 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-4htu",
+      "kode_material": "ZF66000",
+      "deskripsi": "SOFT GASKET L135",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-oyof",
+      "kode_material": "ZF66010",
+      "deskripsi": "SOFT GASKET L10",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-t1u1",
+      "kode_material": "WU79500",
+      "deskripsi": "POWER SUPPLY CORD BRA 3P 2.5M 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-nqyk",
+      "kode_material": "HEXAGON NUT & WASHER DARI EP",
+      "deskripsi": "Material HEXAGON NUT & WASHER DARI EP",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-yctk",
+      "kode_material": "WC24960",
+      "deskripsi": "CORD POWER SUPPLY E 3SHIN 10A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-rd5y",
+      "kode_material": "WV57700",
+      "deskripsi": "CORD POWER SUPPLY J VCTF 3X1.25",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-upkh",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-zhju",
+      "kode_material": "ZN46940",
+      "deskripsi": "PAD A 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-o9x5",
+      "kode_material": "ZP04690",
+      "deskripsi": "PAD E 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-dfdw",
+      "kode_material": "ZP0470",
+      "deskripsi": "Material ZP0470",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-2d2t",
+      "kode_material": "ZP04710",
+      "deskripsi": "PAD G 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-vxaq",
+      "kode_material": "ZQ71500",
+      "deskripsi": "PAD N 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-js79",
+      "kode_material": "ZQ71510",
+      "deskripsi": "PAD P 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-0zo2",
+      "kode_material": "ZN46950",
+      "deskripsi": "PAD B 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-4f8i",
+      "kode_material": "ZN46960",
+      "deskripsi": "PAD C 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-mlm2",
+      "kode_material": "WZ37220",
+      "deskripsi": "PAD A CYAT500",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-wfoy",
+      "kode_material": "WZ37740",
+      "deskripsi": "BURIED BOARD 8L03",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-fsif",
+      "kode_material": "ZE48290",
+      "deskripsi": "PAD C :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-h927",
+      "kode_material": "ZE48350",
+      "deskripsi": "PAD D :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hsva",
+      "kode_material": "ZE48360",
+      "deskripsi": "PAD E :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-9wmb",
+      "kode_material": "ZE48370",
+      "deskripsi": "PAD F :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-acom",
+      "kode_material": "ZE48270",
+      "deskripsi": "PAD A :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-oq2n",
+      "kode_material": "ZE48280",
+      "deskripsi": "PAD B :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228656-rmg0",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-e3is",
+      "kode_material": "VCR3780",
+      "deskripsi": "PAD A 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-urjc",
+      "kode_material": "VCR3810",
+      "deskripsi": "PAD B 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-8ili",
+      "kode_material": "VCW3520",
+      "deskripsi": "SIDE PAD A 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-oy59",
+      "kode_material": "VCW3530",
+      "deskripsi": "SIDE PAD B 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-by89",
+      "kode_material": "VCW3540",
+      "deskripsi": "REINFORCE PAD B 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-yf18",
+      "kode_material": "VCR3870",
+      "deskripsi": "CUTTER PAD 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-b9bv",
+      "kode_material": "ZE48350",
+      "deskripsi": "PAD D :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-07el",
+      "kode_material": "ZE48390",
+      "deskripsi": "BOX FOR PIPE L600",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ds83",
+      "kode_material": "ZE89470",
+      "deskripsi": "PAD N :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-4f2o",
+      "kode_material": "VCR5400",
+      "deskripsi": "BOX ASSY DE 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-quq6",
+      "kode_material": "ZE89480",
+      "deskripsi": "BOX ASSY FOR CL DE 8M86",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-oe1h",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-100d",
+      "kode_material": "ZF21620",
+      "deskripsi": "WIRING ASSY MASJK-PS 2P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hqey",
+      "kode_material": "ZF21630",
+      "deskripsi": "WIRING ASSY MASJK-LDO 6P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-428z",
+      "kode_material": "ZF21640",
+      "deskripsi": "WIRING ASSY STMAS-PS 3P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-axqo",
+      "kode_material": "ZF21650",
+      "deskripsi": "WIRING ASSY STMAS-PS 5P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-9g0z",
+      "kode_material": "ZF21660",
+      "deskripsi": "WIRING ASSY STMAS-LDO 4P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-4doa",
+      "kode_material": "ZF21670",
+      "deskripsi": "WIRING ASSY STMAS-LDO 7P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-afxq",
+      "kode_material": "ZF21690",
+      "deskripsi": "WIRING ASSY HA-LDO 5P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-w3xf",
+      "kode_material": "ZF21700",
+      "deskripsi": "WIRING ASSY HA-HA 5P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-dvc6",
+      "kode_material": "ZF21720",
+      "deskripsi": "WIRING ASSY DSP-PN 6P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-5xp1",
+      "kode_material": "ZF21730",
+      "deskripsi": "WIRING ASSY DSP-PS 10P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-00jn",
+      "kode_material": "ZF21740",
+      "deskripsi": "WIRING ASSY STMAS-PN 9P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hx4i",
+      "kode_material": "ZF21760",
+      "deskripsi": "WIRING ASSY DSP-STMAS 16P",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ad9n",
+      "kode_material": "WH91780",
+      "deskripsi": "RUBBER FOOT ARMSTRONG K29",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-thqu",
+      "kode_material": "ZE26620",
+      "deskripsi": "GRAND METAL HAJK 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-cen0",
+      "kode_material": "ZF59820",
+      "deskripsi": "COVER FFC MGP32",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-45it",
+      "kode_material": "WB81280",
+      "deskripsi": "OPP TAPE #205 48MMX100 YARD",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-vd7w",
+      "kode_material": "WX41580",
+      "deskripsi": "FILAMENT TAPE 12X55M",
+      "satuan": "ROL",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-dthi",
+      "kode_material": "WX15810",
+      "deskripsi": "PANFIX CELLULOSE TAPE CLEAR 1_2X72YARD",
+      "satuan": "ROL",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-iw6s",
+      "kode_material": "WX11230",
+      "deskripsi": "INSULOK TYTON T18R L=100 W=2.5 NATURAL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-vnco",
+      "kode_material": "V571780",
+      "deskripsi": "STAPLE STRONGMAN 35X18",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-n0mo",
+      "kode_material": "WX07700",
+      "deskripsi": "STAPLE KUNING T=15 mm L=35 mm @2000 Pcs",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-7m4j",
+      "kode_material": "VJJ8480",
+      "deskripsi": "WINDOW LCD PRINTED 002552",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-tn09",
+      "kode_material": "ZE26670",
+      "deskripsi": "PHONE FIXER 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-nwoq",
+      "kode_material": "VF60610",
+      "deskripsi": "MINI. CLAMP UAMS-05S-0",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-4cvg",
+      "kode_material": "ZN00760",
+      "deskripsi": "SHIELD PS 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-i4cw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-pi6l",
+      "kode_material": "WZ28200",
+      "deskripsi": "PROTECT FELT RK-MG",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-6kn0",
+      "kode_material": "WJ60410",
+      "deskripsi": "Material WJ60410",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hb6b",
+      "kode_material": "ZF21530",
+      "deskripsi": "WIRE HARNESS P=2.0 2-90",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-7471",
+      "kode_material": "ZF21540",
+      "deskripsi": "WIRE HARNESS P=2.0 5-90",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-p2so",
+      "kode_material": "WY84710",
+      "deskripsi": "KNOB VR SMALL GREEN/BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-1vge",
+      "kode_material": "WY84660",
+      "deskripsi": "ENCODER FX BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-kd9j",
+      "kode_material": "ZJ26820",
+      "deskripsi": "FFC CABLE P=0.5 30P 260L",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-432t",
+      "kode_material": "ZF21560",
+      "deskripsi": "WIRE HARNESS P=2.0 12-90",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-c0xx",
+      "kode_material": "ZF21570",
+      "deskripsi": "WIRE HARNESS P=2.0 13-90",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-hlu1",
+      "kode_material": "ZE90160",
+      "deskripsi": "PSW ASSY VH3P AWG20 SW",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-78jb",
+      "kode_material": "ZJ26820",
+      "deskripsi": "FFC CABLE P=0.5 30P 260L",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-mqey",
+      "kode_material": "WY84720",
+      "deskripsi": "KNOB VR SMALL BLUE/BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-um0z",
+      "kode_material": "WZ20350",
+      "deskripsi": "KNOB FADER BLACK/L-GRAY,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-wci5",
+      "kode_material": "WZ20360",
+      "deskripsi": "KNOB FADER RED/D-GRAY,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-kd98",
+      "kode_material": "WZ20370",
+      "deskripsi": "KNOB FADER WHITE/RED,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-nj6p",
+      "kode_material": "WH44791",
+      "deskripsi": "LAMP HOUSE ON MG12_X2",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-jmck",
+      "kode_material": "WY84670",
+      "deskripsi": "KNOB VR SMALL WHITE/BLACK,MGP WY8467Z",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ny25",
+      "kode_material": "WY84730",
+      "deskripsi": "KNOB VR SMALL RED/BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-6rv3",
+      "kode_material": "ZE90100",
+      "deskripsi": "INLET ASSY INLET ASSY",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-xoyv",
+      "kode_material": "ZF21750",
+      "deskripsi": "KNOB FADER WHITE/BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-yvo0",
+      "kode_material": "WY84740",
+      "deskripsi": "KNOB VR SMALL YELLOW/BLACK,MGP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270578-ba25",
+      "kode_material": "WF77670",
+      "deskripsi": "BUTTON PFL MILKY/D-GRAY",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ir8m",
+      "kode_material": "WF77620",
+      "deskripsi": "BUTTON HPF D-GRAY/WHITE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-58au",
+      "kode_material": "WD23422",
+      "deskripsi": "BUTTON SQUARE 10 MG12/4FX",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-zz5s",
+      "kode_material": "WW34500",
+      "deskripsi": "SCREW TP #S TDISH 3.0X6 MFZN2B3 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-loee",
+      "kode_material": "WE97080",
+      "deskripsi": "BIND H TAP SCREW #1(+) 3.5X10 MFZN2W3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-5b3b",
+      "kode_material": "WE77440",
+      "deskripsi": "SCREW TP #B +BIND    3.0X8 MFZN2B3 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-3zyk",
+      "kode_material": "WE99480",
+      "deskripsi": "SCREW TP #S +BIND 4.0X8 MFZN2B3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-u6ks",
+      "kode_material": "WD23321",
+      "deskripsi": "GUARD PFL MG12/4FX",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ke38",
+      "kode_material": "ZE14920",
+      "deskripsi": "WINDOW LCD PRINTED 8I55",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-hyj5",
+      "kode_material": "WW34500",
+      "deskripsi": "SCREW TP #S TDISH 3.0X6 MFZN2B3 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-zuik",
+      "kode_material": "WG10210",
+      "deskripsi": "WIRE SADDLE LWS-3S-2W V0 KITAG",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-482v",
+      "kode_material": "WE87790",
+      "deskripsi": "SCREW TAPPING #S 3.0X6 MFZN2W3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-jrdh",
+      "kode_material": "WE97460",
+      "deskripsi": "BIND.H.TAP.SCREW #B(+) :  4.0X8 MFZN2W3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-lrta",
+      "kode_material": "WD79640",
+      "deskripsi": "PL FOR BUNDLED WIRE :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-van7",
+      "kode_material": "ZF59800",
+      "deskripsi": "CUSHION FFC MGP32",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-una7",
+      "kode_material": "ZF66000",
+      "deskripsi": "SOFT GASKET L135",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-zd6c",
+      "kode_material": "ZF66010",
+      "deskripsi": "SOFT GASKET L10",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-hw5o",
+      "kode_material": "WF02640",
+      "deskripsi": "SCREW TP #P +BIND 3.0X6 MFZN2W3 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ik83",
+      "kode_material": "WE98120",
+      "deskripsi": "BIND.H.TAP.SCREW #B(+):4.0X12MFZn2W3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-i20t",
+      "kode_material": "WE96850",
+      "deskripsi": "BIND. H. MACH SCREW : 4.0X8 MFZN2W3",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-uzht",
+      "kode_material": "WR28620",
+      "deskripsi": "EDGE SADDLE EDS-1L-V0 KITAGAWA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-racl",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-s0ko",
+      "kode_material": "ZQ11250",
+      "deskripsi": "BACKBONE 8 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-z4j6",
+      "kode_material": "ZF65710",
+      "deskripsi": "SENSOR CUSHION 8N37 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-dvnw",
+      "kode_material": "ZF65720",
+      "deskripsi": "PAD CUSHION 8N37 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-isv4",
+      "kode_material": "ZJ20120",
+      "deskripsi": "CUSHION 1 A-155",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ew44",
+      "kode_material": "ZP27520",
+      "deskripsi": "CUSHION SUB ASSY 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-95i7",
+      "kode_material": "AAE9688",
+      "deskripsi": "SS662",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ru4l",
+      "kode_material": "VJY5630",
+      "deskripsi": "REGULAR HOOP 6 10X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-9h9e",
+      "kode_material": "VJY5610",
+      "deskripsi": "REGULAR HOOP 6 12X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-zew2",
+      "kode_material": "VJY5620",
+      "deskripsi": "MESH HEAD MP10 DE 002241/2647",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-qjd3",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-msiz",
+      "kode_material": "ZN47980",
+      "deskripsi": "PLASTIC BAG 500X800X0.04",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ayd5",
+      "kode_material": "WH67960",
+      "deskripsi": "PLASTIC BAG RECYCLE J.D",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-2mtd",
+      "kode_material": "WC02080",
+      "deskripsi": "PLASTIC BAG PE-LD 0.05X400X500",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-e15z",
+      "kode_material": "WJ14020",
+      "deskripsi": "AIR CAP BAG 150X210 150X210",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-chj8",
+      "kode_material": "WM78830",
+      "deskripsi": "AIR CAP 480X240",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-3q44",
+      "kode_material": "V881470",
+      "deskripsi": "AIR CAP (350X400) E-D RACK SYSTEM",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-omdk",
+      "kode_material": "WE20370",
+      "deskripsi": "AIR CAP (300X350) E-D RACK SYSTEM",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-mozx",
+      "kode_material": "WC75590",
+      "deskripsi": "AIR CAP (140X300) E-D RACK SYSTEM",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-0g5g",
+      "kode_material": "ZF65690",
+      "deskripsi": "REAR COVER 8O98 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ze8p",
+      "kode_material": "WY62770",
+      "deskripsi": "CLAMP LOD ASSY :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-lbr9",
+      "kode_material": "ZF65700",
+      "deskripsi": "REAR COVER 8O99 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-nm0t",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-oo3c",
+      "kode_material": "VCR2580",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 JA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-vgs9",
+      "kode_material": "VJA0650",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO JA DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-6de6",
+      "kode_material": "VJA0670",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO DE DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-0ttl",
+      "kode_material": "VCR2600",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ouyf",
+      "kode_material": "VCR2670",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 FR",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-kqdt",
+      "kode_material": "VCR2700",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-76gs",
+      "kode_material": "VJA0660",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO EN DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-vjfo",
+      "kode_material": "VJA0690",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO IT DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-pr34",
+      "kode_material": "VCR2710",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-li0b",
+      "kode_material": "VCR2720",
+      "deskripsi": "ASSEMBLY MANUAL DE 000515/516 ZH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ac40",
+      "kode_material": "VCR2730",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 JA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-qva9",
+      "kode_material": "VJA0680",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO FR DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-o77s",
+      "kode_material": "VJT0710",
+      "deskripsi": "OWNER_S_MANUAL_MULTI RHH135 5MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-08nm",
+      "kode_material": "VCR2740",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-6jpn",
+      "kode_material": "VCR2750",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 FR",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-ngk8",
+      "kode_material": "VCR2770",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-f3cp",
+      "kode_material": "VJA0710",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO ZH DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-omaq",
+      "kode_material": "VDQ0310",
+      "deskripsi": "DOWNLOAD INFORMATION DE 000513 COMMON",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-xycm",
+      "kode_material": "VP3190",
+      "deskripsi": "Material VP3190",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-bggv",
+      "kode_material": "VCR2780",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-bakn",
+      "kode_material": "VJA0720",
+      "deskripsi": "OWNER_S MANUAL DTX-PRO KO DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-doc4",
+      "kode_material": "VCR2790",
+      "deskripsi": "ASSEMBLY MANUAL DE 000678 ZH",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-w7g6",
+      "kode_material": "VJA0790",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX PT DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-mvd3",
+      "kode_material": "VCR0450",
+      "deskripsi": "Material VCR0450",
+      "satuan": "Pcs",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-wx2l",
+      "kode_material": "VJA0750",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX EN DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-jcec",
+      "kode_material": "VGY0460",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 EN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-m1fo",
+      "kode_material": "VJA0810",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX KO DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-qnx2",
+      "kode_material": "VGY0470",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 FR",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-j9x1",
+      "kode_material": "VJA0770",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX FR DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-3z98",
+      "kode_material": "VGY0480",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-n1h7",
+      "kode_material": "VJT0690",
+      "deskripsi": "OWNER_S_MANUAL_MULTI KP90 7MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-nuyz",
+      "kode_material": "VGY0490",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-g6ki",
+      "kode_material": "VFC8480",
+      "deskripsi": "OWNER_S MANUAL DE 000533 JA",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-0c7n",
+      "kode_material": "VGY0500",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 ZH-CN",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-52si",
+      "kode_material": "VFC8450",
+      "deskripsi": "OWNER_S MANUAL DE 000513 PT",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-9g37",
+      "kode_material": "VJA0760",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX DE DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-mr9h",
+      "kode_material": "VGY0510",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 ZH-TW",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270579-xgs2",
+      "kode_material": "VJA0800",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX ZH DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-6jrz",
+      "kode_material": "VJA0780",
+      "deskripsi": "OWNER_S MANUAL DTX-PROX IT DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-uwmr",
+      "kode_material": "VGY0520",
+      "deskripsi": "ASSEMBLY MANUAL DE 002193 ID",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-czi4",
+      "kode_material": "VHX0690",
+      "deskripsi": "MANUAL DL LEAFLET 000533 11MULTI ED",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-igkh",
+      "kode_material": "VHX4920",
+      "deskripsi": "OWNER_S MANUAL MULTI RS6 7MULTI DE",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-ojhw",
+      "kode_material": "VDM7650",
+      "deskripsi": "OWNER_S MANUAL 000678",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-irvb",
+      "kode_material": "VDQ0320",
+      "deskripsi": "DOWNLOAD INFORMATION DE 000533 COMMON",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-g058",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-tpa2",
+      "kode_material": "ZZ02310",
+      "deskripsi": "BODY COVER PCY DE 000048",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-uomx",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-blxw",
+      "kode_material": "VGT3910",
+      "deskripsi": "LOWER CASE MOLD 10 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-uomx",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-qzt6",
+      "kode_material": "ZZ02230",
+      "deskripsi": "UPPER CASE PAINTED 000048",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-o3on",
+      "kode_material": "ZZ02220",
+      "deskripsi": "UPPER CASE PRINTED 000048",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-m5tv",
+      "kode_material": "VDA9100",
+      "deskripsi": "LOWER CASE MOLDING 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-xtvt",
+      "kode_material": "WW28940",
+      "deskripsi": "EPS PAD 8 8H38",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-4k9q",
+      "kode_material": "WW38550",
+      "deskripsi": "EPS PAD PCY100",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-flsb",
+      "kode_material": "WZ91060",
+      "deskripsi": "EPS PAD K 8N31/8N33",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-g649",
+      "kode_material": "WZ91070",
+      "deskripsi": "EPS PAD L 8K48/8N32",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-vuah",
+      "kode_material": "VDG6550",
+      "deskripsi": "PLASTIC POWER BUTTON 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-5a2d",
+      "kode_material": "ZY55080",
+      "deskripsi": "LCD HOLDER DE 000035",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-hrv0",
+      "kode_material": "VDA9100",
+      "deskripsi": "LOWER CASE MOLDING 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-3wt3",
+      "kode_material": "VDG6540",
+      "deskripsi": "PLASTIC BUTTON 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-55ri",
+      "kode_material": "VFJ5460",
+      "deskripsi": "PIPE JOINT 8K48/8N31",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-0s8w",
+      "kode_material": "VFJ5470",
+      "deskripsi": "PIPE CY JOINT 8K48/8N31",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-w5tx",
+      "kode_material": "VGT3900",
+      "deskripsi": "LOWER CASE MOLD 12 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-nx3g",
+      "kode_material": "WZ82930",
+      "deskripsi": "BODY COVER MOLDING LLTP",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-5i71",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-wsra",
+      "kode_material": "VDM7430",
+      "deskripsi": "ASSEMBLING FLYER DE 001114 :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-eyus",
+      "kode_material": "ZJ20410",
+      "deskripsi": "BACK LEG 2 PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-n70y",
+      "kode_material": "ZJ20390",
+      "deskripsi": "RISER PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-krjv",
+      "kode_material": "ZJ20400",
+      "deskripsi": "BACK LEG 1 PAINTED 8N36",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-bozo",
+      "kode_material": "VCD9460",
+      "deskripsi": "DM ANGLE B 000533",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-k420",
+      "kode_material": "VDG7280",
+      "deskripsi": "STRAIGHT PIPE (T=1.0 L=700)",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-3mzd",
+      "kode_material": "AAE9679",
+      "deskripsi": "HS740A",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-33f8",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-gsx8",
+      "kode_material": "WZ66730",
+      "deskripsi": "HOLDER CLAMP :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-k649",
+      "kode_material": "VDG7150",
+      "deskripsi": "RUBBER PAD 17 000828",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-3jki",
+      "kode_material": "ZZ11560",
+      "deskripsi": "RUBBER PAD 15 8O97 BL",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-36ms",
+      "kode_material": "VHY5680",
+      "deskripsi": "MESH HEAD MP10 DE 000549/550",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-d6pw",
+      "kode_material": "VHY5670",
+      "deskripsi": "MESH HEAD MP12 DE 000549/550",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-qx9e",
+      "kode_material": "ZQ05920",
+      "deskripsi": "REGULAR HOOP 6 12X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-27sd",
+      "kode_material": "ZQ05900",
+      "deskripsi": "REGULAR HOOP 6 10X6H",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-fgjw",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-9994",
+      "kode_material": "V740640",
+      "deskripsi": "BATTERY COVER :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-9zcy",
+      "kode_material": "V769440",
+      "deskripsi": "PEDAL UPPER CASE :",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-j7a0",
+      "kode_material": "VEW378Z",
+      "deskripsi": "KEY BLOCK 6L PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-ttr1",
+      "kode_material": "VEW391Z",
+      "deskripsi": "KEY BLOCK 6R PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-d3k1",
+      "kode_material": "VFK918Z",
+      "deskripsi": "ARM 6L PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    },
+    {
+      "id": "mat-1794470270580-f2l9",
+      "kode_material": "VFK919Z",
+      "deskripsi": "ARM 6R PAINTED 000040",
+      "satuan": "PC",
+      "kategori": "Hardware",
+      "default_rak_id": "rak-1794470228657-eh33",
+      "status": "active"
+    }
+  ],
+  "lines": [
+    {
+      "id": "line-1794470294208-9o8i",
+      "kode_line": "FA2-L09-PACKING-IN",
+      "nama_line": "PACKING IN",
+      "qr_code_proses": "FA2-L09 PACKING IN",
+      "area": "PACKING IN",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-ypiz",
+      "kode_line": "FA2-L09-CRASSY",
+      "nama_line": "CRASSY",
+      "qr_code_proses": "FA2-L09 CRASSY",
+      "area": "CRASSY",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-dy1c",
+      "kode_line": "FA2-L09-LLTP",
+      "nama_line": "LLTP",
+      "qr_code_proses": "FA2-L09 LLTP",
+      "area": "LLTP",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-m7qq",
+      "kode_line": "FA2-L09-LPIPE",
+      "nama_line": "LPIPE",
+      "qr_code_proses": "FA2-L09 LPIPE",
+      "area": "LPIPE",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-2m3t",
+      "kode_line": "FA2-L09-TP70S-XP80",
+      "nama_line": "TP70S-XP80",
+      "qr_code_proses": "FA2-L09 TP70S-XP80",
+      "area": "TP70S-XP80",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-db3q",
+      "kode_line": "FA2-L09-PCY95AT",
+      "nama_line": "PCY95AT",
+      "qr_code_proses": "FA2-L09 PCY95AT",
+      "area": "PCY95AT",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-vyq3",
+      "kode_line": "FA2-L09-KU-HH",
+      "nama_line": "KU/HH",
+      "qr_code_proses": "FA2-L09 KU/HH",
+      "area": "KU/HH",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-0122",
+      "kode_line": "FA2-L09-HH65",
+      "nama_line": "HH65",
+      "qr_code_proses": "FA2-L09 HH65",
+      "area": "HH65",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-6w6t",
+      "kode_line": "FA2-L09-ACC",
+      "nama_line": "ACC",
+      "qr_code_proses": "FA2-L09 ACC",
+      "area": "ACC",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-9lmm",
+      "kode_line": "FA2-L09-MODUL",
+      "nama_line": "MODUL",
+      "qr_code_proses": "FA2-L09 MODUL",
+      "area": "MODUL",
+      "status": "active"
+    },
+    {
+      "id": "line-1794470294208-999c",
+      "kode_line": "FA2-L09-KP65",
+      "nama_line": "KP65",
+      "qr_code_proses": "FA2-L09 KP65",
+      "area": "KP65",
+      "status": "active"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1794472740044",
+      "user_id": "u-1794472740044",
+      "task_no": "T-20261112-883",
+      "tanggal": "2026-11-12",
+      "shift": 2,
+      "status": "active",
+      "start_time": "2026-11-12T08:39:00.044Z",
+      "end_time": null
+    },
+    {
+      "id": "task-1794472416721",
+      "user_id": "u-1794472416721",
+      "task_no": "T-20261112-905",
+      "tanggal": "2026-11-12",
+      "shift": 2,
+      "status": "new",
+      "start_time": "2026-11-12T08:33:36.721Z",
+      "end_time": null
+    },
+    {
+      "id": "task-101",
+      "user_id": "u-op-001",
+      "task_no": "T-20261030-001",
+      "tanggal": "2026-10-30",
+      "shift": 1,
+      "status": "completed",
+      "start_time": "2026-10-30T02:00:00.000Z",
+      "end_time": "2026-10-30T02:18:45.000Z"
+    },
+    {
+      "id": "task-102",
+      "user_id": "u-op-002",
+      "task_no": "T-20261030-002",
+      "tanggal": "2026-10-30",
+      "shift": 1,
+      "status": "completed",
+      "start_time": "2026-10-30T02:20:00.000Z",
+      "end_time": "2026-10-30T02:35:12.000Z"
+    },
+    {
+      "id": "task-103",
+      "user_id": "u-op-001",
+      "task_no": "T-20261030-003",
+      "tanggal": "2026-10-30",
+      "shift": 1,
+      "status": "active",
+      "start_time": "2026-10-30T03:05:00.000Z",
+      "end_time": null
+    }
+  ],
+  "task_items": [
+    {
+      "id": "item-101-1",
+      "task_id": "task-101",
+      "user_id": "u-op-001",
+      "rak_id": "rak-1",
+      "material_id": "mat-1",
+      "qty": 50,
+      "satuan": "Pcs",
+      "line_id": "line-1",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-10-30T02:04:10.000Z",
+      "picked_at": "2026-10-30T02:05:00.000Z",
+      "delivered_at": "2026-10-30T02:09:12.000Z",
+      "return_at": "2026-10-30T02:14:30.000Z",
+      "delivery_duration_sec": 252,
+      "return_duration_sec": 318
+    },
+    {
+      "id": "item-101-2",
+      "task_id": "task-101",
+      "user_id": "u-op-001",
+      "rak_id": "rak-1",
+      "material_id": "mat-2",
+      "qty": 50,
+      "satuan": "Pcs",
+      "line_id": "line-1",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-10-30T02:04:45.000Z",
+      "picked_at": "2026-10-30T02:05:00.000Z",
+      "delivered_at": "2026-10-30T02:09:12.000Z",
+      "return_at": "2026-10-30T02:14:30.000Z",
+      "delivery_duration_sec": 252,
+      "return_duration_sec": 318
+    },
+    {
+      "id": "item-102-1",
+      "task_id": "task-102",
+      "user_id": "u-op-002",
+      "rak_id": "rak-2",
+      "material_id": "mat-3",
+      "qty": 15,
+      "satuan": "Set",
+      "line_id": "line-2",
+      "status": "DELIVERED",
+      "departure_mode": "AUTO_FALLBACK",
+      "last_material_scanned_at": "2026-10-30T02:22:30.000Z",
+      "picked_at": "2026-10-30T02:22:30.000Z",
+      "delivered_at": "2026-10-30T02:28:40.000Z",
+      "return_at": "2026-10-30T02:35:12.000Z",
+      "delivery_duration_sec": 370,
+      "return_duration_sec": 392
+    },
+    {
+      "id": "item-103-1",
+      "task_id": "task-103",
+      "user_id": "u-op-001",
+      "rak_id": "rak-1",
+      "material_id": "mat-1",
+      "qty": 20,
+      "satuan": "Pcs",
+      "line_id": "line-1",
+      "status": "IN_TRANSIT",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-10-30T03:07:00.000Z",
+      "picked_at": "2026-10-30T03:07:30.000Z",
+      "delivered_at": null,
+      "return_at": null,
+      "delivery_duration_sec": null,
+      "return_duration_sec": null
+    },
+    {
+      "id": "item-103-2",
+      "task_id": "task-103",
+      "user_id": "u-op-001",
+      "rak_id": "rak-2",
+      "material_id": "mat-4",
+      "qty": 5,
+      "satuan": "Box",
+      "line_id": "line-2",
+      "status": "IN_TRANSIT",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-10-30T03:08:15.000Z",
+      "picked_at": "2026-10-30T03:08:30.000Z",
+      "delivered_at": null,
+      "return_at": null,
+      "delivery_duration_sec": null,
+      "return_duration_sec": null
+    },
+    {
+      "task_id": "task-1794472740044",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794470228656-we88",
+      "material_id": "mat-1794470270576-3cyl",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-9o8i",
+      "status": "IN_TRANSIT",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-13T06:52:45.790Z",
+      "picked_at": "2026-11-13T06:52:57.168Z",
+      "delivered_at": null,
+      "return_at": null,
+      "delivery_duration_sec": null,
+      "return_duration_sec": null,
+      "id": "item-1794552765790-vmky"
+    }
+  ],
+  "logs": [
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794552804491-5896",
+      "timestamp": "2026-11-13T06:53:24.491Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Keberangkatan dikonfirmasi [MANUAL_PRESS]. Status barang diubah ke IN_TRANSIT (T1: 13.52.57).",
+      "id": "log-1794552777169-3cuq",
+      "timestamp": "2026-11-13T06:52:57.169Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "task_item_id": "item-1794552765790-vmky",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZX35830 (10 PC) dari rak MGPTF RAK I",
+      "location_ref": "MGPTF RAK I",
+      "id": "log-1794552765791-d7ks",
+      "timestamp": "2026-11-13T06:52:45.791Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794552734561-c9vp",
+      "timestamp": "2026-11-13T06:52:14.561Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794472834701-dkgv",
+      "timestamp": "2026-11-12T08:40:34.701Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "AUTO_REGISTER",
+      "notes": "POKA-YOKE FAST-TRACK: Operator baru otomatis didaftarkan: Operator 3018683 (3018683). Task awal T-20261112-883 dibuat.",
+      "id": "log-1794472740045-58j9",
+      "timestamp": "2026-11-12T08:39:00.045Z"
+    },
+    {
+      "task_id": "task-1794472416721",
+      "operator_id": "u-1794472416721",
+      "operator_name": "Operator 318683",
+      "event_type": "AUTO_REGISTER",
+      "notes": "POKA-YOKE FAST-TRACK: Operator baru otomatis didaftarkan: Operator 318683 (318683). Task awal T-20261112-905 dibuat.",
+      "id": "log-1794472416721-9eo1",
+      "timestamp": "2026-11-12T08:33:36.721Z"
+    },
+    {
+      "task_id": "task-103",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 LPIPE",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 LPIPE tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794471106147-qtx6",
+      "timestamp": "2026-11-12T08:11:46.147Z"
+    },
+    {
+      "task_id": "task-103",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 TP70S-XP80",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 TP70S-XP80 tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794471103483-l233",
+      "timestamp": "2026-11-12T08:11:43.483Z"
+    },
+    {
+      "task_id": "task-103",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 PACKING IN tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794471099844-m5gs",
+      "timestamp": "2026-11-12T08:11:39.844Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794470951321-we2u",
+      "timestamp": "2026-11-12T08:09:11.321Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794470698092-2ycb",
+      "timestamp": "2026-11-12T08:04:58.092Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-spv",
+      "operator_name": "SPV-TRIAL",
+      "event_type": "LOGIN",
+      "notes": "Staff login: SPV-TRIAL (SPV)",
+      "id": "log-1794470562618-xfpu",
+      "timestamp": "2026-11-12T08:02:42.618Z"
+    },
+    {
+      "id": "log-1",
+      "timestamp": "2026-10-30T02:00:00.000Z",
+      "task_id": "task-101",
+      "operator_id": "u-op-001",
+      "operator_name": "Budi Santoso",
+      "event_type": "TASK_CREATE",
+      "notes": "Task T-20261030-001 dibuat (Shift 1)"
+    },
+    {
+      "id": "log-2",
+      "timestamp": "2026-10-30T02:04:10.000Z",
+      "task_id": "task-101",
+      "task_item_id": "item-101-1",
+      "operator_id": "u-op-001",
+      "operator_name": "Budi Santoso",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan Material MAT-001 di RAK-A12 (Qty: 50 Pcs)",
+      "location_ref": "RAK-A12"
+    },
+    {
+      "id": "log-3",
+      "timestamp": "2026-10-30T02:05:00.000Z",
+      "task_id": "task-101",
+      "operator_id": "u-op-001",
+      "operator_name": "Budi Santoso",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Konfirmasi Berangkat ditekan manual (T1 set)"
+    },
+    {
+      "id": "log-4",
+      "timestamp": "2026-10-30T02:09:12.000Z",
+      "task_id": "task-101",
+      "task_item_id": "item-101-1",
+      "operator_id": "u-op-001",
+      "operator_name": "Budi Santoso",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Verifikasi Scan Sukses di Line 1 - Assy Main Frame (T2: Lead Time 4m 12s)",
+      "location_ref": "QR-LINE-01-ASSY"
+    },
+    {
+      "id": "log-5",
+      "timestamp": "2026-10-30T02:28:40.000Z",
+      "task_id": "task-102",
+      "task_item_id": "item-102-1",
+      "operator_id": "u-op-002",
+      "operator_name": "Agus Pratama",
+      "event_type": "DEPARTURE_AUTO_FALLBACK",
+      "departure_mode": "AUTO_FALLBACK",
+      "notes": "POKA-YOKE: Operator lupa tekan berangkat. T1 otomatis diambil dari scan material terakhir.",
+      "location_ref": "QR-LINE-02-SUBASSY"
+    }
+  ],
+  "last_updated": 1794552804531
+}

@@ -367,8 +367,106 @@ const SEED_LOGS: SpatiotemporalLogEvent[] = [
   },
 ];
 
+// --------------------------------------------------------------------------
+// Multi-Device Central Server Synchronization Engine
+// Memastikan semua perangkat (PC, Laptop, PDA Handheld di IP berbeda)
+// membaca dan menyimpan data secara sinkron dan identik.
+// --------------------------------------------------------------------------
+let lastKnownServerTimestamp = 0;
+type SyncListener = (db: {
+  users?: User[];
+  raks?: MasterRak[];
+  materials?: MasterMaterial[];
+  lines?: MasterLine[];
+  tasks?: Task[];
+  task_items?: TaskItem[];
+  logs?: SpatiotemporalLogEvent[];
+}) => void;
+const syncListeners: Set<SyncListener> = new Set();
+
+const pushEntityToServer = async (entity: string, data: any) => {
+  try {
+    const res = await fetch('/api/save-entity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entity, data }),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.last_updated) {
+        lastKnownServerTimestamp = json.last_updated;
+      }
+    }
+  } catch {
+    // Offline or network error - silent fallback, local cache tetap tersimpan
+  }
+};
+
+const notifySyncListeners = (data: any) => {
+  syncListeners.forEach((listener) => {
+    try {
+      listener(data);
+    } catch (err) {
+      console.error('[Storage] Error in sync listener', err);
+    }
+  });
+};
+
 // Helper Storage methods
 export const storage = {
+  // Sync engine methods
+  subscribeSync: (listener: SyncListener) => {
+    syncListeners.add(listener);
+    return () => {
+      syncListeners.delete(listener);
+    };
+  },
+
+  syncFromServer: async (): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/data');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const db = json.data;
+          lastKnownServerTimestamp = json.last_updated || Date.now();
+
+          // Sync into localStorage as fast local cache
+          if (Array.isArray(db.users)) localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(db.users));
+          if (Array.isArray(db.raks)) localStorage.setItem(STORAGE_KEYS.RAKS, JSON.stringify(db.raks));
+          if (Array.isArray(db.materials)) localStorage.setItem(STORAGE_KEYS.MATERIALS, JSON.stringify(db.materials));
+          if (Array.isArray(db.lines)) localStorage.setItem(STORAGE_KEYS.LINES, JSON.stringify(db.lines));
+          if (Array.isArray(db.tasks)) localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(db.tasks));
+          if (Array.isArray(db.task_items)) localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(db.task_items));
+          if (Array.isArray(db.logs)) localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(db.logs));
+
+          notifySyncListeners(db);
+          return true;
+        }
+      }
+    } catch {
+      // Offline fallback
+    }
+    return false;
+  },
+
+  checkAndSync: async (): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/last-updated');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.last_updated) {
+          if (json.last_updated > lastKnownServerTimestamp) {
+            return await storage.syncFromServer();
+          }
+        }
+      }
+    } catch {
+      // Offline
+    }
+    return false;
+  },
+
   getUsers: (): User[] => {
     const raw = localStorage.getItem(STORAGE_KEYS.USERS);
     if (!raw) {
@@ -405,6 +503,7 @@ export const storage = {
   },
   saveUsers: (users: User[]) => {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    pushEntityToServer('users', users);
   },
 
   getRaks: (): MasterRak[] => {
@@ -417,6 +516,7 @@ export const storage = {
   },
   saveRaks: (raks: MasterRak[]) => {
     localStorage.setItem(STORAGE_KEYS.RAKS, JSON.stringify(raks));
+    pushEntityToServer('raks', raks);
   },
 
   getMaterials: (): MasterMaterial[] => {
@@ -429,6 +529,7 @@ export const storage = {
   },
   saveMaterials: (mats: MasterMaterial[]) => {
     localStorage.setItem(STORAGE_KEYS.MATERIALS, JSON.stringify(mats));
+    pushEntityToServer('materials', mats);
   },
 
   getLines: (): MasterLine[] => {
@@ -441,6 +542,7 @@ export const storage = {
   },
   saveLines: (lines: MasterLine[]) => {
     localStorage.setItem(STORAGE_KEYS.LINES, JSON.stringify(lines));
+    pushEntityToServer('lines', lines);
   },
 
   getTasks: (): Task[] => {
@@ -453,6 +555,7 @@ export const storage = {
   },
   saveTasks: (tasks: Task[]) => {
     localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+    pushEntityToServer('tasks', tasks);
   },
 
   getTaskItems: (): TaskItem[] => {
@@ -465,6 +568,7 @@ export const storage = {
   },
   saveTaskItems: (items: TaskItem[]) => {
     localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(items));
+    pushEntityToServer('task_items', items);
   },
 
   getLogs: (): SpatiotemporalLogEvent[] => {
@@ -483,11 +587,15 @@ export const storage = {
       timestamp: new Date().toISOString(),
     };
     logs.unshift(newLog); // latest first
-    localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs.slice(0, 500))); // keep up to 500
+    const trimmed = logs.slice(0, 500);
+    localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(trimmed));
+    pushEntityToServer('logs', trimmed);
     return newLog;
   },
   saveLogs: (logs: SpatiotemporalLogEvent[]) => {
-    localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs.slice(0, 500)));
+    const trimmed = logs.slice(0, 500);
+    localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(trimmed));
+    pushEntityToServer('logs', trimmed);
   },
 
   getCurrentUser: (): User | null => {
@@ -555,6 +663,7 @@ export const storage = {
     localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(SEED_TASKS));
     localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(SEED_TASK_ITEMS));
     localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(SEED_LOGS));
+    fetch('/api/reset', { method: 'POST' }).catch(() => {});
   },
 };
 

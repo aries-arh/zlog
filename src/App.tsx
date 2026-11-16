@@ -80,6 +80,38 @@ export const App: React.FC = () => {
   // Load data on startup with 5-minute idle session restore check
   useEffect(() => {
     loadAllData();
+
+    // Subscribe to multi-device real-time sync
+    const unsubscribe = storage.subscribeSync((updatedDb) => {
+      if (updatedDb.users) setAllUsers(updatedDb.users);
+      if (updatedDb.raks) setAllRaks(updatedDb.raks);
+      if (updatedDb.materials) setAllMaterials(updatedDb.materials);
+      if (updatedDb.lines) setAllLines(updatedDb.lines);
+      if (updatedDb.tasks) setTasks(updatedDb.tasks);
+      if (updatedDb.task_items) setTaskItems(updatedDb.task_items);
+      if (updatedDb.logs) setLogs(updatedDb.logs);
+    });
+
+    // Initial server fetch
+    storage.syncFromServer();
+
+    // High-frequency polling (2.5s) to sync tasks/scans across all devices and IPs
+    const syncInterval = setInterval(() => {
+      storage.checkAndSync();
+    }, 2500);
+
+    const handleFocusSync = () => {
+      storage.checkAndSync();
+    };
+    window.addEventListener('focus', handleFocusSync);
+    document.addEventListener('visibilitychange', handleFocusSync);
+
+    return () => {
+      unsubscribe();
+      clearInterval(syncInterval);
+      window.removeEventListener('focus', handleFocusSync);
+      document.removeEventListener('visibilitychange', handleFocusSync);
+    };
   }, []);
 
   // Listen to user interaction events (clicks, touch, typing, mouse movement) to keep session fresh
@@ -895,6 +927,7 @@ export const App: React.FC = () => {
           <LoginView
             onOperatorLogin={handleOperatorLogin}
             onStaffLogin={handleStaffLogin}
+            allUsers={allUsers}
           />
         )}
 

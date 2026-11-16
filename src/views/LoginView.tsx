@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { sound } from '../utils/audio';
 import { ScannerModal } from '../components/ScannerModal';
+import { User as UserType } from '../types';
 import {
   Scan,
   Shield,
@@ -11,16 +12,19 @@ import {
   User,
   AlertCircle,
   CheckCircle,
+  Camera,
 } from 'lucide-react';
 
 interface LoginViewProps {
   onOperatorLogin: (employeeIdOrQr: string) => { success: boolean; message?: string };
   onStaffLogin: (username: string, pass: string) => { success: boolean; message?: string };
+  allUsers?: UserType[];
 }
 
 export const LoginView: React.FC<LoginViewProps> = ({
   onOperatorLogin,
   onStaffLogin,
+  allUsers = [],
 }) => {
   const [tab, setTab] = useState<'operator' | 'staff'>('operator');
 
@@ -33,11 +37,93 @@ export const LoginView: React.FC<LoginViewProps> = ({
   const [staffError, setStaffError] = useState('');
 
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const operatorInputRef = useRef<HTMLInputElement>(null);
 
-  const handleOperatorSubmit = (e?: React.FormEvent) => {
+  // Auto focus operator input on mount & tab change
+  useEffect(() => {
+    if (tab === 'operator') {
+      setTimeout(() => {
+        operatorInputRef.current?.focus();
+      }, 80);
+    }
+  }, [tab]);
+
+  // Global listener for PDA barcode gun wedges
+  useEffect(() => {
+    if (tab !== 'operator') return;
+
+    let scanBuffer = '';
+    let lastKeyTime = 0;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in staff password or other inputs
+      const activeEl = document.activeElement;
+      if (activeEl && activeEl !== operatorInputRef.current && activeEl.tagName === 'INPUT') {
+        return;
+      }
+
+      const now = Date.now();
+      const elapsed = now - lastKeyTime;
+      lastKeyTime = now;
+
+      if (e.key === 'Enter') {
+        if (scanBuffer.length >= 3 && elapsed < 80) {
+          // Detected rapid barcode gun input
+          e.preventDefault();
+          const scannedText = scanBuffer.trim();
+          setOperatorId(scannedText);
+          handleOperatorSubmit(undefined, scannedText);
+          scanBuffer = '';
+        }
+      } else if (e.key.length === 1) {
+        if (elapsed > 100) {
+          scanBuffer = e.key;
+        } else {
+          scanBuffer += e.key;
+        }
+        // Keep focus on operator input
+        if (document.activeElement !== operatorInputRef.current) {
+          operatorInputRef.current?.focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [tab]);
+
+  const handleOperatorInputChange = (val: string) => {
+    setOperatorError('');
+    const clean = val.trim().replace(/[\r\n]+/g, '');
+    setOperatorId(clean);
+
+    // If scanner sent a newline or carriage return from PDA:
+    if (val.includes('\n') || val.includes('\r')) {
+      if (clean) {
+        handleOperatorSubmit(undefined, clean);
+        return;
+      }
+    }
+
+    // If clean exactly matches an existing operator's employee_id or qr_code, auto-login immediately!
+    if (clean.length >= 3 && allUsers && allUsers.length > 0) {
+      const match = allUsers.find(
+        (u) =>
+          u.role === 'operator' &&
+          (u.employee_id.toUpperCase() === clean.toUpperCase() ||
+            (u.qr_code && u.qr_code.toUpperCase() === clean.toUpperCase()))
+      );
+      if (match) {
+        handleOperatorSubmit(undefined, clean);
+      }
+    }
+  };
+
+  const handleOperatorSubmit = (e?: React.FormEvent, overrideVal?: string) => {
     if (e) e.preventDefault();
     setOperatorError('');
-    const clean = operatorId.trim();
+    const raw = overrideVal !== undefined ? overrideVal : operatorId;
+    const clean = raw.trim().replace(/[\r\n]+/g, '');
     if (!clean) {
       setOperatorError('Harap masukkan ID Karyawan atau scan barcode NIK.');
       sound.playErrorBeep();
@@ -48,6 +134,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
     if (!result.success) {
       setOperatorError(result.message || 'Login operator gagal.');
       sound.playErrorBeep();
+      setTimeout(() => operatorInputRef.current?.select(), 100);
     } else {
       sound.playSuccessBeep();
     }
@@ -159,33 +246,41 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       <User className="w-3.5 h-3.5 text-slate-500" />
                       ID Karyawan / NIK Operator
                     </span>
-                    <span className="text-amber-700 font-mono text-[11px] bg-amber-100 px-2 py-0.5 rounded font-semibold">
-                      Barcode Gun Ready
+                    <span className="text-emerald-800 font-mono text-[11px] bg-emerald-100 px-2 py-0.5 rounded font-bold border border-emerald-300 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                      PDA Scanner Ready
                     </span>
                   </label>
                   <div className="relative">
                     <input
+                      ref={operatorInputRef}
                       type="text"
                       autoFocus
                       autoComplete="off"
                       value={operatorId}
-                      onChange={(e) => {
-                        setOperatorId(e.target.value);
-                        setOperatorError('');
+                      onChange={(e) => handleOperatorInputChange(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleOperatorSubmit();
+                        }
                       }}
-                      placeholder="Masukkan ID / NIK (contoh: OP-001 atau NIK baru)..."
+                      placeholder="Scan Barcode / Masukkan NIK (e.g. OP-001)..."
                       className="w-full bg-slate-50 border-2 border-slate-300 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 rounded-xl px-4 py-3.5 text-base font-mono text-slate-900 placeholder-slate-400 transition outline-none"
                     />
                     <button
                       type="button"
                       onClick={() => setIsScannerOpen(true)}
                       className="absolute right-2 top-2 bottom-2 px-3 bg-slate-100 hover:bg-slate-200 text-amber-700 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-200 transition"
-                      title="Buka Scanner Kamera"
+                      title="Buka Kamera (Opsional jika perangkat tidak punya hardware scanner)"
                     >
                       <QrCode className="w-4 h-4 text-amber-600" />
-                      <span className="hidden sm:inline">Scan QR</span>
+                      <span className="hidden sm:inline">Kamera</span>
                     </button>
                   </div>
+                  <p className="text-[11px] text-emerald-800 mt-1.5 font-medium flex items-center gap-1">
+                    ✓ <strong>Handheld PDA:</strong> Tekan tombol trigger scan saat kursor di kolom ini untuk login otomatis.
+                  </p>
                 </div>
 
                 <button

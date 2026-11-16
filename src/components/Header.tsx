@@ -107,10 +107,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Center Shift & Time */}
-        <div className="hidden md:flex items-center gap-4 bg-slate-100/80 px-4 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+        {/* Center Shift & Time & Central Sync Status */}
+        <div className="hidden md:flex items-center gap-3 bg-slate-100/80 px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
           <div className="flex items-center gap-1.5 text-amber-700 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Shift {currentShift}</span>
           </div>
           <span className="text-slate-300">|</span>
@@ -118,6 +118,11 @@ export const Header: React.FC<HeaderProps> = ({
             <Clock className="w-3.5 h-3.5 text-slate-500" />
             <span>{time.toLocaleTimeString('id-ID')}</span>
           </div>
+          <span className="text-slate-300">|</span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 font-bold" title="Database terpusat aktif di semua IP (localhost, WiFi, PDA)">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            Central Sync
+          </span>
         </div>
 
         {/* User Profile & Demo Switcher */}
