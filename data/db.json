@@ -8,7 +8,7 @@
       "password": "admin123",
       "status": "active",
       "created_at": "2026-10-01T07:00:00.000Z",
-      "last_login_at": "2026-11-13T06:53:24.491Z",
+      "last_login_at": "2026-11-16T05:51:35.561Z",
       "qr_code": "admin"
     },
     {
@@ -81,2665 +81,180 @@
       "role": "operator",
       "status": "active",
       "created_at": "2026-11-12T08:39:00.044Z",
-      "last_login_at": "2026-11-13T06:52:14.558Z"
+      "last_login_at": "2026-11-16T05:52:27.897Z"
     }
   ],
   "raks": [
     {
-      "id": "rak-1794470228656-we88",
+      "id": "rak-1794804509737-lgx2",
       "kode_rak": "MGPTF RAK I",
       "nama_rak": "MGPTF RAK I",
       "zona": "MPS, ELEKTRIK",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-7zoe",
-      "kode_rak": "MGPTF RAK I",
-      "nama_rak": "MGPTF RAK I",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-is39",
-      "kode_rak": "MGPTF RAK I",
-      "nama_rak": "MGPTF RAK I",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-bsrh",
-      "kode_rak": "MGPTF RAK I",
-      "nama_rak": "MGPTF RAK I",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-yqq5",
-      "kode_rak": "MGPTF RAK I",
-      "nama_rak": "MGPTF RAK I",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-y3ne",
-      "kode_rak": "MGPTF RAK I",
-      "nama_rak": "MGPTF RAK I",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-6ns4",
+      "id": "rak-1794804509737-hmx9",
       "kode_rak": "MGPTF RAK G",
       "nama_rak": "MGPTF RAK G",
       "zona": "MPS, ELEKTRIK",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-xzsm",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-6n1h",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-eg8q",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ecnc",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-df3j",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-f02m",
-      "kode_rak": "MGPTF RAK G",
-      "nama_rak": "MGPTF RAK G",
-      "zona": "MPS, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-eqnt",
+      "id": "rak-1794804509737-r941",
       "kode_rak": "MGPTF RAK F",
       "nama_rak": "MGPTF RAK F",
       "zona": "BIG PART, PLASTIK, ELEKTRIK",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-2a0a",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ss7g",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-1ihc",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-05wd",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-dh0d",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-s8lr",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-h2yi",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-5ggg",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-316d",
-      "kode_rak": "MGPTF RAK F",
-      "nama_rak": "MGPTF RAK F",
-      "zona": "BIG PART, PLASTIK, ELEKTRIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-yn37",
+      "id": "rak-1794804509737-ldyq",
       "kode_rak": "MGPTF RAK C",
       "nama_rak": "MGPTF RAK C",
       "zona": "BIG PART, SMALL PART, PLASTIK",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-vxvg",
-      "kode_rak": "MGPTF RAK C",
-      "nama_rak": "MGPTF RAK C",
-      "zona": "BIG PART, SMALL PART, PLASTIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-dn87",
-      "kode_rak": "MGPTF RAK C",
-      "nama_rak": "MGPTF RAK C",
-      "zona": "BIG PART, SMALL PART, PLASTIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ylhl",
-      "kode_rak": "MGPTF RAK C",
-      "nama_rak": "MGPTF RAK C",
-      "zona": "BIG PART, SMALL PART, PLASTIK",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-irxj",
+      "id": "rak-1794804509737-6j9c",
       "kode_rak": "MGPTF RAK B",
       "nama_rak": "MGPTF RAK B",
       "zona": "BIG PART, MPS",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-oabx",
-      "kode_rak": "MGPTF RAK B",
-      "nama_rak": "MGPTF RAK B",
-      "zona": "BIG PART, MPS",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ecf5",
-      "kode_rak": "MGPTF RAK B",
-      "nama_rak": "MGPTF RAK B",
-      "zona": "BIG PART, MPS",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-qla0",
-      "kode_rak": "MGPTF RAK B",
-      "nama_rak": "MGPTF RAK B",
-      "zona": "BIG PART, MPS",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-947v",
-      "kode_rak": "MGPTF RAK B",
-      "nama_rak": "MGPTF RAK B",
-      "zona": "BIG PART, MPS",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-lfav",
+      "id": "rak-1794804509737-zpmv",
       "kode_rak": "MGPTF RAK A",
       "nama_rak": "MGPTF RAK A",
       "zona": "BIG PART, SMALL PART",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-n852",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-b75k",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-sn6c",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-cm3h",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-8kfk",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-mt6b",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-orqv",
-      "kode_rak": "MGPTF RAK A",
-      "nama_rak": "MGPTF RAK A",
-      "zona": "BIG PART, SMALL PART",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-72pk",
+      "id": "rak-1794804509737-qtnq",
       "kode_rak": "WD01 RAK F",
       "nama_rak": "WD01 RAK F",
       "zona": "OWNER'S MANUAL, LEAFLET",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-3ko4",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hcze",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-3ao9",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-02vx",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-zg92",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-2uk4",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-mbrh",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4q37",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-m43b",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-tu6l",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-lsd3",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-b0m5",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-bwmg",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-k14b",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-w6ym",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-cye7",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-qn3c",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-cvyn",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-8wz0",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-74nf",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-l5pi",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-wmsk",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-bgq7",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-7p28",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-zax1",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-5yff",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-8t5m",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-8os5",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hp8w",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4gfw",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-rtmh",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-339m",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-m510",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-2q51",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hkl6",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-2awe",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hmsz",
-      "kode_rak": "WD01 RAK F",
-      "nama_rak": "WD01 RAK F",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-few1",
+      "id": "rak-1794804509737-kecy",
       "kode_rak": "WD01 RAK H",
       "nama_rak": "WD01 RAK H",
       "zona": "OWNER'S MANUAL, LEAFLET",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-vt1x",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-sq97",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-kyrs",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-11jb",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ox38",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-vjzv",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-n4x6",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-sdpl",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hc11",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hs9r",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-jaxf",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-8imb",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-i0h9",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-vy17",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-283b",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-imat",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-v0dy",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-jajo",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-q6bw",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-pcph",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ls3t",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-rpmh",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-g39p",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-iu8f",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-men8",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-02dp",
-      "kode_rak": "WD01 RAK H",
-      "nama_rak": "WD01 RAK H",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ras7",
+      "id": "rak-1794804509737-4963",
       "kode_rak": "WD01 RAK DEKAT WL01",
       "nama_rak": "WD01 RAK DEKAT WL01",
       "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-m2im",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-himw",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-d3g6",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-gjyt",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-181k",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-qeyb",
-      "kode_rak": "WD01 RAK DEKAT WL01",
-      "nama_rak": "WD01 RAK DEKAT WL01",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-trva",
+      "id": "rak-1794804509737-m2sa",
       "kode_rak": "WD01 RAK DEKAT WL01 (2)",
       "nama_rak": "WD01 RAK DEKAT WL01 (2)",
       "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-tbk6",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-akha",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-9e52",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-h2ky",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-u8vv",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-7sez",
-      "kode_rak": "WD01 RAK DEKAT WL01 (2)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (2)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-mfnw",
+      "id": "rak-1794804509737-4xg3",
       "kode_rak": "WD01 RAK DEKAT WL01 (3)",
       "nama_rak": "WD01 RAK DEKAT WL01 (3)",
       "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-buy0",
-      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-fgry",
-      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-k4ti",
-      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-xm1r",
-      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ps0p",
-      "kode_rak": "WD01 RAK DEKAT WL01 (3)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (3)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-tyd4",
+      "id": "rak-1794804509737-h13y",
       "kode_rak": "RAK FA4 TF",
       "nama_rak": "RAK FA4 TF",
       "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-39mo",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-2upc",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-xqcs",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-pni2",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-f45u",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-j1jy",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-gjtk",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-c9km",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-nli0",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-t5yi",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-a7lw",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-7ur1",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-r3ns",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-jy5g",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-rp8j",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-vk2j",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-stjt",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-algd",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-nt2y",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4vy2",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-97my",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-j506",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-bx47",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-wlrd",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-xfx8",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-7ujg",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-3ec7",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-focp",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-vq7u",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-lk0x",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-bsa4",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-we5o",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-l6t8",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-1tzl",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-g72f",
-      "kode_rak": "RAK FA4 TF",
-      "nama_rak": "RAK FA4 TF",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-upkh",
+      "id": "rak-1794804509737-01zp",
       "kode_rak": "RAK FA4 TF (2)",
       "nama_rak": "RAK FA4 TF (2)",
       "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-92m4",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hsj3",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ey9j",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-e9vs",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-ah0m",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-1yth",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-x2lv",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4y7k",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-n33v",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-lqss",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-rrgu",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-v7ru",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-b3ja",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-64x3",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-tf9e",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-h4v1",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-hfys",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-idio",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-su5u",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-2ce1",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-m8wc",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4i2v",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-1tri",
-      "kode_rak": "RAK FA4 TF (2)",
-      "nama_rak": "RAK FA4 TF (2)",
-      "zona": "LEAFLET , OWNER'S MANUAL, POWER SUPPLY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-rmg0",
+      "id": "rak-1794804509737-04j6",
       "kode_rak": "WD01 PACKING H",
       "nama_rak": "WD01 PACKING H",
       "zona": "RAK PACKING SUB",
       "status": "active"
     },
     {
-      "id": "rak-1794470228656-a66m",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-g2xp",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-4ix2",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-cmqr",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-jumt",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-icpm",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-11fe",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-frfo",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-dmjx",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-i1s2",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228656-xtwm",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-w8s1",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-p3ff",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-p3sm",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-dsic",
-      "kode_rak": "WD01 PACKING H",
-      "nama_rak": "WD01 PACKING H",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-oe1h",
+      "id": "rak-1794804509737-5ilp",
       "kode_rak": "WD01 PACKING G",
       "nama_rak": "WD01 PACKING G",
       "zona": "RAK PACKING SUB",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-eqks",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-pvyi",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ftmd",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-pxyu",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-mmld",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-48g2",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-zs5k",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xs3a",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8b0t",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-13kz",
-      "kode_rak": "WD01 PACKING G",
-      "nama_rak": "WD01 PACKING G",
-      "zona": "RAK PACKING SUB",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-i4cw",
+      "id": "rak-1794804509737-vmqp",
       "kode_rak": "AKRILIK MGP",
       "nama_rak": "AKRILIK MGP",
       "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-fsyi",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-rd7n",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ztko",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-jh0v",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-mvhl",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-qdx7",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-7o9a",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-j4bu",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-96vg",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-2fup",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-kk1o",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-s4a6",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-7nli",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-p2zd",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-hrls",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-r3ex",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-3f3c",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-cj3y",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wc5r",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-qw3z",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-zyjq",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-uccb",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-vr2q",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-beqb",
-      "kode_rak": "AKRILIK MGP",
-      "nama_rak": "AKRILIK MGP",
-      "zona": "WIRE , STAPLES , RUBBER FOOT (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-racl",
+      "id": "rak-1794804509737-u3mo",
       "kode_rak": "AKRILIK MGP (2)",
       "nama_rak": "AKRILIK MGP (2)",
       "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-3pu5",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-sap5",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-7lfu",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-63zf",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-shd3",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-4ned",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-lqst",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-bb5c",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-x9g0",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ol0b",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8arc",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-5mac",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-lozz",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wvs5",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-cp8i",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-48j4",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-lw5x",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-om9h",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-iyv4",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wgdx",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-tg69",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-tcko",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-6tfy",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-cy0c",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-i6vr",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-h6qw",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-qhio",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ledu",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-0met",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-hllg",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-rm43",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-q5m8",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-jx7r",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-80y6",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-1d1z",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-0yri",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-00fk",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-314h",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xsna",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-39ub",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-fw1c",
-      "kode_rak": "AKRILIK MGP (2)",
-      "nama_rak": "AKRILIK MGP (2)",
-      "zona": "WIRE , KNOB , SCREW , SMALLPART (WD05)",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-qjd3",
+      "id": "rak-1794804509737-3r6o",
       "kode_rak": "RAK WD01",
       "nama_rak": "RAK WD01",
       "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-klt8",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-jvyz",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-uzzj",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xg1q",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-qdvo",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-5u5w",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-63ab",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-cbb8",
-      "kode_rak": "RAK WD01",
-      "nama_rak": "RAK WD01",
-      "zona": "BACKBONE , PAD CUSHION, SENSOR CUSHION , SS662, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-nm0t",
+      "id": "rak-1794804509737-ka59",
       "kode_rak": "RAK WD01 (2)",
       "nama_rak": "RAK WD01 (2)",
       "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-g08e",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-1fqu",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-fc5y",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-nowv",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-hesb",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-mnrj",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-jzb3",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-393w",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-fzcn",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-pa1e",
-      "kode_rak": "RAK WD01 (2)",
-      "nama_rak": "RAK WD01 (2)",
-      "zona": "PLASTIC BAG , AIR CAP , REAR COVER, CLAMP LOD ASSY",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-g058",
+      "id": "rak-1794804509737-0jvh",
       "kode_rak": "WD01 RAK G",
       "nama_rak": "WD01 RAK G",
       "zona": "OWNER'S MANUAL, LEAFLET",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-ihie",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-211e",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wesl",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-3te4",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-4oqz",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-jl82",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-o5qo",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-0e5x",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-zyab",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ks3i",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-761j",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-6bov",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wndg",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-gs59",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xpw8",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-bexw",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-c49n",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-2nfd",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xj30",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-myrh",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-d9rq",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-em8f",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-b4ja",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-wqbx",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ypy6",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-j86k",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-hh78",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ot7m",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-kb4j",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-fytt",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-x0jw",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-nkht",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8zn7",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-mhmj",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ve0u",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-lv2t",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-s3j8",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8ble",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-b6jb",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-yrcp",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-phmo",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-27lj",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-b0r2",
-      "kode_rak": "WD01 RAK G",
-      "nama_rak": "WD01 RAK G",
-      "zona": "OWNER'S MANUAL, LEAFLET",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-uomx",
+      "id": "rak-1794804509737-sizf",
       "kode_rak": "RAK BP WD",
       "nama_rak": "RAK BP WD",
       "zona": "BODY COVER, LOWER CASE",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-5fe5",
-      "kode_rak": "RAK BP WD",
-      "nama_rak": "RAK BP WD",
-      "zona": "BODY COVER, LOWER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-5i71",
+      "id": "rak-1794804509737-jc6c",
       "kode_rak": "RAK BP WD (2)",
       "nama_rak": "RAK BP WD (2)",
       "zona": "UPPER CASE",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-2l49",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-3ibw",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-aqy4",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-c9d8",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-uphi",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-mmow",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-lkkq",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-naed",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-v6zt",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-a47d",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-k7bw",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-miq6",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-dozv",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-ps4r",
-      "kode_rak": "RAK BP WD (2)",
-      "nama_rak": "RAK BP WD (2)",
-      "zona": "UPPER CASE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-33f8",
+      "id": "rak-1794804509737-7b9n",
       "kode_rak": "WD01 RAK DEKAT WL01 (4)",
       "nama_rak": "WD01 RAK DEKAT WL01 (4)",
       "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-kk0t",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8kv2",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-nhir",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-gyiy",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-d5qk",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-xn2n",
-      "kode_rak": "WD01 RAK DEKAT WL01 (4)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (4)",
-      "zona": "ASSEMBLING FLYER, BACK LEG, DM ANGLE, HS470A, STRAIGHT PIPE",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-fgjw",
+      "id": "rak-1794804509737-ecwr",
       "kode_rak": "WD01 RAK DEKAT WL01 (5)",
       "nama_rak": "WD01 RAK DEKAT WL01 (5)",
       "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
       "status": "active"
     },
     {
-      "id": "rak-1794470228657-l9iq",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-3fv1",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-17gw",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-c7zj",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-p330",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-i72s",
-      "kode_rak": "WD01 RAK DEKAT WL01 (5)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (5)",
-      "zona": "HOLDER CLAMP, RUBBER PAD,MESH HEAD, REGULAR HOOP",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-eh33",
-      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-z1ur",
-      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-8gjq",
-      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-en0u",
-      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-koho",
-      "kode_rak": "WD01 RAK DEKAT WL01 (6)",
-      "nama_rak": "WD01 RAK DEKAT WL01 (6)",
-      "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
-      "status": "active"
-    },
-    {
-      "id": "rak-1794470228657-g26c",
+      "id": "rak-1794804509737-eyw5",
       "kode_rak": "WD01 RAK DEKAT WL01 (6)",
       "nama_rak": "WD01 RAK DEKAT WL01 (6)",
       "zona": "BATTERY COVER, PEDAL UPPER CASE, KEYBLOCK, ARM PAINTED",
@@ -6409,18 +3924,291 @@
       "qty": 10,
       "satuan": "PC",
       "line_id": "line-1794470294208-9o8i",
-      "status": "IN_TRANSIT",
+      "status": "DELIVERED",
       "departure_mode": "MANUAL_PRESS",
       "last_material_scanned_at": "2026-11-13T06:52:45.790Z",
       "picked_at": "2026-11-13T06:52:57.168Z",
-      "delivered_at": null,
+      "delivered_at": "2026-11-16T04:43:19.351Z",
       "return_at": null,
-      "delivery_duration_sec": null,
+      "delivery_duration_sec": 251422,
       "return_duration_sec": null,
       "id": "item-1794552765790-vmky"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794470228656-we88",
+      "material_id": "mat-1794470270577-cs10",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-9o8i",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-16T04:42:45.629Z",
+      "picked_at": "2026-11-16T04:43:12.921Z",
+      "delivered_at": "2026-11-16T04:43:19.351Z",
+      "return_at": null,
+      "delivery_duration_sec": 6,
+      "return_duration_sec": null,
+      "id": "item-1794804165629-fx5s"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794470228656-we88",
+      "material_id": "mat-1794470270577-cs10",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-ypiz",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-16T04:43:07.581Z",
+      "picked_at": "2026-11-16T04:43:12.921Z",
+      "delivered_at": "2026-11-16T04:43:27.618Z",
+      "return_at": null,
+      "delivery_duration_sec": 15,
+      "return_duration_sec": null,
+      "id": "item-1794804187581-0kfx"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794804509737-hmx9",
+      "material_id": "mat-1794470270577-cs10",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-9o8i",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-16T05:52:56.401Z",
+      "picked_at": "2026-11-16T05:53:34.565Z",
+      "delivered_at": "2026-11-16T05:54:01.917Z",
+      "return_at": null,
+      "delivery_duration_sec": 27,
+      "return_duration_sec": null,
+      "id": "item-1794808376401-9zei"
     }
   ],
   "logs": [
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "Penyerahan sukses di PACKING IN (1 item). Lead Time: 27s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794808441917-1jq1",
+      "timestamp": "2026-11-16T05:54:01.917Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 LLTP",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 LLTP tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794808441911-vf83",
+      "timestamp": "2026-11-16T05:54:01.911Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 CRASSY",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 CRASSY tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794808430525-t65h",
+      "timestamp": "2026-11-16T05:53:50.525Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 CRASSY",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 CRASSY tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794808430500-wshs",
+      "timestamp": "2026-11-16T05:53:50.500Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Keberangkatan dikonfirmasi [MANUAL_PRESS]. Status barang diubah ke IN_TRANSIT (T1: 12.53.34).",
+      "id": "log-1794808414566-0ihu",
+      "timestamp": "2026-11-16T05:53:34.566Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "task_item_id": "item-1794808376401-9zei",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZK60070 (10 PC) dari rak MGPTF RAK G",
+      "location_ref": "MGPTF RAK G",
+      "id": "log-1794808376402-0n2n",
+      "timestamp": "2026-11-16T05:52:56.402Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794808347897-mhxs",
+      "timestamp": "2026-11-16T05:52:27.897Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794808295561-zngk",
+      "timestamp": "2026-11-16T05:51:35.561Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794805015187-ayj8",
+      "timestamp": "2026-11-16T04:56:55.187Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794804252009-qv1k",
+      "timestamp": "2026-11-16T04:44:12.009Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 CRASSY",
+      "notes": "Penyerahan sukses di CRASSY (1 item). Lead Time: 15s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794804207618-hoby",
+      "timestamp": "2026-11-16T04:43:27.618Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 CRASSY",
+      "notes": "Penyerahan sukses di CRASSY (1 item). Lead Time: 15s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794804207609-8r44",
+      "timestamp": "2026-11-16T04:43:27.609Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "Penyerahan sukses di PACKING IN (2 item). Lead Time: 6s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794804199351-e68e",
+      "timestamp": "2026-11-16T04:43:19.351Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "Penyerahan sukses di PACKING IN (2 item). Lead Time: 6s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794804199325-9xc9",
+      "timestamp": "2026-11-16T04:43:19.325Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Keberangkatan dikonfirmasi [MANUAL_PRESS]. Status barang diubah ke IN_TRANSIT (T1: 11.43.12).",
+      "id": "log-1794804192921-xjse",
+      "timestamp": "2026-11-16T04:43:12.921Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "task_item_id": "item-1794804187581-0kfx",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZK60070 (10 PC) dari rak MGPTF RAK I",
+      "location_ref": "MGPTF RAK I",
+      "id": "log-1794804187581-c08u",
+      "timestamp": "2026-11-16T04:43:07.581Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "task_item_id": "item-1794804165629-fx5s",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZK60070 (10 PC) dari rak MGPTF RAK I",
+      "location_ref": "MGPTF RAK I",
+      "id": "log-1794804165630-1o0b",
+      "timestamp": "2026-11-16T04:42:45.630Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794804136009-dqzu",
+      "timestamp": "2026-11-16T04:42:16.009Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794803390201-wos9",
+      "timestamp": "2026-11-16T04:29:50.201Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794803367252-m8h5",
+      "timestamp": "2026-11-16T04:29:27.252Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794800173916-59ak",
+      "timestamp": "2026-11-16T03:36:13.916Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794793799846-h2ck",
+      "timestamp": "2026-11-16T01:49:59.846Z"
+    },
     {
       "task_id": "SYSTEM",
       "operator_id": "u-admin",
@@ -6599,5 +4387,5 @@
       "location_ref": "QR-LINE-02-SUBASSY"
     }
   ],
-  "last_updated": 1794552804531
+  "last_updated": 1794808441919
 }

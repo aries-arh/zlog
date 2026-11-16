@@ -52,12 +52,6 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
   const [showBadge, setShowBadge] = useState(true);
   const [showCutLines, setShowCutLines] = useState(true);
 
-  if (!isOpen) return null;
-
-  const countRak = items.filter((i) => i.type === 'rak').length;
-  const countMat = items.filter((i) => i.type === 'material').length;
-  const countLine = items.filter((i) => i.type === 'line').length;
-
   // Filter items based on active category in modal
   const displayedItems = items.filter((item) => {
     if (categoryTab === 'raks') return item.type === 'rak';
@@ -67,8 +61,133 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
   });
 
   const handlePrint = () => {
-    window.print();
+    const printSheet = document.getElementById('qr-print-sheet');
+    if (!printSheet) {
+      window.print();
+      return;
+    }
+
+    // Buat iframe terisolasi untuk print (mencegah bug tampilan kosong & 95 lembar halaman akibat DOM background)
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    iframe.style.visibility = 'hidden';
+    document.body.appendChild(iframe);
+
+    const frameDoc = iframe.contentWindow?.document;
+    if (!frameDoc) {
+      window.print();
+      return;
+    }
+
+    // Kumpulkan stylesheet dan inline style aplikasi agar styling stiker tetap presisi
+    const styleTags = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+      .map((el) => el.outerHTML)
+      .join('\n');
+
+    const cols = gridSize === '12' ? 'repeat(3, minmax(0, 1fr))' : 'repeat(2, minmax(0, 1fr))';
+
+    frameDoc.open();
+    frameDoc.write(`<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Cetak Label Stiker QR</title>
+    ${styleTags}
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      html, body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+      }
+      #qr-print-sheet {
+        background: #ffffff !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: auto !important;
+      }
+      .print-grid {
+        display: grid !important;
+        grid-template-columns: ${cols} !important;
+        gap: 12px !important;
+        width: 100% !important;
+      }
+      .sticker-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="qr-print-sheet">
+      ${printSheet.innerHTML}
+    </div>
+  </body>
+</html>`);
+    frameDoc.close();
+
+    // Beri waktu browser merender SVG vektor dan stylesheet sebelum membuka dialog printer
+    setTimeout(() => {
+      try {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+      } catch (err) {
+        console.error('Print iframe error:', err);
+        window.print();
+      } finally {
+        setTimeout(() => {
+          if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe);
+          }
+        }, 3000);
+      }
+    }, 300);
   };
+
+  // Tangkap pintasan Ctrl+P / Cmd+P saat modal terbuka agar menggunakan isolated iframe print (dipanggil sebelum conditional return)
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        handlePrint();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, gridSize, displayedItems, showCutLines, showBadge, showSubtitle, showLocation]);
+
+  // Early return HANYA setelah semua hooks dipanggil (patuh Rules of Hooks)
+  if (!isOpen) return null;
+
+  const countRak = items.filter((i) => i.type === 'rak').length;
+  const countMat = items.filter((i) => i.type === 'material').length;
+  const countLine = items.filter((i) => i.type === 'line').length;
 
   // Tentukan ukuran QR code berdasarkan pilihan layout grid
   const qrSize = gridSize === '12' ? 95 : gridSize === '6' ? 135 : 175;
@@ -269,7 +388,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
               className="bg-white mx-auto shadow-md border border-slate-300 p-4 sm:p-6 rounded-xl max-w-[210mm] min-h-[297mm] print:m-0 print:p-0 print:shadow-none print:border-none print:w-full print:max-w-none"
             >
               <div
-                className={`grid gap-3 sm:gap-4 print:gap-3 ${
+                className={`print-grid grid gap-3 sm:gap-4 print:gap-3 ${
                   gridSize === '12'
                     ? 'grid-cols-2 sm:grid-cols-3 print:grid-cols-3'
                     : gridSize === '6'
@@ -286,7 +405,7 @@ export const QRPrintPreviewModal: React.FC<QRPrintPreviewModalProps> = ({
                   return (
                     <div
                       key={`${item.id}-${idx}`}
-                      className={`bg-white text-slate-950 p-3 sm:p-3.5 rounded-xl flex flex-col items-center text-center justify-between transition print:break-inside-avoid print:page-break-inside-avoid ${
+                      className={`sticker-card bg-white text-slate-950 p-3 sm:p-3.5 rounded-xl flex flex-col items-center text-center justify-between transition print:break-inside-avoid print:page-break-inside-avoid ${
                         showCutLines
                           ? 'border border-dashed border-slate-400 print:border-dashed print:border-slate-500'
                           : 'border border-slate-200 print:border-none'
