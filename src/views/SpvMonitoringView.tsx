@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   User,
   Task,
@@ -20,6 +20,8 @@ import {
   Zap,
   BarChart3,
   FileSpreadsheet,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
 import { exportSpvCompleteReport } from '../utils/excelReportExport';
@@ -48,6 +50,8 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
   const [filterOperator, setFilterOperator] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'grid' | 'charts'>('grid');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const ITEMS_PER_PAGE = 20;
 
   const operators = allUsers.filter((u) => u.role === 'operator');
 
@@ -76,6 +80,36 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
       return true;
     });
   }, [taskItems, tasks, filterShift, filterLine, filterOperator, searchQuery, allMaterials, allRaks, allUsers]);
+
+  // Reset to page 1 when any filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterShift, filterLine, filterOperator, searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const paginatedItems = useMemo(() => {
+    return filteredItems.slice(startIndex, endIndex);
+  }, [filteredItems, startIndex, endIndex]);
+
+  const pageNumbers = useMemo(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, idx) => idx + 1);
+    }
+    const pages: (number | 'ellipsis')[] = [1];
+    if (safeCurrentPage > 3) pages.push('ellipsis');
+    const start = Math.max(2, safeCurrentPage - 1);
+    const end = Math.min(totalPages - 1, safeCurrentPage + 1);
+    for (let p = start; p <= end; p++) {
+      pages.push(p);
+    }
+    if (safeCurrentPage < totalPages - 2) pages.push('ellipsis');
+    pages.push(totalPages);
+    return pages;
+  }, [totalPages, safeCurrentPage]);
 
   // Metric calculations
   const activeTasksCount = tasks.filter((t) => t.status === 'active' || t.status === 'new').length;
@@ -287,9 +321,9 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
               <Activity className="w-4 h-4 text-blue-600" />
               <span>LIVE OPERATOR &amp; MATERIAL IN-TRANSIT GRID</span>
             </h2>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="text-xs text-slate-500 font-mono">
-                {filteredItems.length} Records Terfilter
+                {filteredItems.length} Records Terfilter • Hal {safeCurrentPage}/{totalPages}
               </span>
               <button
                 type="button"
@@ -318,14 +352,14 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono">
-                {filteredItems.length === 0 ? (
+                {paginatedItems.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
                       Tidak ada data transaksi yang cocok dengan filter.
                     </td>
                   </tr>
                 ) : (
-                  filteredItems.map((item) => {
+                  paginatedItems.map((item) => {
                     const taskObj = tasks.find((t) => t.id === item.task_id);
                     const userObj = allUsers.find((u) => u.id === item.user_id);
                     const matObj = allMaterials.find((m) => m.id === item.material_id);
@@ -438,6 +472,67 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Footer (Maks. 20 baris per halaman) */}
+          {filteredItems.length > 0 && (
+            <div className="px-4 py-3 bg-slate-50/70 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="text-slate-600 font-mono">
+                Menampilkan{' '}
+                <span className="font-bold text-slate-900">{startIndex + 1}</span>
+                –
+                <span className="font-bold text-slate-900">
+                  {Math.min(endIndex, filteredItems.length)}
+                </span>{' '}
+                dari <span className="font-bold text-slate-900">{filteredItems.length}</span> baris
+                <span className="text-slate-400 ml-1.5">(Maks. {ITEMS_PER_PAGE} baris/halaman)</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={safeCurrentPage <= 1}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-bold flex items-center gap-1 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span>Sebelumnya</span>
+                </button>
+
+                <div className="flex items-center gap-1 font-mono">
+                  {pageNumbers.map((page, idx) =>
+                    page === 'ellipsis' ? (
+                      <span key={`ellipsis-${idx}`} className="px-1.5 text-slate-400">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={page}
+                        type="button"
+                        onClick={() => setCurrentPage(page)}
+                        className={`min-w-[30px] h-7 px-2 rounded-lg font-bold border text-xs transition cursor-pointer ${
+                          safeCurrentPage === page
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={safeCurrentPage >= totalPages}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-bold flex items-center gap-1 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+                >
+                  <span>Berikutnya</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

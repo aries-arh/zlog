@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Task,
   TaskItem,
@@ -21,6 +21,8 @@ import {
   Users,
   Target,
   FileSpreadsheet,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { AnalyticsChartsView } from '../components/AnalyticsChartsView';
 import { exportManagerCompleteReport } from '../utils/excelReportExport';
@@ -44,6 +46,8 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
 }) => {
   const [managerTab, setManagerTab] = useState<'charts' | 'kpis'>('charts');
   const [selectedShiftFilter, setSelectedShiftFilter] = useState<string>('all');
+  const [isLineDistExpanded, setIsLineDistExpanded] = useState<boolean>(false);
+  const [isOperatorDrillExpanded, setIsOperatorDrillExpanded] = useState<boolean>(false);
   const operators = allUsers.filter((u) => u.role === 'operator');
 
   // Filter items by shift
@@ -95,41 +99,67 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
       ? Math.round((onTimeDeliveries.length / deliveredItems.length) * 100)
       : 100;
 
-  // Workload distribution by Line
-  const lineWorkloads = allLines.map((line) => {
-    const lineItems = deliveredItems.filter((i) => i.line_id === line.id);
-    const lineQty = lineItems.reduce((acc, curr) => acc + curr.qty, 0);
-    const percentage = totalVolumePcs > 0 ? Math.round((lineQty / totalVolumePcs) * 100) : 0;
-    return {
-      line,
-      count: lineItems.length,
-      volume: lineQty,
-      percentage,
-    };
-  });
+  // Workload distribution by Line (sorted descending by volume & frequency)
+  const lineWorkloads = useMemo(() => {
+    return allLines
+      .map((line) => {
+        const lineItems = deliveredItems.filter((i) => i.line_id === line.id);
+        const lineQty = lineItems.reduce((acc, curr) => acc + curr.qty, 0);
+        const percentage = totalVolumePcs > 0 ? Math.round((lineQty / totalVolumePcs) * 100) : 0;
+        return {
+          line,
+          count: lineItems.length,
+          volume: lineQty,
+          percentage,
+        };
+      })
+      .sort((a, b) => b.volume - a.volume || b.count - a.count);
+  }, [allLines, deliveredItems, totalVolumePcs]);
 
   // Operator Performance Ranking
-  const operatorStats = operators.map((op) => {
-    const opItems = deliveredItems.filter((i) => i.user_id === op.id);
-    const opVolume = opItems.reduce((acc, curr) => acc + curr.qty, 0);
-    const opDurations = opItems
-      .map((i) => i.delivery_duration_sec)
-      .filter((d): d is number => typeof d === 'number' && d > 0);
-    const opAvgLeadTime =
-      opDurations.length > 0
-        ? Math.round(opDurations.reduce((a, b) => a + b, 0) / opDurations.length)
-        : null;
+  const operatorStats = useMemo(() => {
+    return operators
+      .map((op) => {
+        const opItems = deliveredItems.filter((i) => i.user_id === op.id);
+        const opVolume = opItems.reduce((acc, curr) => acc + curr.qty, 0);
+        const opDurations = opItems
+          .map((i) => i.delivery_duration_sec)
+          .filter((d): d is number => typeof d === 'number' && d > 0);
+        const opAvgLeadTime =
+          opDurations.length > 0
+            ? Math.round(opDurations.reduce((a, b) => a + b, 0) / opDurations.length)
+            : null;
 
-    const opAutoFallback = opItems.filter((i) => i.departure_mode === 'AUTO_FALLBACK').length;
+        const opAutoFallback = opItems.filter((i) => i.departure_mode === 'AUTO_FALLBACK').length;
 
-    return {
-      operator: op,
-      deliveredCount: opItems.length,
-      volume: opVolume,
-      avgLeadTime: opAvgLeadTime,
-      autoFallbackCount: opAutoFallback,
-    };
-  }).sort((a, b) => b.deliveredCount - a.deliveredCount);
+        return {
+          operator: op,
+          deliveredCount: opItems.length,
+          volume: opVolume,
+          avgLeadTime: opAvgLeadTime,
+          autoFallbackCount: opAutoFallback,
+        };
+      })
+      .sort((a, b) => b.deliveredCount - a.deliveredCount || b.volume - a.volume);
+  }, [operators, deliveredItems]);
+
+  // Batas tampilan mode collapse pada Ringkasan Eksekutif
+  const LINE_COLLAPSED_LIMIT = 5;
+  const OPERATOR_COLLAPSED_LIMIT = 4;
+
+  const displayedLineWorkloads = useMemo(() => {
+    if (isLineDistExpanded || lineWorkloads.length <= LINE_COLLAPSED_LIMIT) {
+      return lineWorkloads;
+    }
+    return lineWorkloads.slice(0, LINE_COLLAPSED_LIMIT);
+  }, [lineWorkloads, isLineDistExpanded]);
+
+  const displayedOperatorStats = useMemo(() => {
+    if (isOperatorDrillExpanded || operatorStats.length <= OPERATOR_COLLAPSED_LIMIT) {
+      return operatorStats;
+    }
+    return operatorStats.slice(0, OPERATOR_COLLAPSED_LIMIT);
+  }, [operatorStats, isOperatorDrillExpanded]);
 
   // Export Executive Complete Report (.xlsx)
   const handleExportExcel = () => {
@@ -302,26 +332,61 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
       </div>
 
       {/* Row 2: Distribution by Line + Operator Performance */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Workload by Line */}
         <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
-              <PieChart className="w-4 h-4 text-emerald-600" />
-              <span>DISTRIBUSI VOLUME SUPLAI PER LINE</span>
-            </h2>
-            <span className="text-xs text-slate-500 font-mono">Lean Flow</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <PieChart className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>DISTRIBUSI VOLUME SUPLAI PER LINE</span>
+              </h2>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                {isLineDistExpanded
+                  ? `${lineWorkloads.length} Line`
+                  : `Top ${Math.min(LINE_COLLAPSED_LIMIT, lineWorkloads.length)} dari ${lineWorkloads.length} Line`}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500 font-mono hidden sm:inline">Lean Flow</span>
+              {lineWorkloads.length > LINE_COLLAPSED_LIMIT && (
+                <button
+                  type="button"
+                  onClick={() => setIsLineDistExpanded((prev) => !prev)}
+                  className="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 border shadow-2xs cursor-pointer bg-white hover:bg-emerald-50 text-emerald-800 border-emerald-300"
+                  title={isLineDistExpanded ? `Ciutkan ke Top ${LINE_COLLAPSED_LIMIT} line` : 'Tampilkan semua line'}
+                >
+                  {isLineDistExpanded ? (
+                    <>
+                      <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Ciutkan (Top {LINE_COLLAPSED_LIMIT})</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Lihat Semua ({lineWorkloads.length})</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="space-y-3">
-            {lineWorkloads.map(({ line, count, volume, percentage }) => (
+            {displayedLineWorkloads.map(({ line, count, volume, percentage }, idx) => (
               <div key={line.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <div>
-                    <span className="font-bold text-slate-900 font-sans">{line.nama_line}</span>
-                    <span className="text-[10px] text-slate-500 font-mono block">
-                      Area: {line.area}
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-md bg-white border border-slate-200 text-slate-700 flex items-center justify-center font-bold font-mono text-[10px] shrink-0">
+                      #{idx + 1}
                     </span>
+                    <div>
+                      <span className="font-bold text-slate-900 font-sans">{line.nama_line}</span>
+                      <span className="text-[10px] text-slate-500 font-mono block">
+                        Area: {line.area} • {count}x suplai
+                      </span>
+                    </div>
                   </div>
                   <div className="text-right font-mono">
                     <span className="font-bold text-emerald-700 text-sm">{percentage}%</span>
@@ -338,17 +403,70 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
                 </div>
               </div>
             ))}
+
+            {lineWorkloads.length > LINE_COLLAPSED_LIMIT && (
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsLineDistExpanded((prev) => !prev)}
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition border shadow-xs cursor-pointer bg-slate-50 hover:bg-emerald-50/80 text-emerald-900 border-emerald-300/80 active:scale-[0.99]"
+                >
+                  {isLineDistExpanded ? (
+                    <>
+                      <ChevronUp className="w-4 h-4 text-emerald-600" />
+                      <span>Ciutkan Tampilan (Hanya Tampilkan Top {LINE_COLLAPSED_LIMIT} Line)</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-4 h-4 text-emerald-600" />
+                      <span>
+                        Tampilkan {lineWorkloads.length - LINE_COLLAPSED_LIMIT} Line Lainnya ({lineWorkloads.length} Total Line)
+                      </span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Operator Ranking Drill-Down */}
         <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
-              <Users className="w-4 h-4 text-blue-600" />
-              <span>DRILL-DOWN PERFORMA INDIVIDU OPERATOR</span>
-            </h2>
-            <span className="text-xs text-slate-500 font-mono">{operatorStats.length} Operator</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <Users className="w-4 h-4 text-blue-600 shrink-0" />
+                <span>DRILL-DOWN PERFORMA INDIVIDU OPERATOR</span>
+              </h2>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                {isOperatorDrillExpanded
+                  ? `${operatorStats.length} Operator`
+                  : `Top ${Math.min(OPERATOR_COLLAPSED_LIMIT, operatorStats.length)} dari ${operatorStats.length} Operator`}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {operatorStats.length > OPERATOR_COLLAPSED_LIMIT && (
+                <button
+                  type="button"
+                  onClick={() => setIsOperatorDrillExpanded((prev) => !prev)}
+                  className="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 border shadow-2xs cursor-pointer bg-white hover:bg-blue-50 text-blue-800 border-blue-300"
+                  title={isOperatorDrillExpanded ? `Ciutkan ke Top ${OPERATOR_COLLAPSED_LIMIT} operator` : 'Tampilkan semua operator'}
+                >
+                  {isOperatorDrillExpanded ? (
+                    <>
+                      <ChevronUp className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Ciutkan (Top {OPERATOR_COLLAPSED_LIMIT})</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Lihat Semua ({operatorStats.length})</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="overflow-x-auto">
@@ -363,7 +481,7 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 font-mono">
-                {operatorStats.map((stat, idx) => (
+                {displayedOperatorStats.map((stat, idx) => (
                   <tr key={stat.operator.id} className="hover:bg-slate-50/70">
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
@@ -409,6 +527,30 @@ export const ManagerKpiView: React.FC<ManagerKpiViewProps> = ({
               </tbody>
             </table>
           </div>
+
+          {operatorStats.length > OPERATOR_COLLAPSED_LIMIT && (
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setIsOperatorDrillExpanded((prev) => !prev)}
+                className="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition border shadow-xs cursor-pointer bg-slate-50 hover:bg-blue-50/80 text-blue-900 border-blue-300/80 active:scale-[0.99]"
+              >
+                {isOperatorDrillExpanded ? (
+                  <>
+                    <ChevronUp className="w-4 h-4 text-blue-600" />
+                    <span>Ciutkan Tampilan (Hanya Tampilkan Top {OPERATOR_COLLAPSED_LIMIT} Operator)</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4 text-blue-600" />
+                    <span>
+                      Tampilkan {operatorStats.length - OPERATOR_COLLAPSED_LIMIT} Operator Lainnya ({operatorStats.length} Total Operator)
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

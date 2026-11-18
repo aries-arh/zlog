@@ -8,6 +8,11 @@ import {
   MasterRak,
 } from '../types';
 import { formatDuration } from './storage';
+import {
+  PeriodFilterType,
+  matchesPeriodFilter,
+  formatPeriodLabel,
+} from './dateFilter';
 
 const formatDateTime = (isoString?: string | null): string => {
   if (!isoString) return '-';
@@ -53,7 +58,10 @@ export interface ExportSpvParams {
   filterLine?: string;
   filterOperator?: string;
   searchQuery?: string;
-  periodFilter?: 'today' | '7days' | 'all';
+  periodFilter?: PeriodFilterType;
+  selectedDate?: string;
+  selectedMonth?: number;
+  selectedYear?: number;
 }
 
 export const exportSpvCompleteReport = (params: ExportSpvParams) => {
@@ -69,6 +77,9 @@ export const exportSpvCompleteReport = (params: ExportSpvParams) => {
     filterOperator = 'all',
     searchQuery = '',
     periodFilter = 'all',
+    selectedDate,
+    selectedMonth,
+    selectedYear,
   } = params;
 
   // Filter task items according to SPV filters
@@ -93,22 +104,16 @@ export const exportSpvCompleteReport = (params: ExportSpvParams) => {
       return false;
     }
 
-    // Period Filter
-    if (periodFilter !== 'all' && item.delivered_at) {
-      const itemDate = new Date(item.delivered_at);
-      const now = new Date();
-      if (periodFilter === 'today') {
-        if (
-          itemDate.getDate() !== now.getDate() ||
-          itemDate.getMonth() !== now.getMonth() ||
-          itemDate.getFullYear() !== now.getFullYear()
-        ) {
-          return false;
-        }
-      } else if (periodFilter === '7days') {
-        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        if (itemDate < sevenDaysAgo) return false;
-      }
+    // Period / Date / Month-Year Filter
+    if (
+      !matchesPeriodFilter(item, parentTask, {
+        periodFilter,
+        selectedDate,
+        selectedMonth,
+        selectedYear,
+      })
+    ) {
+      return false;
     }
 
     // Search Query
@@ -381,7 +386,10 @@ export interface ExportManagerParams {
   allMaterials: MasterMaterial[];
   allRaks?: MasterRak[];
   selectedShiftFilter?: string;
-  periodFilter?: 'today' | '7days' | 'all';
+  periodFilter?: PeriodFilterType;
+  selectedDate?: string;
+  selectedMonth?: number;
+  selectedYear?: number;
 }
 
 export const exportManagerCompleteReport = (params: ExportManagerParams) => {
@@ -394,30 +402,27 @@ export const exportManagerCompleteReport = (params: ExportManagerParams) => {
     allRaks = [],
     selectedShiftFilter = 'all',
     periodFilter = 'all',
+    selectedDate,
+    selectedMonth,
+    selectedYear,
   } = params;
 
-  // Filter items by shift and period
+  // Filter items by shift and period/date/month-year
   const filteredItems = taskItems.filter((i) => {
     const parentTask = tasks.find((t) => t.id === i.task_id);
     if (selectedShiftFilter !== 'all' && parentTask && parentTask.shift !== parseInt(selectedShiftFilter)) {
       return false;
     }
 
-    if (periodFilter !== 'all' && i.delivered_at) {
-      const itemDate = new Date(i.delivered_at);
-      const now = new Date();
-      if (periodFilter === 'today') {
-        if (
-          itemDate.getDate() !== now.getDate() ||
-          itemDate.getMonth() !== now.getMonth() ||
-          itemDate.getFullYear() !== now.getFullYear()
-        ) {
-          return false;
-        }
-      } else if (periodFilter === '7days') {
-        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        if (itemDate < sevenDaysAgo) return false;
-      }
+    if (
+      !matchesPeriodFilter(i, parentTask, {
+        periodFilter,
+        selectedDate,
+        selectedMonth,
+        selectedYear,
+      })
+    ) {
+      return false;
     }
 
     return true;
@@ -514,6 +519,13 @@ export const exportManagerCompleteReport = (params: ExportManagerParams) => {
       'Satuan': 'Shift',
       'Target / Standar': 'Shift 1, 2, 3',
       'Evaluasi Lean Manufacturing': 'Ruang Lingkup Laporan',
+    },
+    {
+      'Indikator KPI Manajemen': 'Periode Laporan Aktif',
+      'Nilai Realisasi': formatPeriodLabel({ periodFilter, selectedDate, selectedMonth, selectedYear }),
+      'Satuan': 'Periode',
+      'Target / Standar': '-',
+      'Evaluasi Lean Manufacturing': 'Rentang Tanggal / Bulan Laporan',
     },
     {
       'Indikator KPI Manajemen': 'Waktu Ekspor Laporan',

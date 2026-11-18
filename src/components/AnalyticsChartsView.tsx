@@ -34,6 +34,14 @@ import {
   FileSpreadsheet,
 } from 'lucide-react';
 import { exportSpvCompleteReport, exportManagerCompleteReport } from '../utils/excelReportExport';
+import {
+  PeriodFilterType,
+  INDONESIAN_MONTHS,
+  getLocalDateInputValue,
+  getItemLocalDate,
+  matchesPeriodFilter,
+  formatPeriodLabel,
+} from '../utils/dateFilter';
 
 interface AnalyticsChartsViewProps {
   tasks: Task[];
@@ -252,9 +260,12 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
   allRaks = [],
   role = 'spv',
 }) => {
-  // Filter States
+  // Filter States (default: Hari Ini - Live Update)
   const [shiftFilter, setShiftFilter] = useState<string>('all');
-  const [periodFilter, setPeriodFilter] = useState<'today' | '7days' | 'all'>('all');
+  const [periodFilter, setPeriodFilter] = useState<PeriodFilterType>('today');
+  const [selectedDate, setSelectedDate] = useState<string>(() => getLocalDateInputValue());
+  const [selectedMonth, setSelectedMonth] = useState<number>(() => new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState<number>(() => new Date().getFullYear());
   const [activeSection, setActiveSection] = useState<'all' | 'operator' | 'line' | 'hourly'>('all');
 
   // Drill-down expanded cards state
@@ -267,7 +278,36 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
 
   const operators = allUsers.filter((u) => u.role === 'operator');
 
-  // Filter Task Items by Shift & Period
+  // Available years for Month & Year selector
+  const availableYears = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const yearSet = new Set<number>([currentYear, currentYear - 1]);
+    taskItems.forEach((item) => {
+      const parentTask = tasks.find((t) => t.id === item.task_id);
+      const d = getItemLocalDate(item, parentTask);
+      if (d) yearSet.add(d.getFullYear());
+    });
+    tasks.forEach((t) => {
+      if (t.tanggal) {
+        const match = /^(\d{4})/.exec(t.tanggal);
+        if (match) yearSet.add(Number(match[1]));
+      }
+    });
+    return Array.from(yearSet).sort((a, b) => b - a);
+  }, [taskItems, tasks]);
+
+  const activePeriodLabel = useMemo(
+    () =>
+      formatPeriodLabel({
+        periodFilter,
+        selectedDate,
+        selectedMonth,
+        selectedYear,
+      }),
+    [periodFilter, selectedDate, selectedMonth, selectedYear]
+  );
+
+  // Filter Task Items by Shift & Period / Date / Month-Year
   const filteredItems = useMemo(() => {
     return taskItems.filter((item) => {
       // Status check: must be DELIVERED for performance evaluation
@@ -280,27 +320,21 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
         return false;
       }
 
-      // Period Filter
-      if (periodFilter !== 'all' && item.delivered_at) {
-        const itemDate = new Date(item.delivered_at);
-        const now = new Date();
-        if (periodFilter === 'today') {
-          if (
-            itemDate.getDate() !== now.getDate() ||
-            itemDate.getMonth() !== now.getMonth() ||
-            itemDate.getFullYear() !== now.getFullYear()
-          ) {
-            return false;
-          }
-        } else if (periodFilter === '7days') {
-          const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-          if (itemDate < sevenDaysAgo) return false;
-        }
+      // Period / Date / Month-Year Filter
+      if (
+        !matchesPeriodFilter(item, parentTask, {
+          periodFilter,
+          selectedDate,
+          selectedMonth,
+          selectedYear,
+        })
+      ) {
+        return false;
       }
 
       return true;
     });
-  }, [taskItems, tasks, shiftFilter, periodFilter]);
+  }, [taskItems, tasks, shiftFilter, periodFilter, selectedDate, selectedMonth, selectedYear]);
 
   // Overall Global KPI Stats
   const totalDeliveries = filteredItems.length;
@@ -499,7 +533,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
 
       const deliveryInfo: DeliveryTimestampInfo = {
         rawTime,
-        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today' && periodFilter !== 'date'),
         fullTime: formatFullDateTime(rawTime),
         qty: item.qty || 0,
         opName: op?.nama || 'Operator',
@@ -572,7 +606,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       const existingLine = lineMap.get(item.line_id) || { count: 0, volume: 0, deliveries: [] };
       const lineDelInfo: DeliveryTimestampInfo = {
         rawTime,
-        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today' && periodFilter !== 'date'),
         fullTime: formatFullDateTime(rawTime),
         qty: item.qty || 0,
       };
@@ -586,7 +620,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       const existingMat = matMap.get(item.material_id) || { count: 0, volume: 0, deliveries: [] };
       const matDelInfo: DeliveryTimestampInfo = {
         rawTime,
-        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today'),
+        formattedTime: formatDeliveryTime(rawTime, periodFilter !== 'today' && periodFilter !== 'date'),
         fullTime: formatFullDateTime(rawTime),
         qty: item.qty || 0,
         lineName: line?.nama_line || item.line_id,
@@ -664,6 +698,9 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
         allRaks,
         selectedShiftFilter: shiftFilter,
         periodFilter,
+        selectedDate,
+        selectedMonth,
+        selectedYear,
       });
     } else {
       exportSpvCompleteReport({
@@ -675,6 +712,9 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
         allRaks,
         filterShift: shiftFilter,
         periodFilter,
+        selectedDate,
+        selectedMonth,
+        selectedYear,
       });
     }
   };
@@ -684,7 +724,7 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       {/* Filter Toolbar Card */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span
               className={`text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded border ${
                 role === 'manager'
@@ -694,8 +734,8 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
             >
               {role === 'manager' ? 'EXECUTIVE KPI & ANALISIS GRAFIK' : 'LAPORAN & GRAFIK DISPLAY SPV'}
             </span>
-            <span className="text-xs text-slate-500 font-mono">
-              Evaluasi Frekuensi &amp; Persentase
+            <span className="text-xs text-slate-600 font-mono font-semibold">
+              {activePeriodLabel}
             </span>
           </div>
           <h2 className="text-xl font-black text-slate-900 mt-1 flex items-center gap-2">
@@ -724,19 +764,62 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
             </select>
           </div>
 
-          {/* Period Filter */}
+          {/* Period Mode Filter */}
           <div className="flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={periodFilter}
-              onChange={(e) => setPeriodFilter(e.target.value as any)}
+              onChange={(e) => setPeriodFilter(e.target.value as PeriodFilterType)}
               className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold outline-none focus:border-amber-500 focus:bg-white"
             >
-              <option value="all">Semua Periode</option>
-              <option value="today">Hari Ini Saja</option>
+              <option value="today">Hari Ini (Update Live)</option>
+              <option value="date">Berdasarkan Tanggal</option>
+              <option value="month">Berdasarkan Bulan &amp; Tahun</option>
               <option value="7days">7 Hari Terakhir</option>
+              <option value="all">Semua Periode</option>
             </select>
           </div>
+
+          {/* Specific Date Picker */}
+          {periodFilter === 'date' && (
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="bg-amber-50/70 border border-amber-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-semibold font-mono outline-none focus:border-amber-500 focus:bg-white"
+              aria-label="Pilih tanggal grafik"
+            />
+          )}
+
+          {/* Month & Year Picker */}
+          {periodFilter === 'month' && (
+            <div className="flex items-center gap-1.5">
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                className="bg-amber-50/70 border border-amber-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold outline-none focus:border-amber-500 focus:bg-white"
+                aria-label="Pilih bulan grafik"
+              >
+                {INDONESIAN_MONTHS.map((m) => (
+                  <option key={m.value} value={m.value}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                className="bg-amber-50/70 border border-amber-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold font-mono outline-none focus:border-amber-500 focus:bg-white"
+                aria-label="Pilih tahun grafik"
+              >
+                {availableYears.map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Export Excel (.xlsx) */}
           <button
