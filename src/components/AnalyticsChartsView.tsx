@@ -261,6 +261,10 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
   const [expandedLineId, setExpandedLineId] = useState<string | null>(null);
   const [expandedOperatorId, setExpandedOperatorId] = useState<string | null>(null);
 
+  // List-level Collapse / Expand states (agar daftar tidak memanjang ke bawah jika ada banyak line / operator)
+  const [isAllLinesExpanded, setIsAllLinesExpanded] = useState<boolean>(false);
+  const [isAllOperatorsExpanded, setIsAllOperatorsExpanded] = useState<boolean>(false);
+
   const operators = allUsers.filter((u) => u.role === 'operator');
 
   // Filter Task Items by Shift & Period
@@ -395,6 +399,24 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
       percentage: d.percentage,
       color: d.color,
     }));
+
+  // Batas jumlah item saat mode collapse
+  const LINE_COLLAPSED_LIMIT = 5;
+  const OPERATOR_COLLAPSED_LIMIT = 4;
+
+  const displayedLineList = useMemo(() => {
+    if (isAllLinesExpanded || lineDistribution.length <= LINE_COLLAPSED_LIMIT) {
+      return lineDistribution;
+    }
+    return lineDistribution.slice(0, LINE_COLLAPSED_LIMIT);
+  }, [lineDistribution, isAllLinesExpanded]);
+
+  const displayedOperatorList = useMemo(() => {
+    if (isAllOperatorsExpanded || operatorDistribution.length <= OPERATOR_COLLAPSED_LIMIT) {
+      return operatorDistribution;
+    }
+    return operatorDistribution.slice(0, OPERATOR_COLLAPSED_LIMIT);
+  }, [operatorDistribution, isAllOperatorsExpanded]);
 
   // 3. Hourly Workload Distribution (Peak Hours)
   const hourlyData = useMemo(() => {
@@ -831,18 +853,48 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
 
           {/* Bar Chart & Breakdown: Frekuensi Dikerjakan per Line */}
           <div className="lg:col-span-7 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
-                <BarChart3 className="w-4 h-4 text-emerald-600" />
-                Ranking Frekuensi Kedatangan Suplai per Line
-              </span>
-              <span className="text-[11px] text-slate-500 font-medium">
-                Klik kartu untuk melihat rincian material
-              </span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
+                  <BarChart3 className="w-4 h-4 text-emerald-600" />
+                  Ranking Frekuensi Kedatangan Suplai per Line
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                  {isAllLinesExpanded
+                    ? `${lineDistribution.length} Line`
+                    : `Top ${Math.min(LINE_COLLAPSED_LIMIT, lineDistribution.length)} dari ${lineDistribution.length} Line`}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-slate-400 font-medium hidden md:inline">
+                  Klik kartu untuk melihat rincian
+                </span>
+                {lineDistribution.length > LINE_COLLAPSED_LIMIT && (
+                  <button
+                    type="button"
+                    onClick={() => setIsAllLinesExpanded((prev) => !prev)}
+                    className="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 border shadow-2xs cursor-pointer bg-white hover:bg-emerald-50 text-emerald-800 border-emerald-300"
+                    title={isAllLinesExpanded ? 'Ciutkan ke 5 line teratas' : 'Tampilkan seluruh line'}
+                  >
+                    {isAllLinesExpanded ? (
+                      <>
+                        <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Ciutkan (Top {LINE_COLLAPSED_LIMIT})</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Lihat Semua ({lineDistribution.length})</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="space-y-2.5">
-              {lineDistribution.map((item, idx) => {
+              {displayedLineList.map((item, idx) => {
                 const maxCount = Math.max(...lineDistribution.map((l) => l.count), 1);
                 const barWidth = Math.max((item.count / maxCount) * 100, item.count > 0 ? 4 : 0);
                 const isExpanded = expandedLineId === item.line.id;
@@ -1028,6 +1080,30 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                   </div>
                 );
               })}
+
+              {lineDistribution.length > LINE_COLLAPSED_LIMIT && (
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsAllLinesExpanded((prev) => !prev)}
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition border shadow-xs cursor-pointer bg-slate-50 hover:bg-emerald-50/80 text-emerald-900 border-emerald-300/80 active:scale-[0.99]"
+                  >
+                    {isAllLinesExpanded ? (
+                      <>
+                        <ChevronUp className="w-4 h-4 text-emerald-600" />
+                        <span>Ciutkan Tampilan (Hanya Tampilkan Top {LINE_COLLAPSED_LIMIT} Line)</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-4 h-4 text-emerald-600" />
+                        <span>
+                          Tampilkan {lineDistribution.length - LINE_COLLAPSED_LIMIT} Line Lainnya ({lineDistribution.length} Total Line)
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1078,18 +1154,48 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
 
           {/* Bar Chart & Breakdown: Frekuensi Pengantaran per Operator */}
           <div className="lg:col-span-7 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
-                <BarChart3 className="w-4 h-4 text-blue-600" />
-                Ranking Frekuensi Task Selesai per Operator
-              </span>
-              <span className="text-[11px] text-slate-500 font-medium">
-                Klik kartu untuk melihat rincian line &amp; material
-              </span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
+                  <BarChart3 className="w-4 h-4 text-blue-600" />
+                  Ranking Frekuensi Task Selesai per Operator
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                  {isAllOperatorsExpanded
+                    ? `${operatorDistribution.length} Operator`
+                    : `Top ${Math.min(OPERATOR_COLLAPSED_LIMIT, operatorDistribution.length)} dari ${operatorDistribution.length} Operator`}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-slate-400 font-medium hidden md:inline">
+                  Klik kartu untuk melihat rincian
+                </span>
+                {operatorDistribution.length > OPERATOR_COLLAPSED_LIMIT && (
+                  <button
+                    type="button"
+                    onClick={() => setIsAllOperatorsExpanded((prev) => !prev)}
+                    className="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 border shadow-2xs cursor-pointer bg-white hover:bg-blue-50 text-blue-800 border-blue-300"
+                    title={isAllOperatorsExpanded ? 'Ciutkan ke operator teratas' : 'Tampilkan seluruh operator'}
+                  >
+                    {isAllOperatorsExpanded ? (
+                      <>
+                        <ChevronUp className="w-3.5 h-3.5 text-blue-600" />
+                        <span>Ciutkan (Top {OPERATOR_COLLAPSED_LIMIT})</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
+                        <span>Lihat Semua ({operatorDistribution.length})</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="space-y-2.5">
-              {operatorDistribution.map((item, idx) => {
+              {displayedOperatorList.map((item, idx) => {
                 const maxCount = Math.max(...operatorDistribution.map((o) => o.count), 1);
                 const barWidth = Math.max((item.count / maxCount) * 100, item.count > 0 ? 4 : 0);
                 const isExpanded = expandedOperatorId === item.operator.id;
@@ -1341,6 +1447,30 @@ export const AnalyticsChartsView: React.FC<AnalyticsChartsViewProps> = ({
                   </div>
                 );
               })}
+
+              {operatorDistribution.length > OPERATOR_COLLAPSED_LIMIT && (
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsAllOperatorsExpanded((prev) => !prev)}
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition border shadow-xs cursor-pointer bg-slate-50 hover:bg-blue-50/80 text-blue-900 border-blue-300/80 active:scale-[0.99]"
+                  >
+                    {isAllOperatorsExpanded ? (
+                      <>
+                        <ChevronUp className="w-4 h-4 text-blue-600" />
+                        <span>Ciutkan Tampilan (Hanya Tampilkan Top {OPERATOR_COLLAPSED_LIMIT} Operator)</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-4 h-4 text-blue-600" />
+                        <span>
+                          Tampilkan {operatorDistribution.length - OPERATOR_COLLAPSED_LIMIT} Operator Lainnya ({operatorDistribution.length} Total Operator)
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -76,6 +76,9 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   // Step 3: Qty & Target Line
   const [qty, setQty] = useState<number>(10);
   const [selectedLineId, setSelectedLineId] = useState<string>('');
+  const [lineInput, setLineInput] = useState<string>('');
+  const [lineValid, setLineValid] = useState<boolean>(false);
+  const [showLineDropdown, setShowLineDropdown] = useState<boolean>(false);
 
   // Scanner Modal state
   const [scannerOpen, setScannerOpen] = useState(false);
@@ -98,6 +101,8 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const rakInputRef = useRef<HTMLInputElement>(null);
   const materialInputRef = useRef<HTMLInputElement>(null);
   const qtyInputRef = useRef<HTMLInputElement>(null);
+  const lineInputRef = useRef<HTMLInputElement>(null);
+  const lineDropdownRef = useRef<HTMLDivElement>(null);
   const destInputRef = useRef<HTMLInputElement>(null);
 
   // Auto focus rak input on screen mount so PDA can scan immediately without clicking
@@ -121,6 +126,17 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const pickedItems = itemsInTrolley.filter((item) => item.status === 'PICKED');
   const inTransitItems = itemsInTrolley.filter((item) => item.status === 'IN_TRANSIT');
   const deliveredItems = itemsInTrolley.filter((item) => item.status === 'DELIVERED');
+
+  // Target lines specifically for pending items in current trolley/task
+  const pendingTrolleyItems = useMemo(
+    () => itemsInTrolley.filter((item) => item.status === 'PICKED' || item.status === 'IN_TRANSIT'),
+    [itemsInTrolley]
+  );
+
+  const targetLinesInTrolley = useMemo(() => {
+    const lineIds = Array.from(new Set(pendingTrolleyItems.map((item) => item.line_id)));
+    return allLines.filter((l) => lineIds.includes(l.id));
+  }, [allLines, pendingTrolleyItems]);
 
   // Active Raks and limited suggestions (max 4 to prevent layout vertical expansion)
   const activeRaks = useMemo(() => allRaks.filter((r) => r.status !== 'inactive'), [allRaks]);
@@ -159,12 +175,130 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     return activeMaterials.slice(0, 4);
   }, [activeMaterials, materialInput, selectedRakId]);
 
-  // Set default line if none selected
-  useEffect(() => {
-    if (allLines.length > 0 && !selectedLineId) {
-      setSelectedLineId(allLines[0].id);
+  // Active Lines and suggestions
+  const activeLines = useMemo(
+    () => allLines.filter((l) => l.status !== 'inactive'),
+    [allLines]
+  );
+
+  const suggestedLines = useMemo(() => {
+    if (lineInput.trim()) {
+      const q = lineInput.trim().toUpperCase();
+      const matched = activeLines.filter(
+        (l) =>
+          l.kode_line.toUpperCase().includes(q) ||
+          l.nama_line.toUpperCase().includes(q) ||
+          l.area.toUpperCase().includes(q) ||
+          l.qr_code_proses.toUpperCase().includes(q)
+      );
+      return matched;
     }
-  }, [allLines, selectedLineId]);
+    return activeLines;
+  }, [activeLines, lineInput]);
+
+  const quickSuggestedLines = useMemo(() => {
+    return suggestedLines.slice(0, 4);
+  }, [suggestedLines]);
+
+  // Close line dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        lineDropdownRef.current &&
+        !lineDropdownRef.current.contains(e.target as Node) &&
+        lineInputRef.current &&
+        !lineInputRef.current.contains(e.target as Node)
+      ) {
+        setShowLineDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelectLine = (line: MasterLine) => {
+    setSelectedLineId(line.id);
+    setLineInput(line.kode_line);
+    setLineValid(true);
+    setShowLineDropdown(false);
+    sound.playSuccessBeep();
+  };
+
+  const handleLineInputChange = (val: string) => {
+    setLineInput(val);
+    const clean = val.trim().replace(/[\r\n]+/g, '').toUpperCase();
+    if (!clean) {
+      setSelectedLineId('');
+      setLineValid(false);
+      setShowLineDropdown(false);
+      return;
+    }
+    setShowLineDropdown(true);
+
+    const exact = activeLines.find(
+      (l) =>
+        l.kode_line.toUpperCase() === clean ||
+        l.nama_line.toUpperCase() === clean ||
+        l.qr_code_proses.toUpperCase() === clean ||
+        l.id.toUpperCase() === clean
+    );
+    if (exact) {
+      setSelectedLineId(exact.id);
+      setLineValid(true);
+      sound.playSuccessBeep();
+    } else {
+      const partial = activeLines.filter(
+        (l) =>
+          l.kode_line.toUpperCase().includes(clean) ||
+          l.nama_line.toUpperCase().includes(clean) ||
+          l.area.toUpperCase().includes(clean)
+      );
+      if (partial.length === 1) {
+        setSelectedLineId(partial[0].id);
+        setLineValid(true);
+      } else {
+        setSelectedLineId('');
+        setLineValid(false);
+      }
+    }
+  };
+
+  const handleLineSubmit = (val?: string) => {
+    const raw = val !== undefined ? val : lineInput;
+    const clean = raw.trim().replace(/[\r\n]+/g, '').toUpperCase();
+    if (!clean) return;
+
+    const found = activeLines.find(
+      (l) =>
+        l.kode_line.toUpperCase() === clean ||
+        l.nama_line.toUpperCase() === clean ||
+        l.qr_code_proses.toUpperCase() === clean ||
+        l.id.toUpperCase() === clean ||
+        clean.includes(l.kode_line.toUpperCase()) ||
+        clean.includes(l.qr_code_proses.toUpperCase())
+    );
+
+    if (found) {
+      setSelectedLineId(found.id);
+      setLineInput(found.kode_line);
+      setLineValid(true);
+      setShowLineDropdown(false);
+      sound.playSuccessBeep();
+      handleAddMaterial();
+    } else if (suggestedLines.length > 0) {
+      const topPick = suggestedLines[0];
+      setSelectedLineId(topPick.id);
+      setLineInput(topPick.kode_line);
+      setLineValid(true);
+      setShowLineDropdown(false);
+      sound.playSuccessBeep();
+      handleAddMaterial();
+    } else {
+      sound.playErrorBeep();
+      setLineValid(false);
+      lineInputRef.current?.select();
+    }
+  };
 
   // Dedicated Rak submit (PDA enter or instant match)
   const handleRakSubmit = (val?: string) => {
@@ -274,8 +408,11 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     let lastKeyTime = 0;
 
     const handleGlobalScan = (e: KeyboardEvent) => {
-      // Don't intercept if user is typing numbers in qty input
-      if (document.activeElement === qtyInputRef.current && e.key !== 'Enter') {
+      // Don't intercept if user is typing numbers in qty input or in line input
+      if (
+        (document.activeElement === qtyInputRef.current || document.activeElement === lineInputRef.current) &&
+        e.key !== 'Enter'
+      ) {
         return;
       }
 
@@ -297,10 +434,15 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
               scanned.includes(l.qr_code_proses.toUpperCase())
           );
           if (lineFound) {
-            setShowCompletionModal(true);
-            setDestScanInput(lineFound.qr_code_proses);
-            handleDestinationScanSubmit(lineFound.qr_code_proses);
-            return;
+            if (inTransitItems.length > 0) {
+              setShowCompletionModal(true);
+              setDestScanInput(lineFound.qr_code_proses);
+              handleDestinationScanSubmit(lineFound.qr_code_proses);
+              return;
+            } else {
+              handleSelectLine(lineFound);
+              return;
+            }
           }
 
           // 2. Rak Barcode check
@@ -338,7 +480,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
 
     window.addEventListener('keydown', handleGlobalScan);
     return () => window.removeEventListener('keydown', handleGlobalScan);
-  }, [allLines, allRaks, allMaterials, selectedRakId]);
+  }, [allLines, allRaks, allMaterials, selectedRakId, inTransitItems]);
 
   // Add Material to Trolley
   const handleAddMaterial = (e?: React.FormEvent) => {
@@ -353,8 +495,14 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       materialInputRef.current?.focus();
       return;
     }
-    if (qty <= 0 || !selectedLineId) {
+    if (qty <= 0) {
       sound.playErrorBeep();
+      return;
+    }
+    if (!selectedLineId) {
+      sound.playErrorBeep();
+      lineInputRef.current?.focus();
+      setShowLineDropdown(true);
       return;
     }
 
@@ -383,6 +531,10 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     setMaterialInput('');
     setSelectedMaterialId('');
     setMaterialValid(false);
+    setLineInput('');
+    setSelectedLineId('');
+    setLineValid(false);
+    setShowLineDropdown(false);
     setQty(10);
     // Keep rack and refocus to material input so operator can continuously scan next parts
     setTimeout(() => materialInputRef.current?.focus(), 80);
@@ -725,7 +877,12 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
-                          handleAddMaterial();
+                          if (!selectedLineId) {
+                            lineInputRef.current?.focus();
+                            setShowLineDropdown(true);
+                          } else {
+                            handleAddMaterial();
+                          }
                         }
                       }}
                       className="flex-1 bg-white border border-slate-300 rounded-xl py-2 px-3 text-center text-lg font-mono font-bold text-slate-900 focus:outline-none focus:border-amber-500"
@@ -733,32 +890,159 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setQty((q) => q + 5)}
-                      className="w-10 h-10 rounded-xl bg-white hover:bg-slate-100 text-lg font-bold text-slate-800 border border-slate-200 flex items-center justify-center"
+                      className="w-10 h-10 rounded-xl bg-white hover:bg-slate-100 text-lg font-bold text-slate-800 border border-slate-200 flex items-center justify-center cursor-pointer"
                     >
                       +
                     </button>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] text-slate-600 mb-1 font-semibold">
-                    Target Line / Proses Tujuan
-                  </label>
-                  <select
-                    value={selectedLineId}
-                    onChange={(e) => setSelectedLineId(e.target.value)}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-amber-500 font-medium"
-                  >
-                    {allLines.map((l) => (
-                      <option key={l.id} value={l.id}>
-                        {l.kode_line} - {l.nama_line}
-                      </option>
-                    ))}
-                  </select>
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] text-slate-600 font-semibold">
+                      Target Line / Proses Tujuan
+                    </label>
+                    {lineValid && currentLineObj && (
+                      <span className="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
+                        <Check className="w-3 h-3 text-emerald-600" /> Terverifikasi
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      ref={lineInputRef}
+                      type="text"
+                      value={lineInput}
+                      onChange={(e) => handleLineInputChange(e.target.value)}
+                      onFocus={() => {
+                        if (lineInput.trim().length > 0) {
+                          setShowLineDropdown(true);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleLineSubmit();
+                        } else if (e.key === 'Escape') {
+                          setShowLineDropdown(false);
+                        }
+                      }}
+                      placeholder="Ketik kode/nama line (e.g. PACKING IN)..."
+                      className={`w-full bg-white border-2 rounded-xl px-3 py-2 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none transition ${
+                        lineValid
+                          ? 'border-emerald-500 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500'
+                          : 'border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500'
+                      }`}
+                      autoComplete="off"
+                    />
+
+                    {lineInput && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setLineInput('');
+                          setSelectedLineId('');
+                          setLineValid(false);
+                          setShowLineDropdown(false);
+                          lineInputRef.current?.focus();
+                        }}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 text-xs font-bold cursor-pointer"
+                        title="Hapus input line"
+                      >
+                        ✕
+                      </button>
+                    )}
+
+                    {/* Floating Dropdown Autocomplete - Hanya muncul saat kolom diisi */}
+                    {showLineDropdown && lineInput.trim().length > 0 && suggestedLines.length > 0 && (
+                      <div
+                        ref={lineDropdownRef}
+                        className="absolute left-0 right-0 z-30 mt-1 max-h-56 overflow-y-auto bg-white rounded-xl shadow-xl border border-slate-300 divide-y divide-slate-100"
+                      >
+                        {suggestedLines.map((l) => {
+                          const isSelected = l.id === selectedLineId;
+                          return (
+                            <button
+                              key={l.id}
+                              type="button"
+                              onClick={() => handleSelectLine(l)}
+                              className={`w-full px-3 py-2 text-left text-xs transition flex items-center justify-between hover:bg-amber-50 cursor-pointer ${
+                                isSelected ? 'bg-amber-100/70 font-bold text-amber-950' : 'text-slate-800'
+                              }`}
+                            >
+                              <div>
+                                <div className="font-mono font-bold text-slate-900">
+                                  {l.kode_line}
+                                  <span className="ml-1.5 font-sans font-semibold text-slate-600">
+                                    • {l.nama_line}
+                                  </span>
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                  Area: {l.area} • QR: {l.qr_code_proses}
+                                </div>
+                              </div>
+                              {isSelected && <Check className="w-4 h-4 text-amber-700 shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Sugesti Quick Chips - Hanya muncul ketika ada isian teks di kolom */}
+                  {lineInput.trim().length > 0 && quickSuggestedLines.length > 0 && (
+                    <div className="mt-2 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
+                      <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
+                      {quickSuggestedLines.map((l) => (
+                        <button
+                          key={l.id}
+                          type="button"
+                          onClick={() => handleSelectLine(l)}
+                          className={`px-2 py-0.5 rounded-lg text-xs font-mono font-bold transition shrink-0 cursor-pointer ${
+                            selectedLineId === l.id
+                              ? 'bg-amber-500 text-white shadow-2xs'
+                              : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                          }`}
+                          title={`${l.nama_line} (${l.area})`}
+                        >
+                          {l.kode_line}
+                        </button>
+                      ))}
+
+                      {suggestedLines.length > quickSuggestedLines.length && (
+                        <select
+                          value=""
+                          onChange={(e) => {
+                            const chosen = activeLines.find(
+                              (l) => l.id === e.target.value || l.kode_line === e.target.value
+                            );
+                            if (chosen) handleSelectLine(chosen);
+                          }}
+                          className="px-2 py-0.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
+                          title="Pilih dari hasil sugesti lainnya"
+                        >
+                          <option value="">
+                            + {suggestedLines.length - quickSuggestedLines.length} Line Lainnya...
+                          </option>
+                          {suggestedLines.map((l) => (
+                            <option key={l.id} value={l.id}>
+                              {l.kode_line} - {l.nama_line}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Selected Line Details */}
                   {currentLineObj && (
-                    <span className="text-[10px] text-amber-700 font-mono mt-1 block font-semibold">
-                      Target QR: {currentLineObj.qr_code_proses}
-                    </span>
+                    <div className="text-[11px] text-emerald-800 font-medium mt-1.5 flex items-center justify-between">
+                      <span>✓ {currentLineObj.nama_line} (Area: {currentLineObj.area})</span>
+                      <span className="text-[10px] text-amber-700 font-mono font-bold">
+                        Target QR: {currentLineObj.qr_code_proses}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -767,7 +1051,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
             {/* Button Tambah Material */}
             <button
               type="submit"
-              disabled={!selectedRakId || !selectedMaterialId}
+              disabled={!selectedRakId || !selectedMaterialId || !selectedLineId}
               className="w-full py-4 bg-amber-500 hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold rounded-xl text-base flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition transform active:scale-[0.98]"
             >
               <span>+ TAMBAH MATERIAL KE TROLI (ENTER)</span>
@@ -956,9 +1240,9 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       {/* MODAL 6.2: POP-UP COMPLETION (VERIFIKASI SCAN TUJUAN) */}
       {showCompletionModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg bg-white border border-slate-300 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+          <div className="relative w-full max-w-md bg-white border border-slate-300 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
             {/* Modal Header */}
-            <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200">
                   <PackageCheck className="w-5 h-5" />
@@ -974,14 +1258,14 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
               </div>
               <button
                 onClick={() => setShowCompletionModal(false)}
-                className="text-slate-400 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100"
+                className="text-slate-400 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 space-y-5">
+            <div className="p-5 space-y-4 overflow-y-auto flex-1">
               <div className="text-center space-y-1">
                 <p className="text-sm font-bold text-slate-900">
                   SILAKAN SCAN QR CODE NAMA PROSES DI LOKASI TUJUAN
@@ -1017,41 +1301,79 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                       }
                     }}
                     placeholder="Scan QR Lokasi (e.g. QR-LINE-01-ASSY)..."
-                    className="flex-1 bg-slate-50 border-2 border-slate-300 focus:border-amber-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-mono text-slate-900 outline-none"
+                    className="flex-1 bg-slate-50 border-2 border-slate-300 focus:border-amber-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-mono text-slate-900 outline-none"
                   />
                   <button
                     type="submit"
-                    className="px-5 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm shadow-sm"
+                    className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm shadow-sm cursor-pointer"
                   >
                     Verifikasi
                   </button>
                 </div>
 
-                {/* Quick Process Line QR Simulator chips */}
-                <div className="space-y-1.5 pt-1">
-                  <span className="text-[11px] font-semibold text-slate-600">
-                    Quick-Scan QR Lokasi Line Fisik:
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {allLines.map((line) => (
-                      <button
-                        key={line.id}
-                        type="button"
-                        onClick={() => {
-                          setDestScanInput(line.qr_code_proses);
-                          handleDestinationScanSubmit(line.qr_code_proses);
-                        }}
-                        className="p-2.5 bg-slate-50 hover:bg-amber-50/70 border border-slate-200 hover:border-amber-300 rounded-xl text-left transition group"
-                      >
-                        <span className="text-[11px] font-mono font-bold text-amber-700 block">
-                          {line.qr_code_proses}
-                        </span>
-                        <span className="text-[10px] text-slate-700 truncate block">
-                          {line.nama_line}
-                        </span>
-                      </button>
-                    ))}
+                {/* Target Line Prioritas: Hanya tampilkan line tujuan yang ADA di dalam troli saat ini */}
+                {targetLinesInTrolley.length > 0 && (
+                  <div className="p-3 bg-emerald-50/80 border border-emerald-200 rounded-xl space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-emerald-900">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Target Line Tugas Ini ({targetLinesInTrolley.length} Lokasi):
+                      </span>
+                      <span className="text-[10px] text-emerald-700 font-medium">Klik untuk verifikasi instan</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      {targetLinesInTrolley.map((line) => {
+                        const count = pendingTrolleyItems.filter((i) => i.line_id === line.id).length;
+                        return (
+                          <button
+                            key={line.id}
+                            type="button"
+                            onClick={() => {
+                              setDestScanInput(line.qr_code_proses);
+                              handleDestinationScanSubmit(line.qr_code_proses);
+                            }}
+                            className="w-full p-2.5 bg-white hover:bg-emerald-100/70 border border-emerald-300 rounded-xl text-left transition flex items-center justify-between shadow-2xs cursor-pointer group"
+                          >
+                            <div>
+                              <span className="text-xs font-mono font-bold text-emerald-900 block group-hover:text-emerald-950">
+                                {line.qr_code_proses}
+                              </span>
+                              <span className="text-[11px] text-slate-600 block">
+                                {line.nama_line} ({line.area})
+                              </span>
+                            </div>
+                            <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                              {count} Item
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
+                )}
+
+                {/* Dropdown ringkas untuk simulasi / memilih dari seluruh line lainnya tanpa memenuhi layar */}
+                <div className="pt-1">
+                  <label className="block text-[11px] text-slate-500 mb-1 font-semibold">
+                    Atau pilih cepat QR line manual (Simulator / Alternatif):
+                  </label>
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        setDestScanInput(e.target.value);
+                        handleDestinationScanSubmit(e.target.value);
+                      }
+                    }}
+                    className="w-full bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 outline-none transition cursor-pointer"
+                  >
+                    <option value="">-- Pilih dari seluruh {allLines.length} Daftar Line Gudang --</option>
+                    {allLines.map((line) => (
+                      <option key={line.id} value={line.qr_code_proses}>
+                        {line.qr_code_proses} - {line.nama_line} ({line.area})
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </form>
 

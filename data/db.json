@@ -8,7 +8,7 @@
       "password": "admin123",
       "status": "active",
       "created_at": "2026-10-01T07:00:00.000Z",
-      "last_login_at": "2026-11-16T05:51:35.561Z",
+      "last_login_at": "2026-11-18T04:39:19.882Z",
       "qr_code": "admin"
     },
     {
@@ -19,7 +19,7 @@
       "password": "spv123",
       "status": "active",
       "created_at": "2026-10-01T07:00:00.000Z",
-      "last_login_at": "2026-11-12T08:02:42.617Z",
+      "last_login_at": "2026-11-18T04:34:49.682Z",
       "qr_code": "spv"
     },
     {
@@ -30,7 +30,7 @@
       "password": "mgr123",
       "status": "active",
       "created_at": "2026-10-01T07:00:00.000Z",
-      "last_login_at": "2026-10-29T16:00:00.000Z",
+      "last_login_at": "2026-11-18T04:39:43.083Z",
       "qr_code": "manager"
     },
     {
@@ -71,7 +71,7 @@
       "role": "operator",
       "status": "active",
       "created_at": "2026-11-12T08:33:36.721Z",
-      "last_login_at": "2026-11-12T08:33:36.721Z"
+      "last_login_at": "2026-11-18T03:53:22.454Z"
     },
     {
       "id": "u-1794472740044",
@@ -81,7 +81,7 @@
       "role": "operator",
       "status": "active",
       "created_at": "2026-11-12T08:39:00.044Z",
-      "last_login_at": "2026-11-16T05:52:27.897Z"
+      "last_login_at": "2026-11-18T04:33:48.345Z"
     }
   ],
   "raks": [
@@ -3771,18 +3771,320 @@
       "qr_code_proses": "FA2-L09 KP65",
       "area": "KP65",
       "status": "active"
+    },
+    {
+      "id": "line-1794970043059-kxhq",
+      "kode_line": "FA2-L08-PCB-ASSY",
+      "nama_line": "PCB ASSY",
+      "qr_code_proses": "FA2-L08-PCB-ASSY",
+      "area": "PCB ASSY",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-9nbf",
+      "kode_line": "FA2-L08-UFT-TESTING-AKSESORIS-PACKING",
+      "nama_line": "UFT, TESTING, AKSESORIS, PACKING",
+      "qr_code_proses": "FA2-L08-UFT-TESTING-AKSESORIS-PACKING",
+      "area": "UFT, TESTING, AKSESORIS, PACKING",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-9xpg",
+      "kode_line": "FA2-L08-SUB-ASSY-CURVE",
+      "nama_line": "SUB ASSY CURVE",
+      "qr_code_proses": "FA2-L08-SUB-ASSY-CURVE",
+      "area": "SUB ASSY CURVE",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-abix",
+      "kode_line": "FA2-L08-ASSY-CLAMP",
+      "nama_line": "ASSY CLAMP",
+      "qr_code_proses": "FA2-L08-ASSY-CLAMP",
+      "area": "ASSY CLAMP",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-5mpe",
+      "kode_line": "FA2-L08-SUB-ASSY-R-L-CURVE",
+      "nama_line": "SUB ASSY R/L CURVE",
+      "qr_code_proses": "FA2-L08-SUB-ASSY-R-L-CURVE",
+      "area": "SUB ASSY R/L CURVE",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-j24u",
+      "kode_line": "FA2-L08-CENTER-ASSY-RAK-UNIT",
+      "nama_line": "CENTER ASSY RAK UNIT",
+      "qr_code_proses": "FA2-L08-CENTER-ASSY-RAK-UNIT",
+      "area": "CENTER ASSY RAK UNIT (1)",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-mrqs",
+      "kode_line": "FA2-L08-CL-STRAIGHT",
+      "nama_line": "CL/STRAIGHT",
+      "qr_code_proses": "FA2-L08-CL-STRAIGHT",
+      "area": "CL/STRAIGHT",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-37kr",
+      "kode_line": "FA2-L08-PACKING",
+      "nama_line": "PACKING",
+      "qr_code_proses": "FA2-L08-PACKING",
+      "area": "PACKING",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-0c9e",
+      "kode_line": "FA2-L08-FINISH-GOODS",
+      "nama_line": "FINISH GOODS",
+      "qr_code_proses": "FA2-L08-FINISH-GOODS",
+      "area": "FINISH GOODS",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-wdze",
+      "kode_line": "FA2-L08-CONVEYOR",
+      "nama_line": "CONVEYOR",
+      "qr_code_proses": "FA2-L08-CONVEYOR",
+      "area": "CONVEYOR",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-48vk",
+      "kode_line": "FA2-L08-LCD",
+      "nama_line": "LCD",
+      "qr_code_proses": "FA2-L08-LCD",
+      "area": "LCD",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-g5n0",
+      "kode_line": "FA2-L08-INSERT-NUT",
+      "nama_line": "INSERT NUT",
+      "qr_code_proses": "FA2-L08-INSERT-NUT",
+      "area": "INSERT NUT",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-sjj9",
+      "kode_line": "FA2-L08-CENTER-ASSY-RAK-UNIT-RS8-6-JIG-LIPAT",
+      "nama_line": "CENTER ASSY RAK UNIT RS8/6 (JIG LIPAT)",
+      "qr_code_proses": "FA2-L08-CENTER-ASSY-RAK-UNIT-RS8-6-JIG-LIPAT",
+      "area": "CENTER ASSY RAK UNIT RS8/6 (JIG LIPAT)",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-k14j",
+      "kode_line": "FA2-L08-MEJA-KERATAAN",
+      "nama_line": "MEJA KERATAAN",
+      "qr_code_proses": "FA2-L08-MEJA-KERATAAN",
+      "area": "MEJA KERATAAN",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-y78i",
+      "kode_line": "FA2-L08-AKSESORIS",
+      "nama_line": "AKSESORIS",
+      "qr_code_proses": "FA2-L08-AKSESORIS",
+      "area": "AKSESORIS",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-8h1r",
+      "kode_line": "FA2-L08-KP65",
+      "nama_line": "KP65",
+      "qr_code_proses": "FA2-L08-KP65",
+      "area": "KP65 (1)",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-lbpl",
+      "kode_line": "FA2-L08-HH65",
+      "nama_line": "HH65",
+      "qr_code_proses": "FA2-L08-HH65",
+      "area": "HH65",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-ov0f",
+      "kode_line": "FA2-L08-XP70-TP70",
+      "nama_line": "XP70 / TP70",
+      "qr_code_proses": "FA2-L08-XP70-TP70",
+      "area": "XP70 / TP70",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-2i6x",
+      "kode_line": "FA2-L08-PCY95AT",
+      "nama_line": "PCY95AT",
+      "qr_code_proses": "FA2-L08-PCY95AT",
+      "area": "PCY95AT",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-vnum",
+      "kode_line": "FA2-L08-PCY135",
+      "nama_line": "PCY135",
+      "qr_code_proses": "FA2-L08-PCY135",
+      "area": "PCY135 (1)",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-859m",
+      "kode_line": "FA2-L08-XP80",
+      "nama_line": "XP80",
+      "qr_code_proses": "FA2-L08-XP80",
+      "area": "XP80",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-myv6",
+      "kode_line": "FA2-L08-SETTINGAN-PAD-PACKING",
+      "nama_line": "SETTINGAN PAD PACKING",
+      "qr_code_proses": "FA2-L08-SETTINGAN-PAD-PACKING",
+      "area": "SETTINGAN PAD PACKING",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-494r",
+      "kode_line": "FA2-L08-OUTERBOX",
+      "nama_line": "OUTERBOX",
+      "qr_code_proses": "FA2-L08-OUTERBOX",
+      "area": "OUTERBOX",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-epr7",
+      "kode_line": "FA2-L08-MATERIAL-ELECTRIC",
+      "nama_line": "MATERIAL ELECTRIC",
+      "qr_code_proses": "FA2-L08-MATERIAL-ELECTRIC",
+      "area": "MATERIAL ELECTRIC",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-cvtn",
+      "kode_line": "FA2-L06-KP-90",
+      "nama_line": "KP 90",
+      "qr_code_proses": "FA2-L06-KP-90",
+      "area": "KP 90",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-llqh",
+      "kode_line": "FA2-L06-KP-100",
+      "nama_line": "KP 100",
+      "qr_code_proses": "FA2-L06-KP-100",
+      "area": "KP 100",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-c1ow",
+      "kode_line": "FA2-L06-KP-90-ASSY",
+      "nama_line": "KP 90 Assy",
+      "qr_code_proses": "FA2-L06-KP-90-ASSY",
+      "area": "KP 90 Assy",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-ln8c",
+      "kode_line": "FA2-L06-KP-100-ASSY",
+      "nama_line": "KP 100 Assy",
+      "qr_code_proses": "FA2-L06-KP-100-ASSY",
+      "area": "KP 100 Assy",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-7iiz",
+      "kode_line": "FA2-L06-PCY-135",
+      "nama_line": "PCY 135",
+      "qr_code_proses": "FA2-L06-PCY-135",
+      "area": "PCY 135",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-1xql",
+      "kode_line": "FA2-L06-RHH-135-ASSY",
+      "nama_line": "RHH 135 Assy",
+      "qr_code_proses": "FA2-L06-RHH-135-ASSY",
+      "area": "RHH 135 Assy",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-z516",
+      "kode_line": "FA2-L06-XP-70",
+      "nama_line": "XP 70",
+      "qr_code_proses": "FA2-L06-XP-70",
+      "area": "XP 70",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-ng1q",
+      "kode_line": "FA2-L06-XP-80",
+      "nama_line": "XP 80",
+      "qr_code_proses": "FA2-L06-XP-80",
+      "area": "XP 80",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-fjyu",
+      "kode_line": "FA2-L06-XP-100",
+      "nama_line": "XP 100",
+      "qr_code_proses": "FA2-L06-XP-100",
+      "area": "XP 100",
+      "status": "active"
+    },
+    {
+      "id": "line-1794970043059-32c5",
+      "kode_line": "FA2-L06-XP-120",
+      "nama_line": "XP 120",
+      "qr_code_proses": "FA2-L06-XP-120",
+      "area": "XP 120",
+      "status": "active"
     }
   ],
   "tasks": [
+    {
+      "id": "task-1794975441612",
+      "user_id": "u-1794472740044",
+      "task_no": "T-20261118-348",
+      "tanggal": "2026-11-18",
+      "shift": 1,
+      "status": "new",
+      "start_time": "2026-11-18T04:17:21.613Z",
+      "end_time": null
+    },
+    {
+      "id": "task-1794974444443",
+      "user_id": "u-1794472740044",
+      "task_no": "T-20261118-275",
+      "tanggal": "2026-11-18",
+      "shift": 1,
+      "status": "completed",
+      "start_time": "2026-11-18T04:00:44.443Z",
+      "end_time": "2026-11-18T04:17:19.765Z"
+    },
+    {
+      "id": "task-1794973982766",
+      "user_id": "u-1794472740044",
+      "task_no": "T-20261118-725",
+      "tanggal": "2026-11-18",
+      "shift": 1,
+      "status": "completed",
+      "start_time": "2026-11-18T03:53:02.766Z",
+      "end_time": "2026-11-18T04:00:34.196Z"
+    },
     {
       "id": "task-1794472740044",
       "user_id": "u-1794472740044",
       "task_no": "T-20261112-883",
       "tanggal": "2026-11-12",
       "shift": 2,
-      "status": "active",
+      "status": "completed",
       "start_time": "2026-11-12T08:39:00.044Z",
-      "end_time": null
+      "end_time": "2026-11-18T03:42:41.510Z"
     },
     {
       "id": "task-1794472416721",
@@ -3987,9 +4289,419 @@
       "delivery_duration_sec": 27,
       "return_duration_sec": null,
       "id": "item-1794808376401-9zei"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794804509737-ldyq",
+      "material_id": "mat-1794470270577-cs10",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-m7qq",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-18T03:57:50.969Z",
+      "picked_at": "2026-11-18T03:58:33.617Z",
+      "delivered_at": "2026-11-18T04:00:11.556Z",
+      "return_at": null,
+      "delivery_duration_sec": 98,
+      "return_duration_sec": null,
+      "id": "item-1794974270969-o366"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794804509737-lgx2",
+      "material_id": "mat-1794470270577-47gd",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-9o8i",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-18T03:58:24.768Z",
+      "picked_at": "2026-11-18T03:58:33.617Z",
+      "delivered_at": "2026-11-18T04:00:30.012Z",
+      "return_at": null,
+      "delivery_duration_sec": 116,
+      "return_duration_sec": null,
+      "id": "item-1794974304768-v4h1"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794804509737-r941",
+      "material_id": "mat-1794470270576-2rpg",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-m7qq",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-18T04:16:15.184Z",
+      "picked_at": "2026-11-18T04:16:39.178Z",
+      "delivered_at": "2026-11-18T04:17:10.135Z",
+      "return_at": "2026-11-18T04:17:17.330Z",
+      "delivery_duration_sec": 31,
+      "return_duration_sec": 7,
+      "id": "item-1794975375184-nnq3"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "user_id": "u-1794472740044",
+      "rak_id": "rak-1794804509737-r941",
+      "material_id": "mat-1794470270577-47gd",
+      "qty": 10,
+      "satuan": "PC",
+      "line_id": "line-1794470294208-9o8i",
+      "status": "DELIVERED",
+      "departure_mode": "MANUAL_PRESS",
+      "last_material_scanned_at": "2026-11-18T04:16:34.126Z",
+      "picked_at": "2026-11-18T04:16:39.178Z",
+      "delivered_at": "2026-11-18T04:17:00.873Z",
+      "return_at": "2026-11-18T04:17:17.330Z",
+      "delivery_duration_sec": 22,
+      "return_duration_sec": 16,
+      "id": "item-1794975394126-fpe7"
     }
   ],
   "logs": [
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-mgr",
+      "operator_name": "MGR-TRIAL",
+      "event_type": "LOGIN",
+      "notes": "Staff login: MGR-TRIAL (MANAGER)",
+      "id": "log-1794976783083-vbu2",
+      "timestamp": "2026-11-18T04:39:43.083Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794976759882-anmt",
+      "timestamp": "2026-11-18T04:39:19.882Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-spv",
+      "operator_name": "SPV-TRIAL",
+      "event_type": "LOGIN",
+      "notes": "Staff login: SPV-TRIAL (SPV)",
+      "id": "log-1794976489682-05na",
+      "timestamp": "2026-11-18T04:34:49.682Z"
+    },
+    {
+      "task_id": "task-1794975441612",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794976428345-kwg6",
+      "timestamp": "2026-11-18T04:33:48.345Z"
+    },
+    {
+      "task_id": "task-1794975441612",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "TASK_CREATE",
+      "notes": "Task baru dibuat oleh operator: T-20261118-348 (Shift 1)",
+      "id": "log-1794975441613-b76h",
+      "timestamp": "2026-11-18T04:17:21.613Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "TASK_COMPLETED",
+      "notes": "Task T-20261118-275 dinyatakan SELESAI (COMPLETED).",
+      "id": "log-1794975439765-25o5",
+      "timestamp": "2026-11-18T04:17:19.765Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "RETURN_TO_RACK",
+      "notes": "Operator kembali ke area rak gudang (T3 recorded). Siklus selesai.",
+      "id": "log-1794975437331-rjgg",
+      "timestamp": "2026-11-18T04:17:17.331Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 LPIPE",
+      "notes": "Penyerahan sukses di LPIPE (1 item). Lead Time: 31s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794975430135-ub7r",
+      "timestamp": "2026-11-18T04:17:10.135Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "Penyerahan sukses di PACKING IN (1 item). Lead Time: 22s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794975420873-2iyh",
+      "timestamp": "2026-11-18T04:17:00.873Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "ZK60070",
+      "notes": "LOKASI SALAH! Scan QR ZK60070 tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794975413598-yvzh",
+      "timestamp": "2026-11-18T04:16:53.598Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Keberangkatan dikonfirmasi [MANUAL_PRESS]. Status barang diubah ke IN_TRANSIT (T1: 11.16.39).",
+      "id": "log-1794975399179-gdvy",
+      "timestamp": "2026-11-18T04:16:39.179Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "task_item_id": "item-1794975394126-fpe7",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZN17740 (10 PC) dari rak MGPTF RAK F",
+      "location_ref": "MGPTF RAK F",
+      "id": "log-1794975394126-mjru",
+      "timestamp": "2026-11-18T04:16:34.126Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "task_item_id": "item-1794975375184-nnq3",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: VDT2800 (10 PC) dari rak MGPTF RAK F",
+      "location_ref": "MGPTF RAK F",
+      "id": "log-1794975375185-d2xy",
+      "timestamp": "2026-11-18T04:16:15.185Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 LLTP",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 LLTP tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794975342226-06qm",
+      "timestamp": "2026-11-18T04:15:42.226Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794975325570-otfn",
+      "timestamp": "2026-11-18T04:15:25.570Z"
+    },
+    {
+      "task_id": "task-1794974444443",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "TASK_CREATE",
+      "notes": "Task baru dibuat oleh operator: T-20261118-275 (Shift 1)",
+      "id": "log-1794974444443-4mpv",
+      "timestamp": "2026-11-18T04:00:44.443Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "TASK_COMPLETED",
+      "notes": "Task T-20261118-725 dinyatakan SELESAI (COMPLETED).",
+      "id": "log-1794974434196-d95c",
+      "timestamp": "2026-11-18T04:00:34.196Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 PACKING IN",
+      "notes": "Penyerahan sukses di PACKING IN (1 item). Lead Time: 116s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794974430013-va76",
+      "timestamp": "2026-11-18T04:00:30.013Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L09 LLTP",
+      "notes": "LOKASI SALAH! Scan QR FA2-L09 LLTP tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794974420932-qheh",
+      "timestamp": "2026-11-18T04:00:20.932Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERED_CONFIRMED",
+      "departure_mode": "MANUAL_PRESS",
+      "location_ref": "FA2-L09 LPIPE",
+      "notes": "Penyerahan sukses di LPIPE (1 item). Lead Time: 98s. Mode: [MANUAL_PRESS].",
+      "id": "log-1794974411556-sj8u",
+      "timestamp": "2026-11-18T04:00:11.556Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L08-FINISH-GOODS",
+      "notes": "LOKASI SALAH! Scan QR FA2-L08-FINISH-GOODS tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794974342645-vxh2",
+      "timestamp": "2026-11-18T03:59:02.645Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DELIVERY_MISMATCH_REJECTED",
+      "location_ref": "FA2-L08-INSERT-NUT",
+      "notes": "LOKASI SALAH! Scan QR FA2-L08-INSERT-NUT tidak cocok dengan target line material di troli ini.",
+      "id": "log-1794974330908-nfbf",
+      "timestamp": "2026-11-18T03:58:50.908Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "DEPARTURE_MANUAL",
+      "departure_mode": "MANUAL_PRESS",
+      "notes": "Keberangkatan dikonfirmasi [MANUAL_PRESS]. Status barang diubah ke IN_TRANSIT (T1: 10.58.33).",
+      "id": "log-1794974313618-1n82",
+      "timestamp": "2026-11-18T03:58:33.618Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "task_item_id": "item-1794974304768-v4h1",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZN17740 (10 PC) dari rak MGPTF RAK I",
+      "location_ref": "MGPTF RAK I",
+      "id": "log-1794974304769-3h8s",
+      "timestamp": "2026-11-18T03:58:24.769Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "task_item_id": "item-1794974270969-o366",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "MATERIAL_PICKED",
+      "notes": "Scan material: ZK60070 (10 PC) dari rak MGPTF RAK C",
+      "location_ref": "MGPTF RAK C",
+      "id": "log-1794974270970-63lv",
+      "timestamp": "2026-11-18T03:57:50.970Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794974011528-b96m",
+      "timestamp": "2026-11-18T03:53:31.528Z"
+    },
+    {
+      "task_id": "task-1794472416721",
+      "operator_id": "u-1794472416721",
+      "operator_name": "Operator 318683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 318683 (318683)",
+      "id": "log-1794974002457-jpzj",
+      "timestamp": "2026-11-18T03:53:22.457Z"
+    },
+    {
+      "task_id": "task-1794973982766",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "TASK_CREATE",
+      "notes": "Task baru dibuat oleh operator: T-20261118-725 (Shift 1)",
+      "id": "log-1794973982767-3xkr",
+      "timestamp": "2026-11-18T03:53:02.767Z"
+    },
+    {
+      "task_id": "NO_TASK",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1794973972258-ki0e",
+      "timestamp": "2026-11-18T03:52:52.258Z"
+    },
+    {
+      "task_id": "task-1794472740044",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "TASK_COMPLETED",
+      "notes": "Task T-20261112-883 dinyatakan SELESAI (COMPLETED).",
+      "id": "log-1794973361510-denu",
+      "timestamp": "2026-11-18T03:42:41.510Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794973001973-5e65",
+      "timestamp": "2026-11-18T03:36:41.973Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794971994613-m8zo",
+      "timestamp": "2026-11-18T03:19:54.613Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794970031217-0q49",
+      "timestamp": "2026-11-18T02:47:11.217Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794969436029-eynj",
+      "timestamp": "2026-11-18T02:37:16.029Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794969107034-2w23",
+      "timestamp": "2026-11-18T02:31:47.034Z"
+    },
     {
       "task_id": "task-1794472740044",
       "operator_id": "u-1794472740044",
@@ -4387,5 +5099,5 @@
       "location_ref": "QR-LINE-02-SUBASSY"
     }
   ],
-  "last_updated": 1794808441919
+  "last_updated": 1794976783089
 }
