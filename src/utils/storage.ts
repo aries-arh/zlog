@@ -368,12 +368,15 @@ const SEED_LOGS: SpatiotemporalLogEvent[] = [
 ];
 
 // --------------------------------------------------------------------------
-// Multi-Device Central Server Synchronization Engine
+// Multi-Device Central Server Synchronization & Atomic Mutation Engine
 // Memastikan semua perangkat (PC, Laptop, PDA Handheld di IP berbeda)
-// membaca dan menyimpan data secara sinkron dan identik.
+// menyimpan perubahan secara atomik per-record tanpa saling menimpa data.
 // --------------------------------------------------------------------------
 let lastKnownServerTimestamp = 0;
-type SyncListener = (db: {
+let inFlightMutations = 0;
+let clientWriteQueue: Promise<void> = Promise.resolve();
+
+export interface ServerDbPayload {
   users?: User[];
   raks?: MasterRak[];
   materials?: MasterMaterial[];
@@ -381,33 +384,102 @@ type SyncListener = (db: {
   tasks?: Task[];
   task_items?: TaskItem[];
   logs?: SpatiotemporalLogEvent[];
-}) => void;
+}
+
+export type ServerMutationOp =
+  | { action: 'UPSERT_USER'; payload: { user: User } }
+  | { action: 'CREATE_TASK'; payload: { task: Task } }
+  | { action: 'UPDATE_TASK'; payload: { taskId: string; patch: Partial<Task> } }
+  | { action: 'ADD_TASK_ITEM'; payload: { item: TaskItem } }
+  | { action: 'REMOVE_TASK_ITEM'; payload: { itemId: string } }
+  | {
+      action: 'CONFIRM_TASK_DEPARTURE';
+      payload: { taskId: string; pickedAt: string; mode: TaskItem['departure_mode'] };
+    }
+  | {
+      action: 'UPDATE_TASK_ITEMS';
+      payload: { updates: Array<{ id: string; patch: Partial<TaskItem> }> };
+    }
+  | { action: 'APPEND_LOG'; payload: { log: SpatiotemporalLogEvent } };
+
+type SyncListener = (db: ServerDbPayload) => void;
 const syncListeners: Set<SyncListener> = new Set();
 
-const pushEntityToServer = async (entity: string, data: any) => {
-  try {
-    const res = await fetch('/api/save-entity', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ entity, data }),
-    });
-    if (res.ok) {
-      const json = await res.json();
-      if (json.last_updated) {
-        lastKnownServerTimestamp = json.last_updated;
-      }
-    }
-  } catch {
-    // Offline or network error - silent fallback, local cache tetap tersimpan
-  }
+const applyDbSnapshotToLocalCache = (db: ServerDbPayload) => {
+  if (Array.isArray(db.users)) localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(db.users));
+  if (Array.isArray(db.raks)) localStorage.setItem(STORAGE_KEYS.RAKS, JSON.stringify(db.raks));
+  if (Array.isArray(db.materials)) localStorage.setItem(STORAGE_KEYS.MATERIALS, JSON.stringify(db.materials));
+  if (Array.isArray(db.lines)) localStorage.setItem(STORAGE_KEYS.LINES, JSON.stringify(db.lines));
+  if (Array.isArray(db.tasks)) localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(db.tasks));
+  if (Array.isArray(db.task_items)) localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(db.task_items));
+  if (Array.isArray(db.logs)) localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(db.logs));
 };
 
-const notifySyncListeners = (data: any) => {
+const notifySyncListeners = (data: ServerDbPayload) => {
   syncListeners.forEach((listener) => {
     try {
       listener(data);
     } catch (err) {
       console.error('[Storage] Error in sync listener', err);
+    }
+  });
+};
+
+const enqueueClientWrite = <T>(fn: () => Promise<T>): Promise<T> => {
+  inFlightMutations++;
+  const taskPromise = clientWriteQueue.then(() => fn());
+  clientWriteQueue = taskPromise
+    .then(
+      () => undefined,
+      () => undefined
+    )
+    .finally(() => {
+      inFlightMutations = Math.max(0, inFlightMutations - 1);
+    });
+  return taskPromise;
+};
+
+const pushEntityToServer = (entity: string, data: any) => {
+  return enqueueClientWrite(async () => {
+    try {
+      const res = await fetch('/api/save-entity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entity, data }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.last_updated) {
+          lastKnownServerTimestamp = json.last_updated;
+        }
+      }
+    } catch {
+      // Offline or network error - silent fallback, local cache tetap tersimpan
+    }
+  });
+};
+
+const pushMutationsToServer = (operations: ServerMutationOp[]) => {
+  return enqueueClientWrite(async () => {
+    try {
+      const res = await fetch('/api/mutate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operations }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.last_updated) {
+          lastKnownServerTimestamp = json.last_updated;
+        }
+        // Only apply authoritative server snapshot if no newer mutation is queued behind this one
+        if (json.success && json.data && inFlightMutations <= 1) {
+          applyDbSnapshotToLocalCache(json.data);
+          notifySyncListeners(json.data);
+        }
+      }
+    } catch {
+      // Offline fallback: local optimistic cache tetap tersimpan
     }
   });
 };
@@ -423,23 +495,17 @@ export const storage = {
   },
 
   syncFromServer: async (): Promise<boolean> => {
+    if (inFlightMutations > 0) return false;
     try {
       const res = await fetch('/api/data');
+      if (inFlightMutations > 0) return false;
       if (res.ok) {
         const json = await res.json();
+        if (inFlightMutations > 0) return false;
         if (json.success && json.data) {
           const db = json.data;
           lastKnownServerTimestamp = json.last_updated || Date.now();
-
-          // Sync into localStorage as fast local cache
-          if (Array.isArray(db.users)) localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(db.users));
-          if (Array.isArray(db.raks)) localStorage.setItem(STORAGE_KEYS.RAKS, JSON.stringify(db.raks));
-          if (Array.isArray(db.materials)) localStorage.setItem(STORAGE_KEYS.MATERIALS, JSON.stringify(db.materials));
-          if (Array.isArray(db.lines)) localStorage.setItem(STORAGE_KEYS.LINES, JSON.stringify(db.lines));
-          if (Array.isArray(db.tasks)) localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(db.tasks));
-          if (Array.isArray(db.task_items)) localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(db.task_items));
-          if (Array.isArray(db.logs)) localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(db.logs));
-
+          applyDbSnapshotToLocalCache(db);
           notifySyncListeners(db);
           return true;
         }
@@ -451,8 +517,10 @@ export const storage = {
   },
 
   checkAndSync: async (): Promise<boolean> => {
+    if (inFlightMutations > 0) return false;
     try {
       const res = await fetch('/api/last-updated');
+      if (inFlightMutations > 0) return false;
       if (res.ok) {
         const json = await res.json();
         if (json.success && json.last_updated) {
@@ -465,6 +533,39 @@ export const storage = {
       // Offline
     }
     return false;
+  },
+
+  mutateBatch: (operations: ServerMutationOp[]) => {
+    if (operations.length === 0) return Promise.resolve();
+    return pushMutationsToServer(operations);
+  },
+
+  mutate: (op: ServerMutationOp) => {
+    return pushMutationsToServer([op]);
+  },
+
+  saveFullDatabase: (payload: ServerDbPayload) => {
+    return enqueueClientWrite(async () => {
+      try {
+        const res = await fetch('/api/data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.last_updated) {
+            lastKnownServerTimestamp = json.last_updated;
+          }
+          if (json.success && json.data && inFlightMutations <= 1) {
+            applyDbSnapshotToLocalCache(json.data);
+            notifySyncListeners(json.data);
+          }
+        }
+      } catch {
+        // Offline fallback
+      }
+    });
   },
 
   getUsers: (): User[] => {
@@ -504,6 +605,9 @@ export const storage = {
   saveUsers: (users: User[]) => {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
     pushEntityToServer('users', users);
+  },
+  saveUsersLocalOnly: (users: User[]) => {
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
   },
 
   getRaks: (): MasterRak[] => {
@@ -557,6 +661,9 @@ export const storage = {
     localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
     pushEntityToServer('tasks', tasks);
   },
+  saveTasksLocalOnly: (tasks: Task[]) => {
+    localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+  },
 
   getTaskItems: (): TaskItem[] => {
     const raw = localStorage.getItem(STORAGE_KEYS.TASK_ITEMS);
@@ -570,6 +677,9 @@ export const storage = {
     localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(items));
     pushEntityToServer('task_items', items);
   },
+  saveTaskItemsLocalOnly: (items: TaskItem[]) => {
+    localStorage.setItem(STORAGE_KEYS.TASK_ITEMS, JSON.stringify(items));
+  },
 
   getLogs: (): SpatiotemporalLogEvent[] => {
     const raw = localStorage.getItem(STORAGE_KEYS.LOGS);
@@ -579,21 +689,25 @@ export const storage = {
     }
     return JSON.parse(raw);
   },
-  addLog: (log: Omit<SpatiotemporalLogEvent, 'id' | 'timestamp'>) => {
+  createLogLocal: (log: Omit<SpatiotemporalLogEvent, 'id' | 'timestamp'>): SpatiotemporalLogEvent => {
     const logs = storage.getLogs();
     const newLog: SpatiotemporalLogEvent = {
       ...log,
       id: `log-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       timestamp: new Date().toISOString(),
     };
-    logs.unshift(newLog); // latest first
-    const trimmed = logs.slice(0, 500);
+    logs.unshift(newLog);
+    const trimmed = logs.slice(0, 1000);
     localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(trimmed));
-    pushEntityToServer('logs', trimmed);
+    return newLog;
+  },
+  addLog: (log: Omit<SpatiotemporalLogEvent, 'id' | 'timestamp'>) => {
+    const newLog = storage.createLogLocal(log);
+    pushMutationsToServer([{ action: 'APPEND_LOG', payload: { log: newLog } }]);
     return newLog;
   },
   saveLogs: (logs: SpatiotemporalLogEvent[]) => {
-    const trimmed = logs.slice(0, 500);
+    const trimmed = logs.slice(0, 1000);
     localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(trimmed));
     pushEntityToServer('logs', trimmed);
   },

@@ -95,10 +95,10 @@ export const App: React.FC = () => {
     // Initial server fetch
     storage.syncFromServer();
 
-    // High-frequency polling (2.5s) to sync tasks/scans across all devices and IPs
+    // High-frequency polling (1.5s) to sync tasks/scans across all devices and IPs
     const syncInterval = setInterval(() => {
       storage.checkAndSync();
-    }, 2500);
+    }, 1500);
 
     const handleFocusSync = () => {
       storage.checkAndSync();
@@ -147,6 +147,15 @@ export const App: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [currentUser]);
+
+  // Keep currentActiveTask synchronized with server updates
+  useEffect(() => {
+    if (!currentActiveTask) return;
+    const latest = tasks.find((t) => t.id === currentActiveTask.id);
+    if (latest && (latest.status !== currentActiveTask.status || latest.end_time !== currentActiveTask.end_time)) {
+      setCurrentActiveTask(latest);
+    }
+  }, [tasks, currentActiveTask]);
 
   const loadAllData = () => {
     const loadedUsers = storage.getUsers();
@@ -220,7 +229,8 @@ export const App: React.FC = () => {
               end_time: null,
             };
             const updatedTasks = [newTask, ...loadedTasks];
-            storage.saveTasks(updatedTasks);
+            storage.saveTasksLocalOnly(updatedTasks);
+            storage.mutate({ action: 'CREATE_TASK', payload: { task: newTask } });
             storage.setActiveTaskId(newTaskId);
             setTasks(updatedTasks);
             setCurrentActiveTask(newTask);
@@ -271,13 +281,13 @@ export const App: React.FC = () => {
         };
       }
 
-      // Existing registered User -> Update login and redirect
+      // Existing registered User -> Update login and redirect atomically
       const updatedUser: User = {
         ...existingUser,
         last_login_at: new Date().toISOString(),
       };
       const updatedUsers = allUsers.map((u) => (u.id === existingUser.id ? updatedUser : u));
-      storage.saveUsers(updatedUsers);
+      storage.saveUsersLocalOnly(updatedUsers);
       storage.setCurrentUser(updatedUser);
       setAllUsers(updatedUsers);
       setCurrentUser(updatedUser);
@@ -294,14 +304,19 @@ export const App: React.FC = () => {
         storage.setActiveTaskId(null);
       }
 
-      storage.addLog({
+      const logEntry = storage.createLogLocal({
         task_id: userActiveTask?.id || 'NO_TASK',
         operator_id: existingUser.id,
         operator_name: existingUser.nama,
         event_type: 'LOGIN',
         notes: `Operator terdaftar login: ${existingUser.nama} (${existingUser.employee_id})`,
       });
-      setLogs(storage.getLogs());
+      setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+      storage.mutateBatch([
+        { action: 'UPSERT_USER', payload: { user: updatedUser } },
+        { action: 'APPEND_LOG', payload: { log: logEntry } },
+      ]);
 
       if (userActiveTask) {
         navigateToView('operator-task-input');
@@ -312,8 +327,9 @@ export const App: React.FC = () => {
       sound.playSuccessBeep();
       return { success: true };
     } else {
-      // AUTO-CREATE OPERATOR BARU: Memudahkan operator baru langsung bisa memakai sistem
-      const newUserId = `u-${Date.now()}`;
+      // AUTO-CREATE OPERATOR BARU: Memudahkan operator baru langsung bisa memakai sistem secara atomik
+      const nowMs = Date.now();
+      const newUserId = `u-${nowMs}-${Math.random().toString(36).slice(2, 6)}`;
       const newUser: User = {
         id: newUserId,
         employee_id: cleanId.toUpperCase(),
@@ -325,7 +341,7 @@ export const App: React.FC = () => {
         last_login_at: new Date().toISOString(),
       };
 
-      const newTaskId = `task-${Date.now()}`;
+      const newTaskId = `task-${nowMs}-${Math.random().toString(36).slice(2, 6)}`;
       const newTask: Task = {
         id: newTaskId,
         user_id: newUserId,
@@ -340,8 +356,8 @@ export const App: React.FC = () => {
       const updatedUsers = [...allUsers, newUser];
       const updatedTasks = [newTask, ...tasks];
 
-      storage.saveUsers(updatedUsers);
-      storage.saveTasks(updatedTasks);
+      storage.saveUsersLocalOnly(updatedUsers);
+      storage.saveTasksLocalOnly(updatedTasks);
       storage.setCurrentUser(newUser);
       storage.setActiveTaskId(newTaskId);
 
@@ -350,14 +366,20 @@ export const App: React.FC = () => {
       setCurrentUser(newUser);
       setCurrentActiveTask(newTask);
 
-      storage.addLog({
+      const logEntry = storage.createLogLocal({
         task_id: newTaskId,
         operator_id: newUserId,
         operator_name: newUser.nama,
         event_type: 'AUTO_REGISTER',
         notes: `POKA-YOKE FAST-TRACK: Operator baru otomatis didaftarkan: ${newUser.nama} (${newUser.employee_id}). Task awal ${newTask.task_no} dibuat.`,
       });
-      setLogs(storage.getLogs());
+      setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+      storage.mutateBatch([
+        { action: 'UPSERT_USER', payload: { user: newUser } },
+        { action: 'CREATE_TASK', payload: { task: newTask } },
+        { action: 'APPEND_LOG', payload: { log: logEntry } },
+      ]);
 
       sound.playSuccessBeep();
       // Direct masuk ke Panel Input Task agar operator baru langsung bekerja!
@@ -400,19 +422,24 @@ export const App: React.FC = () => {
       last_login_at: new Date().toISOString(),
     };
     const updatedUsers = allUsers.map((u) => (u.id === user.id ? updatedUser : u));
-    storage.saveUsers(updatedUsers);
+    storage.saveUsersLocalOnly(updatedUsers);
     storage.setCurrentUser(updatedUser);
     setAllUsers(updatedUsers);
     setCurrentUser(updatedUser);
 
-    storage.addLog({
+    const logEntry = storage.createLogLocal({
       task_id: 'SYSTEM',
       operator_id: user.id,
       operator_name: user.nama,
       event_type: 'LOGIN',
       notes: `Staff login: ${user.nama} (${user.role.toUpperCase()})`,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      { action: 'UPSERT_USER', payload: { user: updatedUser } },
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
 
     if (user.role === 'admin') navigateToView('admin');
     else if (user.role === 'spv') navigateToView('spv');
@@ -433,10 +460,10 @@ export const App: React.FC = () => {
     loadAllData();
   };
 
-  // Operator creates new task
+  // Operator creates new task (atomic per-record)
   const handleCreateNewTask = () => {
     if (!currentUser) return;
-    const newTaskId = `task-${Date.now()}`;
+    const newTaskId = `task-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
     const newTask: Task = {
       id: newTaskId,
       user_id: currentUser.id,
@@ -448,39 +475,48 @@ export const App: React.FC = () => {
       end_time: null,
     };
 
-    const updatedTasks = [newTask, ...tasks];
-    storage.saveTasks(updatedTasks);
+    setTasks((prev) => {
+      const next = [newTask, ...prev];
+      storage.saveTasksLocalOnly(next);
+      return next;
+    });
     storage.setActiveTaskId(newTaskId);
-    setTasks(updatedTasks);
     setCurrentActiveTask(newTask);
 
-    storage.addLog({
+    const logEntry = storage.createLogLocal({
       task_id: newTaskId,
       operator_id: currentUser.id,
       operator_name: currentUser.nama,
       event_type: 'TASK_CREATE',
       notes: `Task baru dibuat oleh operator: ${newTask.task_no} (Shift ${newTask.shift})`,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      { action: 'CREATE_TASK', payload: { task: newTask } },
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
 
     navigateToView('operator-task-input');
   };
 
-  // Operator adds item to trolley
+  // Operator adds item to trolley (atomic per-record so concurrent operators never overwrite each other)
   const handleAddTaskItem = (itemData: Omit<TaskItem, 'id'>) => {
     const newItem: TaskItem = {
       ...itemData,
       id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     };
 
-    const updatedItems = [...taskItems, newItem];
-    storage.saveTaskItems(updatedItems);
-    setTaskItems(updatedItems);
+    setTaskItems((prev) => {
+      const next = [...prev, newItem];
+      storage.saveTaskItemsLocalOnly(next);
+      return next;
+    });
 
     const mat = allMaterials.find((m) => m.id === newItem.material_id);
     const rak = allRaks.find((r) => r.id === newItem.rak_id);
 
-    storage.addLog({
+    const logEntry = storage.createLogLocal({
       task_id: newItem.task_id,
       task_item_id: newItem.id,
       operator_id: newItem.user_id,
@@ -489,51 +525,63 @@ export const App: React.FC = () => {
       notes: `Scan material: ${mat?.kode_material} (${newItem.qty} ${newItem.satuan}) dari rak ${rak?.kode_rak}`,
       location_ref: rak?.kode_rak,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      { action: 'ADD_TASK_ITEM', payload: { item: newItem } },
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
   };
 
-  // Operator removes item from trolley
+  // Operator removes item from trolley (atomic per-record)
   const handleRemoveTaskItem = (itemId: string) => {
-    const updatedItems = taskItems.filter((i) => i.id !== itemId);
-    storage.saveTaskItems(updatedItems);
-    setTaskItems(updatedItems);
+    setTaskItems((prev) => {
+      const next = prev.filter((i) => i.id !== itemId);
+      storage.saveTaskItemsLocalOnly(next);
+      return next;
+    });
+    storage.mutate({ action: 'REMOVE_TASK_ITEM', payload: { itemId } });
   };
 
-  // Operator confirms departure (T1)
+  // Operator confirms departure (T1) atomically for current task
   const handleConfirmDeparture = (mode: DepartureMode) => {
     if (!currentActiveTask) return;
+    const targetTaskId = currentActiveTask.id;
     const now = new Date().toISOString();
 
-    const updatedItems = taskItems.map((item) => {
-      if (item.task_id === currentActiveTask.id && item.status === 'PICKED') {
-        return {
-          ...item,
-          status: 'IN_TRANSIT' as const,
-          picked_at: now,
-          departure_mode: mode,
-        };
-      }
-      return item;
+    setTaskItems((prev) => {
+      const next = prev.map((item) => {
+        if (item.task_id === targetTaskId && item.status === 'PICKED') {
+          return {
+            ...item,
+            status: 'IN_TRANSIT' as const,
+            picked_at: now,
+            departure_mode: mode,
+          };
+        }
+        return item;
+      });
+      storage.saveTaskItemsLocalOnly(next);
+      return next;
     });
 
-    const updatedTasks = tasks.map((t) => {
-      if (t.id === currentActiveTask.id) {
-        return {
-          ...t,
-          status: 'active' as const,
-          start_time: t.start_time || now,
-        };
-      }
-      return t;
+    setTasks((prev) => {
+      const next = prev.map((t) => {
+        if (t.id === targetTaskId) {
+          return {
+            ...t,
+            status: 'active' as const,
+            start_time: t.start_time || now,
+          };
+        }
+        return t;
+      });
+      storage.saveTasksLocalOnly(next);
+      return next;
     });
 
-    storage.saveTaskItems(updatedItems);
-    storage.saveTasks(updatedTasks);
-    setTaskItems(updatedItems);
-    setTasks(updatedTasks);
-
-    storage.addLog({
-      task_id: currentActiveTask.id,
+    const logEntry = storage.createLogLocal({
+      task_id: targetTaskId,
       operator_id: currentUser?.id || '',
       operator_name: currentUser?.nama || 'Operator',
       event_type: 'DEPARTURE_MANUAL',
@@ -542,10 +590,18 @@ export const App: React.FC = () => {
         now
       ).toLocaleTimeString('id-ID')}).`,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      {
+        action: 'CONFIRM_TASK_DEPARTURE',
+        payload: { taskId: targetTaskId, pickedAt: now, mode },
+      },
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
   };
 
-  // COMPLETION SCAN VERIFICATION WITH POKA-YOKE AUTO-DEPARTURE FALLBACK (Section 5.2 & Section 9.2)
+  // COMPLETION SCAN VERIFICATION WITH POKA-YOKE AUTO-DEPARTURE FALLBACK (Atomic per-item update)
   const handleVerifyDestinationScan = (scannedQr: string) => {
     if (!currentActiveTask) {
       return { success: false, matchedCount: 0, errorMessage: 'Tidak ada task aktif.' };
@@ -554,19 +610,13 @@ export const App: React.FC = () => {
     const now = new Date();
     const nowIso = now.toISOString();
 
-    // Find all items in this task that are either PICKED or IN_TRANSIT
-    const activeItems = taskItems.filter(
-      (item) =>
-        item.task_id === currentActiveTask.id &&
-        (item.status === 'PICKED' || item.status === 'IN_TRANSIT')
-    );
-
     let matchedCount = 0;
     let targetLineName = '';
-    let finalDepMode: DepartureMode = 'MANUAL_PRESS';
+    let hasFallback = false;
     let leadTimeSec = 0;
+    const itemUpdates: Array<{ id: string; patch: Partial<TaskItem> }> = [];
 
-    const updatedItems = taskItems.map((item) => {
+    taskItems.forEach((item) => {
       if (
         item.task_id === currentActiveTask.id &&
         (item.status === 'PICKED' || item.status === 'IN_TRANSIT')
@@ -580,11 +630,12 @@ export const App: React.FC = () => {
           let depMode: DepartureMode = item.departure_mode;
 
           if (!pickedTimeStr) {
-            // Jalur Fallback: otomatis ambil timestamp scan material terakhir
             pickedTimeStr = item.last_material_scanned_at || nowIso;
             depMode = 'AUTO_FALLBACK';
+            hasFallback = true;
+          } else if (depMode === 'AUTO_FALLBACK') {
+            hasFallback = true;
           }
-          finalDepMode = depMode;
 
           const pickedTimeDate = new Date(pickedTimeStr);
           const diffSeconds = Math.max(
@@ -592,32 +643,36 @@ export const App: React.FC = () => {
             Math.round((now.getTime() - pickedTimeDate.getTime()) / 1000)
           );
           leadTimeSec = diffSeconds;
-
           matchedCount++;
 
-          return {
-            ...item,
-            status: 'DELIVERED' as const,
-            picked_at: pickedTimeStr,
-            delivered_at: nowIso,
-            departure_mode: depMode,
-            delivery_duration_sec: diffSeconds,
-          };
+          itemUpdates.push({
+            id: item.id,
+            patch: {
+              status: 'DELIVERED',
+              picked_at: pickedTimeStr,
+              delivered_at: nowIso,
+              departure_mode: depMode,
+              delivery_duration_sec: diffSeconds,
+            },
+          });
         }
       }
-      return item;
     });
 
     if (matchedCount > 0) {
-      storage.saveTaskItems(updatedItems);
-      setTaskItems(updatedItems);
+      const patchMap = new Map(itemUpdates.map((u) => [u.id, u.patch]));
+      setTaskItems((prev) => {
+        const next = prev.map((item) => {
+          const patch = patchMap.get(item.id);
+          return patch ? { ...item, ...patch } : item;
+        });
+        storage.saveTaskItemsLocalOnly(next);
+        return next;
+      });
 
-      const isFallback = updatedItems.some(
-        (i) => i.departure_mode === 'AUTO_FALLBACK' && i.delivered_at === nowIso
-      );
-      const determinedDepMode: DepartureMode = isFallback ? 'AUTO_FALLBACK' : 'MANUAL_PRESS';
+      const determinedDepMode: DepartureMode = hasFallback ? 'AUTO_FALLBACK' : 'MANUAL_PRESS';
 
-      storage.addLog({
+      const logEntry = storage.createLogLocal({
         task_id: currentActiveTask.id,
         operator_id: currentUser?.id || '',
         operator_name: currentUser?.nama || 'Operator',
@@ -629,7 +684,12 @@ export const App: React.FC = () => {
         location_ref: scannedQr,
         notes: `Penyerahan sukses di ${targetLineName} (${matchedCount} item). Lead Time: ${leadTimeSec}s. Mode: [${determinedDepMode}].`,
       });
-      setLogs(storage.getLogs());
+      setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+      storage.mutateBatch([
+        { action: 'UPDATE_TASK_ITEMS', payload: { updates: itemUpdates } },
+        { action: 'APPEND_LOG', payload: { log: logEntry } },
+      ]);
 
       return {
         success: true,
@@ -640,7 +700,7 @@ export const App: React.FC = () => {
       };
     } else {
       // Rejection log
-      storage.addLog({
+      const logEntry = storage.createLogLocal({
         task_id: currentActiveTask.id,
         operator_id: currentUser?.id || '',
         operator_name: currentUser?.nama || 'Operator',
@@ -648,7 +708,8 @@ export const App: React.FC = () => {
         location_ref: scannedQr,
         notes: `LOKASI SALAH! Scan QR ${scannedQr} tidak cocok dengan target line material di troli ini.`,
       });
-      setLogs(storage.getLogs());
+      setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+      storage.mutate({ action: 'APPEND_LOG', payload: { log: logEntry } });
 
       return {
         success: false,
@@ -658,13 +719,14 @@ export const App: React.FC = () => {
     }
   };
 
-  // Return to Rack (T3)
+  // Return to Rack (T3) atomically per item
   const handleReturnToRack = () => {
     if (!currentActiveTask) return;
     const now = new Date();
     const nowIso = now.toISOString();
+    const itemUpdates: Array<{ id: string; patch: Partial<TaskItem> }> = [];
 
-    const updatedItems = taskItems.map((item) => {
+    taskItems.forEach((item) => {
       if (
         item.task_id === currentActiveTask.id &&
         item.status === 'DELIVERED' &&
@@ -672,180 +734,189 @@ export const App: React.FC = () => {
       ) {
         const deliveredDate = item.delivered_at ? new Date(item.delivered_at) : now;
         const returnSec = Math.max(1, Math.round((now.getTime() - deliveredDate.getTime()) / 1000));
-        return {
-          ...item,
-          return_at: nowIso,
-          return_duration_sec: returnSec,
-        };
+        itemUpdates.push({
+          id: item.id,
+          patch: {
+            return_at: nowIso,
+            return_duration_sec: returnSec,
+          },
+        });
       }
-      return item;
     });
 
-    storage.saveTaskItems(updatedItems);
-    setTaskItems(updatedItems);
+    if (itemUpdates.length > 0) {
+      const patchMap = new Map(itemUpdates.map((u) => [u.id, u.patch]));
+      setTaskItems((prev) => {
+        const next = prev.map((item) => {
+          const patch = patchMap.get(item.id);
+          return patch ? { ...item, ...patch } : item;
+        });
+        storage.saveTaskItemsLocalOnly(next);
+        return next;
+      });
+    }
 
-    storage.addLog({
+    const logEntry = storage.createLogLocal({
       task_id: currentActiveTask.id,
       operator_id: currentUser?.id || '',
       operator_name: currentUser?.nama || 'Operator',
       event_type: 'RETURN_TO_RACK',
       notes: `Operator kembali ke area rak gudang (T3 recorded). Siklus selesai.`,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      ...(itemUpdates.length > 0
+        ? [{ action: 'UPDATE_TASK_ITEMS' as const, payload: { updates: itemUpdates } }]
+        : []),
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
   };
 
-  // Complete task
+  // Complete task atomically
   const handleCompleteTask = () => {
     if (!currentActiveTask) return;
+    const targetTaskId = currentActiveTask.id;
+    const targetTaskNo = currentActiveTask.task_no;
     const nowIso = new Date().toISOString();
 
-    const updatedTasks = tasks.map((t) => {
-      if (t.id === currentActiveTask.id) {
-        return {
-          ...t,
-          status: 'completed' as const,
-          end_time: nowIso,
-        };
-      }
-      return t;
+    setTasks((prev) => {
+      const next = prev.map((t) => {
+        if (t.id === targetTaskId) {
+          return {
+            ...t,
+            status: 'completed' as const,
+            end_time: nowIso,
+          };
+        }
+        return t;
+      });
+      storage.saveTasksLocalOnly(next);
+      return next;
     });
 
-    storage.saveTasks(updatedTasks);
     storage.setActiveTaskId(null);
-    setTasks(updatedTasks);
     setCurrentActiveTask(null);
 
-    storage.addLog({
-      task_id: currentActiveTask.id,
+    const logEntry = storage.createLogLocal({
+      task_id: targetTaskId,
       operator_id: currentUser?.id || '',
       operator_name: currentUser?.nama || 'Operator',
       event_type: 'TASK_COMPLETED',
-      notes: `Task ${currentActiveTask.task_no} dinyatakan SELESAI (COMPLETED).`,
+      notes: `Task ${targetTaskNo} dinyatakan SELESAI (COMPLETED).`,
     });
-    setLogs(storage.getLogs());
+    setLogs((prev) => [logEntry, ...prev].slice(0, 1000));
+
+    storage.mutateBatch([
+      {
+        action: 'UPDATE_TASK',
+        payload: { taskId: targetTaskId, patch: { status: 'completed', end_time: nowIso } },
+      },
+      { action: 'APPEND_LOG', payload: { log: logEntry } },
+    ]);
 
     sound.playDeliveryConfirmedChime();
     navigateToView('operator-history');
   };
 
-  // Restore / Import Database from JSON Backup
+  // Restore / Import Database from JSON Backup (single atomic server snapshot)
   const handleRestoreDatabase = (
     backup: DatabaseBackupPayload,
     mode: 'overwrite' | 'merge'
   ) => {
     recordActivity();
 
+    let finalRaks = allRaks;
+    let finalMaterials = allMaterials;
+    let finalLines = allLines;
+    let finalUsers = allUsers;
+    let finalTasks = tasks;
+    let finalItems = taskItems;
+    let finalLogs = logs;
+
     // 1. RAKS
     if (backup.raks && Array.isArray(backup.raks)) {
-      let finalRaks: MasterRak[] = [];
       if (mode === 'overwrite') {
         finalRaks = backup.raks;
       } else {
         const existingIds = new Set(allRaks.map((r) => r.id));
-        const updated = allRaks.map((r) => {
-          const match = backup.raks!.find((b) => b.id === r.id);
-          return match || r;
-        });
+        const updated = allRaks.map((r) => backup.raks!.find((b) => b.id === r.id) || r);
         const added = backup.raks.filter((b) => !existingIds.has(b.id));
         finalRaks = [...updated, ...added];
       }
       setAllRaks(finalRaks);
-      storage.saveRaks(finalRaks);
     }
 
     // 2. MATERIALS
     if (backup.materials && Array.isArray(backup.materials)) {
-      let finalMaterials: MasterMaterial[] = [];
       if (mode === 'overwrite') {
         finalMaterials = backup.materials;
       } else {
         const existingIds = new Set(allMaterials.map((m) => m.id));
-        const updated = allMaterials.map((m) => {
-          const match = backup.materials!.find((b) => b.id === m.id);
-          return match || m;
-        });
+        const updated = allMaterials.map((m) => backup.materials!.find((b) => b.id === m.id) || m);
         const added = backup.materials.filter((b) => !existingIds.has(b.id));
         finalMaterials = [...updated, ...added];
       }
       setAllMaterials(finalMaterials);
-      storage.saveMaterials(finalMaterials);
     }
 
     // 3. LINES
     if (backup.lines && Array.isArray(backup.lines)) {
-      let finalLines: MasterLine[] = [];
       if (mode === 'overwrite') {
         finalLines = backup.lines;
       } else {
         const existingIds = new Set(allLines.map((l) => l.id));
-        const updated = allLines.map((l) => {
-          const match = backup.lines!.find((b) => b.id === l.id);
-          return match || l;
-        });
+        const updated = allLines.map((l) => backup.lines!.find((b) => b.id === l.id) || l);
         const added = backup.lines.filter((b) => !existingIds.has(b.id));
         finalLines = [...updated, ...added];
       }
       setAllLines(finalLines);
-      storage.saveLines(finalLines);
     }
 
     // 4. USERS
     if (backup.users && Array.isArray(backup.users)) {
-      let finalUsers: User[] = [];
       if (mode === 'overwrite') {
         finalUsers = backup.users;
       } else {
         const existingIds = new Set(allUsers.map((u) => u.id));
-        const updated = allUsers.map((u) => {
-          const match = backup.users!.find((b) => b.id === u.id);
-          return match || u;
-        });
+        const updated = allUsers.map((u) => backup.users!.find((b) => b.id === u.id) || u);
         const added = backup.users.filter((b) => !existingIds.has(b.id));
         finalUsers = [...updated, ...added];
       }
       setAllUsers(finalUsers);
-      storage.saveUsers(finalUsers);
+      storage.saveUsersLocalOnly(finalUsers);
     }
 
     // 5. TASKS
     if (backup.tasks && Array.isArray(backup.tasks)) {
-      let finalTasks: Task[] = [];
       if (mode === 'overwrite') {
         finalTasks = backup.tasks;
       } else {
         const existingIds = new Set(tasks.map((t) => t.id));
-        const updated = tasks.map((t) => {
-          const match = backup.tasks!.find((b) => b.id === t.id);
-          return match || t;
-        });
+        const updated = tasks.map((t) => backup.tasks!.find((b) => b.id === t.id) || t);
         const added = backup.tasks.filter((b) => !existingIds.has(b.id));
         finalTasks = [...updated, ...added];
       }
       setTasks(finalTasks);
-      storage.saveTasks(finalTasks);
+      storage.saveTasksLocalOnly(finalTasks);
     }
 
     // 6. TASK ITEMS
     if (backup.taskItems && Array.isArray(backup.taskItems)) {
-      let finalItems: TaskItem[] = [];
       if (mode === 'overwrite') {
         finalItems = backup.taskItems;
       } else {
         const existingIds = new Set(taskItems.map((i) => i.id));
-        const updated = taskItems.map((i) => {
-          const match = backup.taskItems!.find((b) => b.id === i.id);
-          return match || i;
-        });
+        const updated = taskItems.map((i) => backup.taskItems!.find((b) => b.id === i.id) || i);
         const added = backup.taskItems.filter((b) => !existingIds.has(b.id));
         finalItems = [...updated, ...added];
       }
       setTaskItems(finalItems);
-      storage.saveTaskItems(finalItems);
+      storage.saveTaskItemsLocalOnly(finalItems);
     }
 
     // 7. LOGS
     if (backup.logs && Array.isArray(backup.logs)) {
-      let finalLogs: SpatiotemporalLogEvent[] = [];
       if (mode === 'overwrite') {
         finalLogs = backup.logs;
       } else {
@@ -854,17 +925,30 @@ export const App: React.FC = () => {
         finalLogs = [...logs, ...added];
       }
       setLogs(finalLogs);
-      storage.saveLogs(finalLogs);
     }
 
-    storage.addLog({
+    const restoreLog: SpatiotemporalLogEvent = {
+      id: `log-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      timestamp: new Date().toISOString(),
       task_id: 'SYSTEM',
       operator_id: currentUser?.id || 'admin',
       operator_name: currentUser?.nama || 'Administrator',
       event_type: 'DATABASE_RESTORE',
       notes: `Database berhasil di-restore dari file JSON backup (Mode: ${mode.toUpperCase()}) pada ${new Date().toLocaleString('id-ID')}.`,
+    };
+    const nextLogs = [restoreLog, ...finalLogs].slice(0, 1000);
+    setLogs(nextLogs);
+
+    storage.saveFullDatabase({
+      raks: finalRaks,
+      materials: finalMaterials,
+      lines: finalLines,
+      users: finalUsers,
+      tasks: finalTasks,
+      task_items: finalItems,
+      logs: nextLogs,
     });
-    setLogs(storage.getLogs());
+
     sound.playSuccessBeep();
     alert(`Database berhasil dipulihkan (${mode === 'overwrite' ? 'Restore Penuh / Overwrite' : 'Merge / Penggabungan Data'})!`);
   };

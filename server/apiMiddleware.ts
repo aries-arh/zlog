@@ -271,6 +271,19 @@ const INITIAL_DATA = {
   last_updated: Date.now(),
 };
 
+// In-process serialized write queue to prevent concurrent read-modify-write races
+let writeQueue: Promise<void> = Promise.resolve();
+
+function enqueueDbMutation<T>(fn: () => T): Promise<T> {
+  const resultPromise = writeQueue.then(() => fn());
+  // Keep queue alive even if an individual task throws
+  writeQueue = resultPromise.then(
+    () => undefined,
+    () => undefined
+  );
+  return resultPromise;
+}
+
 // Ensure data folder and file exists
 function ensureDb(): any {
   const dir = path.dirname(DB_PATH);
@@ -278,27 +291,156 @@ function ensureDb(): any {
     fs.mkdirSync(dir, { recursive: true });
   }
   if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), 'utf-8');
-    return INITIAL_DATA;
+    const initialCopy = JSON.parse(JSON.stringify(INITIAL_DATA));
+    fs.writeFileSync(DB_PATH, JSON.stringify(initialCopy, null, 2), 'utf-8');
+    return initialCopy;
   }
   try {
     const raw = fs.readFileSync(DB_PATH, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
     console.error('[ZEVA-API] Error reading db.json, re-initializing...', err);
-    fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), 'utf-8');
-    return INITIAL_DATA;
+    const initialCopy = JSON.parse(JSON.stringify(INITIAL_DATA));
+    fs.writeFileSync(DB_PATH, JSON.stringify(initialCopy, null, 2), 'utf-8');
+    return initialCopy;
   }
 }
 
-function writeDb(data: any) {
+// Atomic write using temp file + rename so readers never see partial JSON
+function writeDb(data: any): number {
   const dir = path.dirname(DB_PATH);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
   data.last_updated = Date.now();
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+  const payload = JSON.stringify(data, null, 2);
+  const tmpPath = `${DB_PATH}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2, 6)}`;
+  fs.writeFileSync(tmpPath, payload, 'utf-8');
+  fs.renameSync(tmpPath, DB_PATH);
   return data.last_updated;
+}
+
+function applySingleOperation(db: any, action: string, payload: any) {
+  if (!Array.isArray(db.users)) db.users = [];
+  if (!Array.isArray(db.raks)) db.raks = [];
+  if (!Array.isArray(db.materials)) db.materials = [];
+  if (!Array.isArray(db.lines)) db.lines = [];
+  if (!Array.isArray(db.tasks)) db.tasks = [];
+  if (!Array.isArray(db.task_items)) db.task_items = [];
+  if (!Array.isArray(db.logs)) db.logs = [];
+
+  switch (action) {
+    case 'UPSERT_USER': {
+      const user = payload?.user;
+      if (!user || !user.id) break;
+      const idx = db.users.findIndex(
+        (u: any) =>
+          u.id === user.id ||
+          (u.employee_id &&
+            user.employee_id &&
+            String(u.employee_id).toLowerCase() === String(user.employee_id).toLowerCase())
+      );
+      if (idx >= 0) {
+        db.users[idx] = { ...db.users[idx], ...user, id: db.users[idx].id };
+      } else {
+        db.users.push(user);
+      }
+      break;
+    }
+
+    case 'CREATE_TASK': {
+      const task = payload?.task;
+      if (!task || !task.id) break;
+      const exists = db.tasks.some((t: any) => t.id === task.id);
+      if (!exists) {
+        db.tasks.unshift(task);
+      }
+      break;
+    }
+
+    case 'UPDATE_TASK': {
+      const { taskId, patch } = payload || {};
+      if (!taskId || !patch) break;
+      db.tasks = db.tasks.map((t: any) => (t.id === taskId ? { ...t, ...patch } : t));
+      break;
+    }
+
+    case 'ADD_TASK_ITEM': {
+      const item = payload?.item;
+      if (!item || !item.id) break;
+      const exists = db.task_items.some((i: any) => i.id === item.id);
+      if (!exists) {
+        db.task_items.push(item);
+      }
+      break;
+    }
+
+    case 'REMOVE_TASK_ITEM': {
+      const { itemId } = payload || {};
+      if (!itemId) break;
+      db.task_items = db.task_items.filter((i: any) => i.id !== itemId);
+      break;
+    }
+
+    case 'CONFIRM_TASK_DEPARTURE': {
+      const { taskId, pickedAt, mode } = payload || {};
+      if (!taskId || !pickedAt) break;
+      db.task_items = db.task_items.map((item: any) => {
+        if (item.task_id === taskId && item.status === 'PICKED') {
+          return {
+            ...item,
+            status: 'IN_TRANSIT',
+            picked_at: pickedAt,
+            departure_mode: mode || 'MANUAL_PRESS',
+          };
+        }
+        return item;
+      });
+      db.tasks = db.tasks.map((t: any) => {
+        if (t.id === taskId) {
+          return {
+            ...t,
+            status: 'active',
+            start_time: t.start_time || pickedAt,
+          };
+        }
+        return t;
+      });
+      break;
+    }
+
+    case 'UPDATE_TASK_ITEMS': {
+      const updates: Array<{ id: string; patch: Record<string, any> }> = payload?.updates || [];
+      if (!Array.isArray(updates) || updates.length === 0) break;
+      const patchMap = new Map<string, Record<string, any>>();
+      updates.forEach((u) => {
+        if (u && u.id && u.patch) {
+          patchMap.set(u.id, u.patch);
+        }
+      });
+      db.task_items = db.task_items.map((item: any) => {
+        const patch = patchMap.get(item.id);
+        return patch ? { ...item, ...patch } : item;
+      });
+      break;
+    }
+
+    case 'APPEND_LOG': {
+      const log = payload?.log;
+      if (!log || !log.id) break;
+      const exists = db.logs.some((l: any) => l.id === log.id);
+      if (!exists) {
+        db.logs.unshift(log);
+        if (db.logs.length > 1000) {
+          db.logs = db.logs.slice(0, 1000);
+        }
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
 }
 
 function parseJsonBody(req: IncomingMessage): Promise<any> {
@@ -323,6 +465,12 @@ function setCors(res: ServerResponse) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 }
 
+function sendJson(res: ServerResponse, statusCode: number, data: any) {
+  res.statusCode = statusCode;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(data));
+}
+
 export function handleApiRequest(req: IncomingMessage, res: ServerResponse, next?: () => void) {
   setCors(res);
 
@@ -338,69 +486,137 @@ export function handleApiRequest(req: IncomingMessage, res: ServerResponse, next
   // Route 1: GET /api/data or /api/storage
   if ((pathname === '/api/data' || pathname === '/api/storage') && req.method === 'GET') {
     const db = ensureDb();
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ success: true, data: db, last_updated: db.last_updated || Date.now() }));
+    sendJson(res, 200, { success: true, data: db, last_updated: db.last_updated || Date.now() });
     return;
   }
 
-  // Route 2: POST /api/data or /api/storage (Full save or initial sync)
+  // Route 2: POST /api/mutate (Atomic per-record & batch mutations safe for multi-operator concurrency)
+  if (pathname === '/api/mutate' && req.method === 'POST') {
+    parseJsonBody(req)
+      .then((body) =>
+        enqueueDbMutation(() => {
+          const db = ensureDb();
+          if (Array.isArray(body?.operations)) {
+            body.operations.forEach((op: any) => {
+              if (op && op.action) {
+                applySingleOperation(db, op.action, op.payload);
+              }
+            });
+          } else if (body?.action) {
+            applySingleOperation(db, body.action, body.payload);
+          } else {
+            return { error: 'Invalid mutation payload', status: 400 };
+          }
+          const last_updated = writeDb(db);
+          return { status: 200, data: db, last_updated };
+        })
+      )
+      .then((result: any) => {
+        if (result.error) {
+          sendJson(res, result.status || 400, { success: false, message: result.error });
+        } else {
+          sendJson(res, 200, {
+            success: true,
+            data: result.data,
+            last_updated: result.last_updated,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error('[ZEVA-API] Mutation error:', err);
+        sendJson(res, 500, { success: false, message: 'Internal mutation error' });
+      });
+    return;
+  }
+
+  // Route 3: POST /api/data or /api/storage (Full save / restore / initial sync)
   if ((pathname === '/api/data' || pathname === '/api/storage') && req.method === 'POST') {
-    parseJsonBody(req).then((body) => {
-      const current = ensureDb();
-      const updated = {
-        ...current,
-        ...(body.users ? { users: body.users } : {}),
-        ...(body.raks ? { raks: body.raks } : {}),
-        ...(body.materials ? { materials: body.materials } : {}),
-        ...(body.lines ? { lines: body.lines } : {}),
-        ...(body.tasks ? { tasks: body.tasks } : {}),
-        ...(body.task_items ? { task_items: body.task_items } : {}),
-        ...(body.logs ? { logs: body.logs } : {}),
-      };
-      const last_updated = writeDb(updated);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ success: true, last_updated }));
-    });
+    parseJsonBody(req)
+      .then((body) =>
+        enqueueDbMutation(() => {
+          const current = ensureDb();
+          const updated = {
+            ...current,
+            ...(body.users ? { users: body.users } : {}),
+            ...(body.raks ? { raks: body.raks } : {}),
+            ...(body.materials ? { materials: body.materials } : {}),
+            ...(body.lines ? { lines: body.lines } : {}),
+            ...(body.tasks ? { tasks: body.tasks } : {}),
+            ...(body.task_items ? { task_items: body.task_items } : {}),
+            ...(body.logs ? { logs: body.logs } : {}),
+          };
+          const last_updated = writeDb(updated);
+          return { data: updated, last_updated };
+        })
+      )
+      .then((result) => {
+        sendJson(res, 200, { success: true, data: result.data, last_updated: result.last_updated });
+      })
+      .catch((err) => {
+        console.error('[ZEVA-API] Save data error:', err);
+        sendJson(res, 500, { success: false, message: 'Failed saving data' });
+      });
     return;
   }
 
-  // Route 3: POST /api/save-entity (Save single table: tasks, task_items, materials, raks, lines, users, logs)
+  // Route 4: POST /api/save-entity (Save single table, serialized in write queue)
   if (pathname === '/api/save-entity' && req.method === 'POST') {
-    parseJsonBody(req).then((body) => {
-      const { entity, data } = body;
-      if (!entity || !data) {
-        res.statusCode = 400;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ success: false, message: 'Invalid entity or data' }));
-        return;
-      }
-      const current = ensureDb();
-      current[entity] = data;
-      const last_updated = writeDb(current);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ success: true, entity, last_updated }));
-    });
+    parseJsonBody(req)
+      .then((body) => {
+        const { entity, data } = body || {};
+        if (!entity || !data) {
+          return { error: 'Invalid entity or data', status: 400 };
+        }
+        return enqueueDbMutation(() => {
+          const current = ensureDb();
+          current[entity] = data;
+          const last_updated = writeDb(current);
+          return { entity, last_updated };
+        });
+      })
+      .then((result: any) => {
+        if (result.error) {
+          sendJson(res, result.status || 400, { success: false, message: result.error });
+        } else {
+          sendJson(res, 200, {
+            success: true,
+            entity: result.entity,
+            last_updated: result.last_updated,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error('[ZEVA-API] Save entity error:', err);
+        sendJson(res, 500, { success: false, message: 'Failed saving entity' });
+      });
     return;
   }
 
-  // Route 4: GET /api/last-updated (For high-frequency polling with ultra-light payload)
+  // Route 5: GET /api/last-updated (For high-frequency polling with ultra-light payload)
   if (pathname === '/api/last-updated' && req.method === 'GET') {
     const db = ensureDb();
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ success: true, last_updated: db.last_updated || 0 }));
+    sendJson(res, 200, { success: true, last_updated: db.last_updated || 0 });
     return;
   }
 
-  // Route 5: POST /api/reset (Reset database to defaults)
+  // Route 6: POST /api/reset (Reset database to defaults)
   if (pathname === '/api/reset' && req.method === 'POST') {
-    const last_updated = writeDb({ ...INITIAL_DATA, last_updated: Date.now() });
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ success: true, message: 'Database reset to default seeds', last_updated }));
+    enqueueDbMutation(() => {
+      const resetCopy = JSON.parse(JSON.stringify(INITIAL_DATA));
+      const last_updated = writeDb(resetCopy);
+      return { last_updated };
+    })
+      .then((result) => {
+        sendJson(res, 200, {
+          success: true,
+          message: 'Database reset to default seeds',
+          last_updated: result.last_updated,
+        });
+      })
+      .catch((err) => {
+        console.error('[ZEVA-API] Reset error:', err);
+        sendJson(res, 500, { success: false, message: 'Failed resetting database' });
+      });
     return;
   }
 
