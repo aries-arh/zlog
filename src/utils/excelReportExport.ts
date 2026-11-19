@@ -82,55 +82,93 @@ export const exportSpvCompleteReport = (params: ExportSpvParams) => {
     selectedYear,
   } = params;
 
+  const taskMap = new Map<string, Task>(tasks.map((t) => [t.id, t]));
+  const indexMap = new Map<string, number>(taskItems.map((it, idx) => [it.id, idx]));
+
+  const getTaskTimestamp = (task?: Task): number => {
+    if (!task) return 0;
+    if (task.start_time) {
+      const ts = new Date(task.start_time).getTime();
+      if (!Number.isNaN(ts)) return ts;
+    }
+    if (task.tanggal) {
+      const ts = new Date(task.tanggal).getTime();
+      if (!Number.isNaN(ts)) return ts;
+    }
+    return 0;
+  };
+
+  const getItemTimestamp = (item: TaskItem): number => {
+    const raw = item.delivered_at || item.picked_at || item.last_material_scanned_at;
+    if (!raw) return 0;
+    const ts = new Date(raw).getTime();
+    return Number.isNaN(ts) ? 0 : ts;
+  };
+
   // Filter task items according to SPV filters
-  const filteredItems = taskItems.filter((item) => {
-    const parentTask = tasks.find((t) => t.id === item.task_id);
-    const user = allUsers.find((u) => u.id === item.user_id);
-    const material = allMaterials.find((m) => m.id === item.material_id);
-    const rak = allRaks.find((r) => r.id === item.rak_id);
+  const filteredItems = taskItems
+    .filter((item) => {
+      const parentTask = taskMap.get(item.task_id);
+      const user = allUsers.find((u) => u.id === item.user_id);
+      const material = allMaterials.find((m) => m.id === item.material_id);
+      const rak = allRaks.find((r) => r.id === item.rak_id);
 
-    // Shift Filter
-    if (filterShift !== 'all' && parentTask && parentTask.shift !== parseInt(filterShift)) {
-      return false;
-    }
+      // Shift Filter
+      if (filterShift !== 'all' && parentTask && parentTask.shift !== parseInt(filterShift)) {
+        return false;
+      }
 
-    // Line Filter
-    if (filterLine !== 'all' && item.line_id !== filterLine) {
-      return false;
-    }
+      // Line Filter
+      if (filterLine !== 'all' && item.line_id !== filterLine) {
+        return false;
+      }
 
-    // Operator Filter
-    if (filterOperator !== 'all' && item.user_id !== filterOperator) {
-      return false;
-    }
+      // Operator Filter
+      if (filterOperator !== 'all' && item.user_id !== filterOperator) {
+        return false;
+      }
 
-    // Period / Date / Month-Year Filter
-    if (
-      !matchesPeriodFilter(item, parentTask, {
-        periodFilter,
-        selectedDate,
-        selectedMonth,
-        selectedYear,
-      })
-    ) {
-      return false;
-    }
+      // Period / Date / Month-Year Filter
+      if (
+        !matchesPeriodFilter(item, parentTask, {
+          periodFilter,
+          selectedDate,
+          selectedMonth,
+          selectedYear,
+        })
+      ) {
+        return false;
+      }
 
-    // Search Query
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchMat =
-        material?.kode_material.toLowerCase().includes(q) ||
-        material?.deskripsi.toLowerCase().includes(q);
-      const matchRak = rak?.kode_rak.toLowerCase().includes(q);
-      const matchOp =
-        user?.nama.toLowerCase().includes(q) ||
-        user?.employee_id.toLowerCase().includes(q);
-      if (!matchMat && !matchRak && !matchOp) return false;
-    }
+      // Search Query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchMat =
+          material?.kode_material.toLowerCase().includes(q) ||
+          material?.deskripsi.toLowerCase().includes(q);
+        const matchRak = rak?.kode_rak.toLowerCase().includes(q);
+        const matchOp =
+          user?.nama.toLowerCase().includes(q) ||
+          user?.employee_id.toLowerCase().includes(q);
+        const matchTask = parentTask?.task_no.toLowerCase().includes(q);
+        if (!matchMat && !matchRak && !matchOp && !matchTask) return false;
+      }
 
-    return true;
-  });
+      return true;
+    })
+    .sort((a, b) => {
+      const taskA = taskMap.get(a.task_id);
+      const taskB = taskMap.get(b.task_id);
+      const taskTsA = getTaskTimestamp(taskA) || getItemTimestamp(a);
+      const taskTsB = getTaskTimestamp(taskB) || getItemTimestamp(b);
+      if (taskTsB !== taskTsA) return taskTsB - taskTsA;
+
+      const itemTsA = getItemTimestamp(a);
+      const itemTsB = getItemTimestamp(b);
+      if (itemTsB !== itemTsA) return itemTsB - itemTsA;
+
+      return (indexMap.get(b.id) ?? 0) - (indexMap.get(a.id) ?? 0);
+    });
 
   const wb = XLSX.utils.book_new();
 

@@ -56,8 +56,31 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
   const operators = allUsers.filter((u) => u.role === 'operator');
 
   const filteredItems = useMemo(() => {
-    return taskItems.filter((item) => {
-      const parentTask = tasks.find((t) => t.id === item.task_id);
+    const taskMap = new Map<string, Task>(tasks.map((t) => [t.id, t]));
+    const indexMap = new Map<string, number>(taskItems.map((it, idx) => [it.id, idx]));
+
+    const getTaskTimestamp = (task?: Task): number => {
+      if (!task) return 0;
+      if (task.start_time) {
+        const ts = new Date(task.start_time).getTime();
+        if (!Number.isNaN(ts)) return ts;
+      }
+      if (task.tanggal) {
+        const ts = new Date(task.tanggal).getTime();
+        if (!Number.isNaN(ts)) return ts;
+      }
+      return 0;
+    };
+
+    const getItemTimestamp = (item: TaskItem): number => {
+      const raw = item.delivered_at || item.picked_at || item.last_material_scanned_at;
+      if (!raw) return 0;
+      const ts = new Date(raw).getTime();
+      return Number.isNaN(ts) ? 0 : ts;
+    };
+
+    const matched = taskItems.filter((item) => {
+      const parentTask = taskMap.get(item.task_id);
       if (filterShift !== 'all' && parentTask && parentTask.shift !== parseInt(filterShift)) {
         return false;
       }
@@ -75,9 +98,24 @@ export const SpvMonitoringView: React.FC<SpvMonitoringViewProps> = ({
         const matchMat = mat?.kode_material.toLowerCase().includes(q) || mat?.deskripsi.toLowerCase().includes(q);
         const matchRak = rak?.kode_rak.toLowerCase().includes(q);
         const matchUser = user?.nama.toLowerCase().includes(q) || user?.employee_id.toLowerCase().includes(q);
-        if (!matchMat && !matchRak && !matchUser) return false;
+        const matchTask = parentTask?.task_no.toLowerCase().includes(q);
+        if (!matchMat && !matchRak && !matchUser && !matchTask) return false;
       }
       return true;
+    });
+
+    return [...matched].sort((a, b) => {
+      const taskA = taskMap.get(a.task_id);
+      const taskB = taskMap.get(b.task_id);
+      const taskTsA = getTaskTimestamp(taskA) || getItemTimestamp(a);
+      const taskTsB = getTaskTimestamp(taskB) || getItemTimestamp(b);
+      if (taskTsB !== taskTsA) return taskTsB - taskTsA;
+
+      const itemTsA = getItemTimestamp(a);
+      const itemTsB = getItemTimestamp(b);
+      if (itemTsB !== itemTsA) return itemTsB - itemTsA;
+
+      return (indexMap.get(b.id) ?? 0) - (indexMap.get(a.id) ?? 0);
     });
   }, [taskItems, tasks, filterShift, filterLine, filterOperator, searchQuery, allMaterials, allRaks, allUsers]);
 
