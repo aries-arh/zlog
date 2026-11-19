@@ -23,6 +23,10 @@ import {
   RotateCcw,
   Check,
   PackageCheck,
+  Lock,
+  RefreshCw,
+  Zap,
+  ArrowRight,
 } from 'lucide-react';
 
 interface OperatorTaskInputViewProps {
@@ -63,10 +67,11 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   onCompleteTask,
   onBackToHistory,
 }) => {
-  // Step 1: Rak Asal
+  // Step 1: Rak Asal (persisted per task so remount/navigation never forces re-scan)
   const [selectedRakId, setSelectedRakId] = useState<string>('');
   const [rakInput, setRakInput] = useState<string>('');
   const [rakValid, setRakValid] = useState<boolean>(false);
+  const [userUnlockedRak, setUserUnlockedRak] = useState<boolean>(false);
 
   // Step 2: Material
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>('');
@@ -79,6 +84,16 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const [lineInput, setLineInput] = useState<string>('');
   const [lineValid, setLineValid] = useState<boolean>(false);
   const [showLineDropdown, setShowLineDropdown] = useState<boolean>(false);
+
+  // Multi-Pick Speed Modes (1 Rak -> Banyak Material -> Banyak Line)
+  const [autoAddOnLine, setAutoAddOnLine] = useState<boolean>(true);
+  const [skipQtyOnScan, setSkipQtyOnScan] = useState<boolean>(false);
+  const [lastAddedBanner, setLastAddedBanner] = useState<{
+    materialCode: string;
+    qty: number;
+    satuan: string;
+    lineName: string;
+  } | null>(null);
 
   // Scanner Modal state
   const [scannerOpen, setScannerOpen] = useState(false);
@@ -105,12 +120,77 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const lineDropdownRef = useRef<HTMLDivElement>(null);
   const destInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto focus rak input on screen mount so PDA can scan immediately without clicking
+  const rakStorageKey = `zeva_locked_rak_${task.id}`;
+
+  // Helper to lock a Rak consistently across state & sessionStorage
+  const lockRak = (rak: MasterRak) => {
+    setSelectedRakId(rak.id);
+    setRakInput(rak.kode_rak);
+    setRakValid(true);
+    setUserUnlockedRak(false);
+    try {
+      sessionStorage.setItem(rakStorageKey, rak.id);
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  // Auto-restore locked Rack for current task (from sessionStorage or latest item in trolley)
   useEffect(() => {
-    setTimeout(() => {
-      rakInputRef.current?.focus();
-    }, 100);
-  }, []);
+    setUserUnlockedRak(false);
+    let savedRakId: string | null = null;
+    try {
+      savedRakId = sessionStorage.getItem(rakStorageKey);
+    } catch {
+      savedRakId = null;
+    }
+
+    const currentTaskItems = taskItems.filter((item) => item.task_id === task.id);
+    const fallbackRakId =
+      savedRakId ||
+      (currentTaskItems.length > 0 ? currentTaskItems[currentTaskItems.length - 1].rak_id : null);
+
+    if (fallbackRakId) {
+      const rakObj = allRaks.find((r) => r.id === fallbackRakId);
+      if (rakObj) {
+        setSelectedRakId(rakObj.id);
+        setRakInput(rakObj.kode_rak);
+        setRakValid(true);
+        setTimeout(() => materialInputRef.current?.focus(), 100);
+        return;
+      }
+    }
+
+    setSelectedRakId('');
+    setRakInput('');
+    setRakValid(false);
+    setTimeout(() => rakInputRef.current?.focus(), 100);
+    // Only run on task switch / initial mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [task.id]);
+
+  // Also hydrate locked Rak if taskItems/allRaks arrive asynchronously after mount
+  useEffect(() => {
+    if (selectedRakId || userUnlockedRak) return;
+    let savedRakId: string | null = null;
+    try {
+      savedRakId = sessionStorage.getItem(rakStorageKey);
+    } catch {
+      savedRakId = null;
+    }
+    const currentTaskItems = taskItems.filter((item) => item.task_id === task.id);
+    const candidateId =
+      savedRakId ||
+      (currentTaskItems.length > 0 ? currentTaskItems[currentTaskItems.length - 1].rak_id : null);
+    if (!candidateId) return;
+    const rakObj = allRaks.find((r) => r.id === candidateId);
+    if (rakObj) {
+      setSelectedRakId(rakObj.id);
+      setRakInput(rakObj.kode_rak);
+      setRakValid(true);
+      setTimeout(() => materialInputRef.current?.focus(), 100);
+    }
+  }, [allRaks, taskItems, task.id, selectedRakId, userUnlockedRak, rakStorageKey]);
 
   // Auto focus destination scan input when completion modal opens
   useEffect(() => {
@@ -175,11 +255,49 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     return activeMaterials.slice(0, 4);
   }, [activeMaterials, materialInput, selectedRakId]);
 
-  // Active Lines and suggestions
+  // Active Lines and suggestions (prioritize lines already in trolley for multi-material multi-line picking)
   const activeLines = useMemo(
     () => allLines.filter((l) => l.status !== 'inactive'),
     [allLines]
   );
+
+  const trolleyLineIdSet = useMemo(
+    () => new Set(itemsInTrolley.map((item) => item.line_id)),
+    [itemsInTrolley]
+  );
+
+  const lineSummaryInTrolley = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        line: MasterLine;
+        totalItems: number;
+        totalQty: number;
+        pickedCount: number;
+        inTransitCount: number;
+        deliveredCount: number;
+      }
+    >();
+    itemsInTrolley.forEach((item) => {
+      const lineObj = allLines.find((l) => l.id === item.line_id);
+      if (!lineObj) return;
+      const existing = map.get(lineObj.id) || {
+        line: lineObj,
+        totalItems: 0,
+        totalQty: 0,
+        pickedCount: 0,
+        inTransitCount: 0,
+        deliveredCount: 0,
+      };
+      existing.totalItems += 1;
+      existing.totalQty += item.qty;
+      if (item.status === 'PICKED') existing.pickedCount += 1;
+      else if (item.status === 'IN_TRANSIT') existing.inTransitCount += 1;
+      else if (item.status === 'DELIVERED') existing.deliveredCount += 1;
+      map.set(lineObj.id, existing);
+    });
+    return Array.from(map.values());
+  }, [itemsInTrolley, allLines]);
 
   const suggestedLines = useMemo(() => {
     if (lineInput.trim()) {
@@ -193,11 +311,14 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       );
       return matched;
     }
-    return activeLines;
-  }, [activeLines, lineInput]);
+    // When empty, prioritize lines already present in current trolley first
+    const inTrolley = activeLines.filter((l) => trolleyLineIdSet.has(l.id));
+    const others = activeLines.filter((l) => !trolleyLineIdSet.has(l.id));
+    return [...inTrolley, ...others];
+  }, [activeLines, lineInput, trolleyLineIdSet]);
 
   const quickSuggestedLines = useMemo(() => {
-    return suggestedLines.slice(0, 4);
+    return suggestedLines.slice(0, 5);
   }, [suggestedLines]);
 
   // Close line dropdown when clicking outside
@@ -216,12 +337,99 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelectLine = (line: MasterLine) => {
+  const commitMaterialToTrolley = (overrideLineId?: string): boolean => {
+    const effectiveLineId = overrideLineId ?? selectedLineId;
+    if (!selectedRakId) {
+      sound.playErrorBeep();
+      rakInputRef.current?.focus();
+      return false;
+    }
+    if (!selectedMaterialId) {
+      sound.playErrorBeep();
+      materialInputRef.current?.focus();
+      return false;
+    }
+    if (qty <= 0) {
+      sound.playErrorBeep();
+      qtyInputRef.current?.focus();
+      return false;
+    }
+    if (!effectiveLineId) {
+      sound.playErrorBeep();
+      lineInputRef.current?.focus();
+      setShowLineDropdown(true);
+      return false;
+    }
+
+    const materialObj = allMaterials.find((m) => m.id === selectedMaterialId);
+    if (!materialObj) return false;
+    const lineObj = activeLines.find((l) => l.id === effectiveLineId) || allLines.find((l) => l.id === effectiveLineId);
+
+    sound.playSuccessBeep();
+    onAddTaskItem({
+      task_id: task.id,
+      user_id: user.id,
+      rak_id: selectedRakId,
+      material_id: selectedMaterialId,
+      qty,
+      satuan: materialObj.satuan,
+      line_id: effectiveLineId,
+      status: 'PICKED',
+      departure_mode: 'MANUAL_PRESS',
+      last_material_scanned_at: new Date().toISOString(),
+      picked_at: null,
+      delivered_at: null,
+      return_at: null,
+      delivery_duration_sec: null,
+      return_duration_sec: null,
+    });
+
+    setLastAddedBanner({
+      materialCode: materialObj.kode_material,
+      qty,
+      satuan: materialObj.satuan,
+      lineName: lineObj?.nama_line || lineObj?.kode_line || effectiveLineId,
+    });
+
+    // Reset ONLY Material & Line; keep Rak locked for rapid multi-pick!
+    setMaterialInput('');
+    setSelectedMaterialId('');
+    setMaterialValid(false);
+    setLineInput('');
+    setSelectedLineId('');
+    setLineValid(false);
+    setShowLineDropdown(false);
+    if (!skipQtyOnScan) {
+      setQty(10);
+    }
+    setTimeout(() => materialInputRef.current?.focus(), 80);
+    return true;
+  };
+
+  const handleSelectLine = (line: MasterLine, triggerAutoAdd = true) => {
     setSelectedLineId(line.id);
     setLineInput(line.kode_line);
     setLineValid(true);
     setShowLineDropdown(false);
-    sound.playSuccessBeep();
+
+    if (triggerAutoAdd && autoAddOnLine && selectedRakId && selectedMaterialId && qty > 0) {
+      commitMaterialToTrolley(line.id);
+    } else {
+      sound.playSuccessBeep();
+    }
+  };
+
+  const handleChangeRak = () => {
+    setUserUnlockedRak(true);
+    setSelectedRakId('');
+    setRakInput('');
+    setRakValid(false);
+    try {
+      sessionStorage.removeItem(rakStorageKey);
+    } catch {
+      // ignore
+    }
+    setTimeout(() => rakInputRef.current?.focus(), 60);
   };
 
   const handleLineInputChange = (val: string) => {
@@ -266,7 +474,12 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
   const handleLineSubmit = (val?: string) => {
     const raw = val !== undefined ? val : lineInput;
     const clean = raw.trim().replace(/[\r\n]+/g, '').toUpperCase();
-    if (!clean) return;
+    if (!clean) {
+      if (selectedLineId) {
+        commitMaterialToTrolley(selectedLineId);
+      }
+      return;
+    }
 
     const found = activeLines.find(
       (l) =>
@@ -283,16 +496,14 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       setLineInput(found.kode_line);
       setLineValid(true);
       setShowLineDropdown(false);
-      sound.playSuccessBeep();
-      handleAddMaterial();
+      commitMaterialToTrolley(found.id);
     } else if (suggestedLines.length > 0) {
       const topPick = suggestedLines[0];
       setSelectedLineId(topPick.id);
       setLineInput(topPick.kode_line);
       setLineValid(true);
       setShowLineDropdown(false);
-      sound.playSuccessBeep();
-      handleAddMaterial();
+      commitMaterialToTrolley(topPick.id);
     } else {
       sound.playErrorBeep();
       setLineValid(false);
@@ -313,9 +524,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
         clean.includes(r.kode_rak.toUpperCase())
     );
     if (found) {
-      setSelectedRakId(found.id);
-      setRakInput(found.kode_rak);
-      setRakValid(true);
+      lockRak(found);
       sound.playSuccessBeep();
       setTimeout(() => materialInputRef.current?.focus(), 80);
     } else {
@@ -338,6 +547,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
         clean.includes(m.kode_material.toUpperCase())
     );
     if (found) {
+      setLastAddedBanner(null);
       setSelectedMaterialId(found.id);
       setMaterialInput(found.kode_material);
       setMaterialValid(true);
@@ -345,12 +555,17 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       if (!selectedRakId && found.default_rak_id) {
         const defaultRak = allRaks.find((r) => r.id === found.default_rak_id);
         if (defaultRak) {
-          setSelectedRakId(defaultRak.id);
-          setRakInput(defaultRak.kode_rak);
-          setRakValid(true);
+          lockRak(defaultRak);
         }
       }
-      setTimeout(() => qtyInputRef.current?.focus(), 80);
+      setTimeout(() => {
+        if (skipQtyOnScan) {
+          lineInputRef.current?.focus();
+        } else {
+          qtyInputRef.current?.focus();
+          qtyInputRef.current?.select();
+        }
+      }, 80);
     } else {
       sound.playErrorBeep();
       setMaterialValid(false);
@@ -366,8 +581,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       (r) => r.kode_rak.toUpperCase() === clean || r.id === val
     );
     if (found) {
-      setSelectedRakId(found.id);
-      setRakValid(true);
+      lockRak(found);
       sound.playSuccessBeep();
       setTimeout(() => materialInputRef.current?.focus(), 100);
     } else {
@@ -384,22 +598,59 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       (m) => m.kode_material.toUpperCase() === clean || m.id === val
     );
     if (found) {
+      setLastAddedBanner(null);
       setSelectedMaterialId(found.id);
       setMaterialValid(true);
       sound.playSuccessBeep();
       if (!selectedRakId && found.default_rak_id) {
         const defaultRak = allRaks.find((r) => r.id === found.default_rak_id);
         if (defaultRak) {
-          setSelectedRakId(defaultRak.id);
-          setRakInput(defaultRak.kode_rak);
-          setRakValid(true);
+          lockRak(defaultRak);
         }
       }
-      setTimeout(() => qtyInputRef.current?.focus(), 100);
+      setTimeout(() => {
+        if (skipQtyOnScan) {
+          lineInputRef.current?.focus();
+        } else {
+          qtyInputRef.current?.focus();
+          qtyInputRef.current?.select();
+        }
+      }, 100);
     } else {
       setSelectedMaterialId('');
       setMaterialValid(false);
     }
+  };
+
+  // Keep latest scan handlers in ref so global PDA wedge listener never hits stale state
+  const globalScanRef = useRef({
+    allLines,
+    allRaks,
+    allMaterials,
+    inTransitCount: 0,
+    onSelectLine: (l: MasterLine) => handleSelectLine(l, true),
+    onRakSubmit: (code: string) => handleRakSubmit(code),
+    onMaterialSubmit: (code: string) => handleMaterialSubmit(code),
+    onDestScan: (qr: string) => {
+      setShowCompletionModal(true);
+      setDestScanInput(qr);
+      handleDestinationScanSubmit(qr);
+    },
+  });
+
+  globalScanRef.current = {
+    allLines,
+    allRaks,
+    allMaterials,
+    inTransitCount: inTransitItems.length,
+    onSelectLine: (l: MasterLine) => handleSelectLine(l, true),
+    onRakSubmit: (code: string) => handleRakSubmit(code),
+    onMaterialSubmit: (code: string) => handleMaterialSubmit(code),
+    onDestScan: (qr: string) => {
+      setShowCompletionModal(true);
+      setDestScanInput(qr);
+      handleDestinationScanSubmit(qr);
+    },
   };
 
   // Global Keydown Buffer to catch PDA Barcode Wedge anywhere on screen
@@ -426,46 +677,55 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
           const scanned = scanBuffer.trim().replace(/[\r\n]+/g, '').toUpperCase();
           scanBuffer = '';
 
+          const {
+            allLines: lines,
+            allRaks: raks,
+            allMaterials: mats,
+            inTransitCount,
+            onSelectLine,
+            onRakSubmit,
+            onMaterialSubmit,
+            onDestScan,
+          } = globalScanRef.current;
+
           // 1. Line QR Code check
-          const lineFound = allLines.find(
+          const lineFound = lines.find(
             (l) =>
               l.qr_code_proses.toUpperCase() === scanned ||
               l.kode_line.toUpperCase() === scanned ||
               scanned.includes(l.qr_code_proses.toUpperCase())
           );
           if (lineFound) {
-            if (inTransitItems.length > 0) {
-              setShowCompletionModal(true);
-              setDestScanInput(lineFound.qr_code_proses);
-              handleDestinationScanSubmit(lineFound.qr_code_proses);
+            if (inTransitCount > 0) {
+              onDestScan(lineFound.qr_code_proses);
               return;
             } else {
-              handleSelectLine(lineFound);
+              onSelectLine(lineFound);
               return;
             }
           }
 
           // 2. Rak Barcode check
-          const rakFound = allRaks.find(
+          const rakFound = raks.find(
             (r) =>
               r.kode_rak.toUpperCase() === scanned ||
               r.id.toUpperCase() === scanned ||
               scanned.includes(r.kode_rak.toUpperCase())
           );
           if (rakFound) {
-            handleRakSubmit(scanned);
+            onRakSubmit(scanned);
             return;
           }
 
           // 3. Material Barcode check
-          const matFound = allMaterials.find(
+          const matFound = mats.find(
             (m) =>
               m.kode_material.toUpperCase() === scanned ||
               m.id.toUpperCase() === scanned ||
               scanned.includes(m.kode_material.toUpperCase())
           );
           if (matFound) {
-            handleMaterialSubmit(scanned);
+            onMaterialSubmit(scanned);
             return;
           }
         }
@@ -480,64 +740,12 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
 
     window.addEventListener('keydown', handleGlobalScan);
     return () => window.removeEventListener('keydown', handleGlobalScan);
-  }, [allLines, allRaks, allMaterials, selectedRakId, inTransitItems]);
+  }, []);
 
   // Add Material to Trolley
   const handleAddMaterial = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!selectedRakId) {
-      sound.playErrorBeep();
-      rakInputRef.current?.focus();
-      return;
-    }
-    if (!selectedMaterialId) {
-      sound.playErrorBeep();
-      materialInputRef.current?.focus();
-      return;
-    }
-    if (qty <= 0) {
-      sound.playErrorBeep();
-      return;
-    }
-    if (!selectedLineId) {
-      sound.playErrorBeep();
-      lineInputRef.current?.focus();
-      setShowLineDropdown(true);
-      return;
-    }
-
-    const materialObj = allMaterials.find((m) => m.id === selectedMaterialId);
-    if (!materialObj) return;
-
-    sound.playSuccessBeep();
-    onAddTaskItem({
-      task_id: task.id,
-      user_id: user.id,
-      rak_id: selectedRakId,
-      material_id: selectedMaterialId,
-      qty,
-      satuan: materialObj.satuan,
-      line_id: selectedLineId,
-      status: 'PICKED',
-      departure_mode: 'MANUAL_PRESS',
-      last_material_scanned_at: new Date().toISOString(),
-      picked_at: null,
-      delivered_at: null,
-      return_at: null,
-      delivery_duration_sec: null,
-      return_duration_sec: null,
-    });
-
-    setMaterialInput('');
-    setSelectedMaterialId('');
-    setMaterialValid(false);
-    setLineInput('');
-    setSelectedLineId('');
-    setLineValid(false);
-    setShowLineDropdown(false);
-    setQty(10);
-    // Keep rack and refocus to material input so operator can continuously scan next parts
-    setTimeout(() => materialInputRef.current?.focus(), 80);
+    commitMaterialToTrolley();
   };
 
   const handleManualDeparture = () => {
@@ -621,121 +829,190 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Left Column: 3-Step Gemba Touchscreen Friendly Form */}
         <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs space-y-5">
-          <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <Boxes className="w-5 h-5 text-amber-600" />
-              <span>FORM PENGAMBILAN MATERIAL GUDANG</span>
-            </h2>
-            <span className="text-[11px] text-slate-500 font-mono">Touchscreen Friendly</span>
+          <div className="border-b border-slate-100 pb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                <Boxes className="w-5 h-5 text-amber-600" />
+                <span>FORM PENGAMBILAN MATERIAL GUDANG</span>
+              </h2>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Mode 1 Rak → Banyak Material → Multi-Line: Scan Rak 1x, lalu scan beruntun Material &amp; pilih Line.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setAutoAddOnLine((prev) => !prev)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition flex items-center gap-1 cursor-pointer ${
+                  autoAddOnLine
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    : 'bg-slate-100 text-slate-600 border-slate-200'
+                }`}
+                title="Jika aktif, memilih/scan Line langsung memasukkan material ke troli & fokus ke Material berikutnya"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Auto-Masuk saat Pilih Line: {autoAddOnLine ? 'ON' : 'OFF'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSkipQtyOnScan((prev) => !prev)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition flex items-center gap-1 cursor-pointer ${
+                  skipQtyOnScan
+                    ? 'bg-amber-50 text-amber-800 border-amber-300'
+                    : 'bg-slate-100 text-slate-600 border-slate-200'
+                }`}
+                title="Jika aktif, Qty memakai nilai saat ini & setelah scan Material kursor langsung ke Line Tujuan"
+              >
+                <ArrowRight className="w-3 h-3" />
+                <span>Skip Qty ({qty}): {skipQtyOnScan ? 'ON' : 'OFF'}</span>
+              </button>
+            </div>
           </div>
 
           <form onSubmit={handleAddMaterial} className="space-y-4">
-            {/* STEP 1: SCAN RAK ASAL */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all ${
-                rakValid
-                  ? 'bg-emerald-50/70 border-emerald-500 shadow-xs'
-                  : 'bg-slate-50 border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center font-black text-xs">
-                    1
-                  </span>
-                  <span>STEP 1: SCAN RAK ASAL</span>
-                  <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-300 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                    PDA Gun Ready
-                  </span>
-                </label>
-                {rakValid && (
-                  <span className="text-xs font-bold text-emerald-700 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Terverifikasi
-                  </span>
-                )}
-              </div>
-
-              <div className="flex gap-2">
-                <input
-                  ref={rakInputRef}
-                  type="text"
-                  autoFocus
-                  value={rakInput}
-                  onChange={(e) => handleRakChange(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleRakSubmit();
-                    }
-                  }}
-                  placeholder="Arahkan PDA & Scan Barcode Rak (e.g. RAK-A12)..."
-                  className="flex-1 bg-white border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
-                />
+            {/* STEP 1: SCAN RAK ASAL (COLLAPSED LOCKED BANNER AFTER VERIFIED) */}
+            {rakValid && currentRakObj ? (
+              <div className="p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/80 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">
+                        STEP 1: RAK TERKUNCI (MULTI-PICK)
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-mono text-xs font-extrabold">
+                        {currentRakObj.kode_rak}
+                      </span>
+                    </div>
+                    <p className="text-xs text-emerald-900 font-medium truncate mt-0.5">
+                      {currentRakObj.nama_rak} ({currentRakObj.zona}) • <span className="font-semibold">Tidak perlu scan ulang rak — lanjut Step 2 &amp; 3</span>
+                    </p>
+                  </div>
+                </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setScannerMode('rak');
-                    setScannerOpen(true);
-                  }}
-                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-                  title="Buka Kamera HP (hanya jika perangkat tidak memiliki hardware scanner PDA)"
+                  onClick={handleChangeRak}
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-50 text-amber-800 border border-amber-300 text-xs font-bold flex items-center gap-1.5 transition shrink-0 cursor-pointer shadow-2xs"
+                  title="Klik jika ingin pindah ke rak lain"
                 >
-                  <Scan className="w-4 h-4 text-slate-500" />
-                  <span className="hidden sm:inline">Kamera</span>
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Ganti Rak</span>
                 </button>
               </div>
+            ) : (
+              <div className="p-4 rounded-xl border-2 bg-slate-50 border-slate-200 hover:border-slate-300 transition-all">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center font-black text-xs">
+                      1
+                    </span>
+                    <span>STEP 1: SCAN RAK ASAL</span>
+                    <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-300 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                      PDA Gun Ready
+                    </span>
+                  </label>
+                </div>
 
-              <p className="text-[11px] text-emerald-800 font-medium mt-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span><strong>Mode PDA:</strong> Kursor siap di kolom ini. Tekan tombol trigger PDA ke barcode Rak (data langsung masuk otomatis tanpa perlu buka menu QR Scan).</span>
-              </p>
-
-              {/* Quick Rak selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
-              <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
-                <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
-                {suggestedRaks.map((r) => (
-                  <button
-                    key={r.id}
-                    type="button"
-                    onClick={() => handleRakChange(r.kode_rak)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition shrink-0 ${
-                      selectedRakId === r.id
-                        ? 'bg-amber-500 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
-                    }`}
-                  >
-                    {r.kode_rak}
-                  </button>
-                ))}
-
-                {activeRaks.length > 4 && (
-                  <select
-                    value=""
-                    onChange={(e) => {
-                      if (e.target.value) handleRakChange(e.target.value);
+                <div className="flex gap-2">
+                  <input
+                    ref={rakInputRef}
+                    type="text"
+                    autoFocus={!rakValid}
+                    value={rakInput}
+                    onChange={(e) => handleRakChange(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleRakSubmit();
+                      }
                     }}
-                    className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
-                    title="Pilih dari seluruh daftar rak"
+                    placeholder="Arahkan PDA & Scan Barcode Rak (e.g. RAK-A12)..."
+                    className="flex-1 bg-white border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setScannerMode('rak');
+                      setScannerOpen(true);
+                    }}
+                    className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+                    title="Buka Kamera HP (hanya jika perangkat tidak memiliki hardware scanner PDA)"
                   >
-                    <option value="">
-                      + {activeRaks.length > suggestedRaks.length ? `${activeRaks.length - suggestedRaks.length} Rak Lainnya` : 'Semua Rak'}...
-                    </option>
-                    {activeRaks.map((r) => (
-                      <option key={r.id} value={r.kode_rak}>
-                        {r.kode_rak} - {r.nama_rak}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-              {currentRakObj && (
-                <p className="text-xs text-emerald-800 mt-2 font-medium">
-                  ✓ {currentRakObj.nama_rak} ({currentRakObj.zona})
+                    <Scan className="w-4 h-4 text-slate-500" />
+                    <span className="hidden sm:inline">Kamera</span>
+                  </button>
+                </div>
+
+                <p className="text-[11px] text-emerald-800 font-medium mt-1.5 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span>
+                    <strong>Mode PDA:</strong> Scan Rak 1x saja. Setelah terverifikasi, Rak otomatis dikunci agar Anda bisa ambil banyak material dengan cepat.
+                  </span>
                 </p>
-              )}
-            </div>
+
+                {/* Quick Rak selector chips - Limited to single row (max 4 + compact dropdown) to prevent vertical expansion */}
+                <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
+                  <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
+                  {suggestedRaks.map((r) => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => handleRakChange(r.kode_rak)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition shrink-0 cursor-pointer ${
+                        selectedRakId === r.id
+                          ? 'bg-amber-500 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      }`}
+                    >
+                      {r.kode_rak}
+                    </button>
+                  ))}
+
+                  {activeRaks.length > 4 && (
+                    <select
+                      value=""
+                      onChange={(e) => {
+                        if (e.target.value) handleRakChange(e.target.value);
+                      }}
+                      className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
+                      title="Pilih dari seluruh daftar rak"
+                    >
+                      <option value="">
+                        + {activeRaks.length > suggestedRaks.length ? `${activeRaks.length - suggestedRaks.length} Rak Lainnya` : 'Semua Rak'}...
+                      </option>
+                      {activeRaks.map((r) => (
+                        <option key={r.id} value={r.kode_rak}>
+                          {r.kode_rak} - {r.nama_rak}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Inline feedback after adding material so operator knows it went to trolley & rack is still locked */}
+            {lastAddedBanner && (
+              <div className="px-3.5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-semibold flex items-center justify-between gap-2 shadow-xs">
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>
+                    Masuk Troli: <strong className="font-mono">{lastAddedBanner.materialCode}</strong> ({lastAddedBanner.qty} {lastAddedBanner.satuan}) → <strong>{lastAddedBanner.lineName}</strong>. Lanjut scan Material berikutnya!
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setLastAddedBanner(null)}
+                  className="text-emerald-100 hover:text-white px-1.5 font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
             {/* STEP 2: SCAN MATERIAL */}
             <div
@@ -848,12 +1125,19 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
 
             {/* STEP 3: JUMLAH & LINE TUJUAN */}
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center font-black text-xs">
-                  3
-                </span>
-                <span>STEP 3: JUMLAH (QTY) &amp; LINE/PROSES TUJUAN</span>
-              </label>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center font-black text-xs">
+                    3
+                  </span>
+                  <span>STEP 3: JUMLAH (QTY) &amp; LINE/PROSES TUJUAN</span>
+                </label>
+                {autoAddOnLine && selectedRakId && selectedMaterialId && (
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
+                    ⚡ Pilih/Scan Line = Langsung Masuk Troli
+                  </span>
+                )}
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
@@ -864,7 +1148,7 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setQty((q) => Math.max(1, q - 5))}
-                      className="w-10 h-10 rounded-xl bg-white hover:bg-slate-100 text-lg font-bold text-slate-800 border border-slate-200 flex items-center justify-center"
+                      className="w-10 h-10 rounded-xl bg-white hover:bg-slate-100 text-lg font-bold text-slate-800 border border-slate-200 flex items-center justify-center cursor-pointer"
                     >
                       -
                     </button>
@@ -877,11 +1161,12 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
+                          e.stopPropagation();
                           if (!selectedLineId) {
                             lineInputRef.current?.focus();
                             setShowLineDropdown(true);
                           } else {
-                            handleAddMaterial();
+                            commitMaterialToTrolley(selectedLineId);
                           }
                         }
                       }}
@@ -894,6 +1179,29 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     >
                       +
                     </button>
+                  </div>
+                  {/* Quick Qty Presets */}
+                  <div className="mt-1.5 flex items-center gap-1 flex-wrap">
+                    <span className="text-[10px] font-semibold text-slate-400 mr-0.5">Cepat:</span>
+                    {[1, 5, 10, 20, 50].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => {
+                          setQty(preset);
+                          if (selectedMaterialId && !selectedLineId) {
+                            setTimeout(() => lineInputRef.current?.focus(), 40);
+                          }
+                        }}
+                        className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-bold border transition cursor-pointer ${
+                          qty === preset
+                            ? 'bg-amber-500 text-white border-amber-500'
+                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                        }`}
+                      >
+                        {preset}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -923,12 +1231,13 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
+                          e.stopPropagation();
                           handleLineSubmit();
                         } else if (e.key === 'Escape') {
                           setShowLineDropdown(false);
                         }
                       }}
-                      placeholder="Ketik kode/nama line (e.g. PACKING IN)..."
+                      placeholder="Scan/ketik kode line (e.g. PACKING IN)..."
                       className={`w-full bg-white border-2 rounded-xl px-3 py-2 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none transition ${
                         lineValid
                           ? 'border-emerald-500 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500'
@@ -990,25 +1299,35 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     )}
                   </div>
 
-                  {/* Sugesti Quick Chips - Hanya muncul ketika ada isian teks di kolom */}
-                  {lineInput.trim().length > 0 && quickSuggestedLines.length > 0 && (
+                  {/* Always-visible Multi-Line Quick Chips (prioritize lines already in trolley) */}
+                  {quickSuggestedLines.length > 0 && (
                     <div className="mt-2 flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none flex-nowrap">
-                      <span className="text-[11px] font-semibold text-slate-400 shrink-0">Sugesti:</span>
-                      {quickSuggestedLines.map((l) => (
-                        <button
-                          key={l.id}
-                          type="button"
-                          onClick={() => handleSelectLine(l)}
-                          className={`px-2 py-0.5 rounded-lg text-xs font-mono font-bold transition shrink-0 cursor-pointer ${
-                            selectedLineId === l.id
-                              ? 'bg-amber-500 text-white shadow-2xs'
-                              : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
-                          }`}
-                          title={`${l.nama_line} (${l.area})`}
-                        >
-                          {l.kode_line}
-                        </button>
-                      ))}
+                      <span className="text-[10px] font-semibold text-slate-400 shrink-0">
+                        {lineInput.trim().length > 0 ? 'Cocok:' : 'Line Cepat:'}
+                      </span>
+                      {quickSuggestedLines.map((l) => {
+                        const isInTrolley = trolleyLineIdSet.has(l.id);
+                        return (
+                          <button
+                            key={l.id}
+                            type="button"
+                            onClick={() => handleSelectLine(l)}
+                            className={`px-2 py-0.5 rounded-lg text-[11px] font-mono font-bold transition shrink-0 cursor-pointer flex items-center gap-1 ${
+                              selectedLineId === l.id
+                                ? 'bg-amber-500 text-white shadow-2xs'
+                                : isInTrolley
+                                  ? 'bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300'
+                                  : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                            }`}
+                            title={`${l.nama_line} (${l.area})${isInTrolley ? ' • Sudah ada di troli' : ''}`}
+                          >
+                            <span>{l.kode_line}</span>
+                            {isInTrolley && selectedLineId !== l.id && (
+                              <span className="text-[9px] font-sans font-extrabold text-blue-600">•Troli</span>
+                            )}
+                          </button>
+                        );
+                      })}
 
                       {suggestedLines.length > quickSuggestedLines.length && (
                         <select
@@ -1019,11 +1338,11 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                             );
                             if (chosen) handleSelectLine(chosen);
                           }}
-                          className="px-2 py-0.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
-                          title="Pilih dari hasil sugesti lainnya"
+                          className="px-2 py-0.5 bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-semibold rounded-lg border border-slate-200 outline-none transition shrink-0 cursor-pointer"
+                          title="Pilih dari seluruh daftar line"
                         >
                           <option value="">
-                            + {suggestedLines.length - quickSuggestedLines.length} Line Lainnya...
+                            + {suggestedLines.length - quickSuggestedLines.length} Line...
                           </option>
                           {suggestedLines.map((l) => (
                             <option key={l.id} value={l.id}>
@@ -1069,13 +1388,51 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                   <span>DAFTAR MATERIAL DALAM TROLI</span>
                 </h3>
                 <p className="text-[11px] text-slate-500 font-mono">
-                  Total {itemsInTrolley.length} item dalam task ini
+                  Total {itemsInTrolley.length} item • {lineSummaryInTrolley.length} Line tujuan
                 </p>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                {pickedItems.length} Siap di Troli | {inTransitItems.length} Jalan | {deliveredItems.length} Tiba
+                {pickedItems.length} Siap | {inTransitItems.length} Jalan | {deliveredItems.length} Tiba
               </span>
             </div>
+
+            {/* Ringkasan Rute Multi-Line dalam Troli */}
+            {lineSummaryInTrolley.length > 0 && (
+              <div className="mt-3 p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="font-bold text-slate-700">
+                    Ringkasan Rute Pengiriman ({lineSummaryInTrolley.length} Line):
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    {pendingTrolleyItems.length > 0 ? `${targetLinesInTrolley.length} Line menunggu drop` : 'Semua line terkirim'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {lineSummaryInTrolley.map(({ line, totalItems, totalQty, deliveredCount, inTransitCount }) => {
+                    const isAllDelivered = deliveredCount === totalItems;
+                    const hasInTransit = inTransitCount > 0;
+                    return (
+                      <span
+                        key={line.id}
+                        className={`px-2 py-1 rounded-lg text-[11px] font-mono font-bold border flex items-center gap-1.5 ${
+                          isAllDelivered
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : hasInTransit
+                              ? 'bg-blue-50 text-blue-800 border-blue-200'
+                              : 'bg-amber-50 text-amber-900 border-amber-200'
+                        }`}
+                      >
+                        <span>{line.nama_line}</span>
+                        <span className="opacity-75 font-normal">
+                          ({totalItems} item • {totalQty} pcs)
+                        </span>
+                        {isAllDelivered && <Check className="w-3 h-3 text-emerald-600" />}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* List of items */}
             <div className="py-3 space-y-2.5 flex-1 max-h-[380px] overflow-y-auto">
@@ -1217,19 +1574,23 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                     </span>
                   </div>
                   <p className="text-[11px] text-emerald-800">
-                    Material telah diterima di lini produksi. Operator kembali ke area rak gudang untuk siklus selanjutnya.
+                    {pendingTrolleyItems.length > 0
+                      ? `Masih ada ${pendingTrolleyItems.length} item untuk ${targetLinesInTrolley.length} line tujuan lain. Selesaikan pengantaran semua line sebelum kembali ke rak (T3).`
+                      : 'Semua material telah diterima di lini produksi. Operator kembali ke area rak gudang untuk siklus selanjutnya.'}
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      sound.playSuccessBeep();
-                      onReturnToRack();
-                    }}
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    <span>✓ SELESAI &amp; KEMBALI KE RAK (CATAT T3)</span>
-                  </button>
+                  {pendingTrolleyItems.length === 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sound.playSuccessBeep();
+                        onReturnToRack();
+                      }}
+                      className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      <span>✓ SEMUA LINE TERKIRIM • KEMBALI KE RAK (CATAT T3)</span>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -1413,19 +1774,50 @@ export const OperatorTaskInputView: React.FC<OperatorTaskInputViewProps> = ({
                         </p>
                       </div>
 
-                      <div className="pt-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setShowCompletionModal(false);
-                            sound.playSuccessBeep();
-                            onReturnToRack();
-                          }}
-                          className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm"
-                        >
-                          <RotateCcw className="w-4 h-4" />
-                          <span>✓ SELESAI &amp; KEMBALI KE RAK (CATAT T3)</span>
-                        </button>
+                      <div className="pt-2 space-y-2">
+                        {pendingTrolleyItems.length > 0 ? (
+                          <>
+                            <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-[11px] text-blue-900 font-medium">
+                              Masih ada <strong>{pendingTrolleyItems.length} item</strong> untuk{' '}
+                              <strong>{targetLinesInTrolley.length} line tujuan</strong> berikutnya:{' '}
+                              <span className="font-mono font-bold">
+                                {targetLinesInTrolley.map((l) => l.nama_line).join(', ')}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setVerificationResult(null);
+                                setDestScanInput('');
+                                setTimeout(() => destInputRef.current?.focus(), 60);
+                              }}
+                              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                            >
+                              <ArrowRight className="w-4 h-4" />
+                              <span>LANJUT SCAN LINE TUJUAN BERIKUTNYA</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setShowCompletionModal(false)}
+                              className="w-full py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold rounded-xl text-xs cursor-pointer"
+                            >
+                              Tutup Modal Sementara
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowCompletionModal(false);
+                              sound.playSuccessBeep();
+                              onReturnToRack();
+                            }}
+                            className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                          >
+                            <RotateCcw className="w-4 h-4" />
+                            <span>✓ SEMUA LINE TERKIRIM • KEMBALI KE RAK (CATAT T3)</span>
+                          </button>
+                        )}
                       </div>
                     </>
                   ) : (
