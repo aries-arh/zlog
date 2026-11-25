@@ -8,7 +8,7 @@
       "password": "admin123",
       "status": "active",
       "created_at": "2026-10-01T07:00:00.000Z",
-      "last_login_at": "2026-11-18T04:39:19.882Z",
+      "last_login_at": "2026-11-25T02:50:06.658Z",
       "qr_code": "admin"
     },
     {
@@ -34,46 +34,6 @@
       "qr_code": "manager"
     },
     {
-      "id": "u-op-001",
-      "employee_id": "OP-001",
-      "nama": "Budi Santoso",
-      "qr_code": "OP-001",
-      "role": "operator",
-      "status": "active",
-      "created_at": "2026-10-10T06:30:00.000Z",
-      "last_login_at": "2026-10-30T03:10:00.000Z"
-    },
-    {
-      "id": "u-op-002",
-      "employee_id": "OP-002",
-      "nama": "Agus Pratama",
-      "qr_code": "OP-002",
-      "role": "operator",
-      "status": "active",
-      "created_at": "2026-10-12T06:30:00.000Z",
-      "last_login_at": "2026-10-30T02:40:00.000Z"
-    },
-    {
-      "id": "u-op-003",
-      "employee_id": "OP-003",
-      "nama": "Siti Rahma",
-      "qr_code": "OP-003",
-      "role": "operator",
-      "status": "active",
-      "created_at": "2026-10-15T06:30:00.000Z",
-      "last_login_at": "2026-10-30T01:50:00.000Z"
-    },
-    {
-      "id": "u-1794472416721",
-      "employee_id": "318683",
-      "nama": "Operator 318683",
-      "qr_code": "318683",
-      "role": "operator",
-      "status": "active",
-      "created_at": "2026-11-12T08:33:36.721Z",
-      "last_login_at": "2026-11-18T03:53:22.454Z"
-    },
-    {
       "id": "u-1794472740044",
       "employee_id": "3018683",
       "nama": "Operator 3018683",
@@ -81,7 +41,17 @@
       "role": "operator",
       "status": "active",
       "created_at": "2026-11-12T08:39:00.044Z",
-      "last_login_at": "2026-11-18T04:33:48.345Z"
+      "last_login_at": "2026-11-19T08:41:15.076Z"
+    },
+    {
+      "id": "u-1795571098388-w6eu",
+      "employee_id": "318683",
+      "nama": "Operator 318683",
+      "qr_code": "318683",
+      "role": "operator",
+      "status": "active",
+      "created_at": "2026-11-25T01:44:58.388Z",
+      "last_login_at": "2026-11-25T01:44:58.388Z"
     }
   ],
   "raks": [
@@ -4047,6 +4017,16 @@
   ],
   "tasks": [
     {
+      "id": "task-1795571098388-64lu",
+      "user_id": "u-1795571098388-w6eu",
+      "task_no": "T-20261125-366",
+      "tanggal": "2026-11-25",
+      "shift": 1,
+      "status": "new",
+      "start_time": "2026-11-25T01:44:58.388Z",
+      "end_time": null
+    },
+    {
       "id": "task-1794975441612",
       "user_id": "u-1794472740044",
       "task_no": "T-20261118-348",
@@ -4364,6 +4344,141 @@
     }
   ],
   "logs": [
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795575006658-lmn5",
+      "timestamp": "2026-11-25T02:50:06.658Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795571139787-r4pz",
+      "timestamp": "2026-11-25T01:45:39.787Z"
+    },
+    {
+      "task_id": "task-1795571098388-64lu",
+      "operator_id": "u-1795571098388-w6eu",
+      "operator_name": "Operator 318683",
+      "event_type": "AUTO_REGISTER",
+      "notes": "POKA-YOKE FAST-TRACK: Operator baru otomatis didaftarkan: Operator 318683 (318683). Task awal T-20261125-366 dibuat.",
+      "id": "log-1795571098388-bsqq",
+      "timestamp": "2026-11-25T01:44:58.388Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795568684135-uoen",
+      "timestamp": "2026-11-25T01:04:44.135Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795078263222-dkcu",
+      "timestamp": "2026-11-19T08:51:03.222Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795077788739-sib6",
+      "timestamp": "2026-11-19T08:43:08.739Z"
+    },
+    {
+      "task_id": "task-1794975441612",
+      "operator_id": "u-1794472740044",
+      "operator_name": "Operator 3018683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 3018683 (3018683)",
+      "id": "log-1795077675076-0bf7",
+      "timestamp": "2026-11-19T08:41:15.076Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795059062125-v12p",
+      "timestamp": "2026-11-19T03:31:02.125Z"
+    },
+    {
+      "task_id": "task-1794472416721",
+      "operator_id": "u-1794472416721",
+      "operator_name": "Operator 318683",
+      "event_type": "LOGIN",
+      "notes": "Operator terdaftar login: Operator 318683 (318683)",
+      "id": "log-1795058636606-swq7",
+      "timestamp": "2026-11-19T03:23:56.606Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1795053515283-n11r",
+      "timestamp": "2026-11-19T01:58:35.283Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794990970711-k9yw",
+      "timestamp": "2026-11-18T08:36:10.711Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794986254551-41f0",
+      "timestamp": "2026-11-18T07:17:34.551Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794984078225-84lo",
+      "timestamp": "2026-11-18T06:41:18.225Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794981874020-sw1l",
+      "timestamp": "2026-11-18T06:04:34.020Z"
+    },
+    {
+      "task_id": "SYSTEM",
+      "operator_id": "u-admin",
+      "operator_name": "admin",
+      "event_type": "LOGIN",
+      "notes": "Staff login: admin (ADMIN)",
+      "id": "log-1794977737080-ulkm",
+      "timestamp": "2026-11-18T04:55:37.080Z"
+    },
     {
       "task_id": "SYSTEM",
       "operator_id": "u-mgr",
@@ -5099,5 +5214,5 @@
       "location_ref": "QR-LINE-02-SUBASSY"
     }
   ],
-  "last_updated": 1794976783089
+  "last_updated": 1795575007064
 }
